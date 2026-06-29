@@ -1,0 +1,104 @@
+# Dash Configuration
+# One file per Design Dash.
+# Governs tier, mandatory gates, and default thresholds for this dash.
+# Do NOT edit mid-dash to lower the tier — promotion is allowed, demotion is not.
+# Thresholds are defaults; update after ~10 dashes with real calibration data.
+
+# --- Dash identity ---
+dash-name: ""                       # Human-readable name (e.g. "Onboarding Redesign")
+dash-id: ""                         # Unique slug (e.g. "onboarding-redesign-2026-06")
+owner: ""                           # Lead designer
+start-date: ""                      # YYYY-MM-DD
+workspace: ""                       # Path to this dash's working directory
+
+# --- Tier classification ---
+# Tier is RULE-DERIVED, not chosen. The classifier runs at P0. Designer may escalate, never lower.
+# High-stakes requires a reviewer who is not the dash author to confirm.
+tier: ""                            # express | standard | high-stakes
+computed-tier-rationale: ""         # The trigger that set the tier (e.g. "regulated PII surface → High-stakes")
+tier-confirmed-by: ""               # Non-author reviewer name (required for High-stakes)
+tier-confirmation-date: ""          # YYYY-MM-DD
+
+# Tier-escalation triggers (any one forces the minimum tier shown):
+#   Regulated personal data / PII surface (GDPR, HIPAA, CCPA, or equivalent)  →  high-stakes (+ Privacy gate)
+#   payment / financial / health / assessment-scoring surface  →  high-stakes
+#   reach >= 10,000 end users OR multi-tenant / enterprise-wide rollout  →  high-stakes
+#   irreversible / not flag-guarded / not easily rolled back  →  high-stakes
+#   affects > 1 user role OR reach 500-9,999 users  →  standard
+#   reach < 500, single role, reversible, flag-guarded, no PII  →  express (floor)
+
+# --- Active phases ---
+phases-active:                      # List phases included in this dash
+  - P0   # Preconditions & tier classification
+  # - P1   # Opportunity & Evidence (required: standard, high-stakes)
+  # - P2   # ORCA Object Modeling
+  # - P3   # Framing lock
+  # - P3.5 # Flow & IA synthesis
+  # - P4   # Reconciliation (required: standard, high-stakes)
+  # - P5   # Divergence & Selection (required: standard, high-stakes — when >= 2 concepts contend)
+  # - P6   # Edge/Ethics/Equity (required: all tiers — ethics floor always runs)
+  # - P7   # Wireframe
+  # - P8   # Plan assembly: requirements.md + summary.html + Learning gate
+
+# --- Mandatory gates ---
+# Auto-computed from tier; list here for visibility.
+gates-required:
+  - P6   # Ethics/equity floor — never waived for high-risk profiles
+
+# Express skips (tracked as evidence debt, not deleted):
+# gates-deferred: [P1, P4, P5, P8]   # Uncomment for Express tier; add to assumptions.md
+
+# --- Required artifacts ---
+artifacts-required:
+  - assumptions.md       # All tiers
+  - glossary.md          # All tiers
+  - ethics-equity-checklist.md  # All tiers
+
+# Standard additionally requires:
+# - metrics.md
+# - edge-state-matrix.md
+# - sign-off-ledger.md
+
+# High-stakes additionally requires:
+# - learning-loop-contract (learning-close gate)
+# - live instrumentation wired before P8 completes (real production ticket)
+
+# --- Cross-functional sign-off ---
+# Derived from tier + artifact type; not designer-assignable for Responsible roles.
+cross-functional-sign-off:
+  required-disciplines: []        # Populate from sign-off-ledger.md
+  simulation-allowed: true        # Express: all may simulate. Standard/High-stakes: see ledger.
+
+# --- Default thresholds — calibrate after ~10 dashes ---
+thresholds:
+
+  # Tier-classification triggers
+  reach-high-stakes-users: 10000  # >= N users -> high-stakes
+  reach-standard-users-min: 500   # >= N users -> minimum standard
+  reach-standard-users-max: 9999
+
+  # Grade-capping counter-metrics
+  all-simulated-cap-quality2: "C"         # No real sign-off on any Responsible -> Quality 2 capped
+  team-all-simulated-rate-cap: 0.40       # >40% all-simulated over trailing 10 -> team Q2 capped at B-
+  test-not-run-cap-quality3: "C"          # Scheduled test not run by learning-close -> Q3 capped
+  concepts-not-distinct-cap-quality7: "B" # Panel finds concepts not structurally distinct -> Q7 capped
+
+  # Usability test minimums
+  min-participants-per-role: 5            # Nielsen saturation heuristic
+
+  # Learning-close SLA
+  learning-close-sla-standard: 15        # Business days after P8 commitment gate (Standard)
+  learning-close-sla-high-stakes: 30     # Business days after P8 commitment gate (High-stakes)
+
+  # Spot-audit cadence
+  spot-audit-per-cycle: 2               # Dashes randomly audited per design-ops cycle
+
+# --- Tier override log ---
+# Record any escalation mid-dash (downgrade not allowed once a higher-tier gate has surfaced a real risk).
+tier-override-log: []
+# Example:
+# - date: YYYY-MM-DD
+#   from: standard
+#   to: high-stakes
+#   reason: "PII surface discovered at P3 — user payment data exposed to third party"
+#   confirmed-by: [reviewer name]

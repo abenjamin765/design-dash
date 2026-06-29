@@ -1,0 +1,59 @@
+---
+description: When planning, conducting, or synthesizing UX research aligned to OOUX methods and ORCA phases
+alwaysApply: false
+---
+
+# OOUX UX Research Principles
+
+When planning or analyzing UX research for OOUX artifacts, follow these principles.
+
+## Method Selection by ORCA Phase
+
+- **Discovery** — Favor moderated generative methods (interviews, contextual inquiry) to elicit objects, relationships, and language. Use unmoderated (card sorts, surveys) for breadth once vocabulary stabilizes.
+- **Prioritization** — Combine moderated sessions for "why" and tradeoffs with unmoderated quantitative methods (tree testing, MaxDiff surveys) for stable rankings.
+- **Representation** — Use moderated usability testing for early prototypes. Scale with unmoderated usability tests once the prototype is functional.
+
+## Moderated vs Unmoderated
+
+Use **moderated** when interpretation, motivation, or prototype ambiguity matters — discovery of unknown unknowns, unstable vocabulary, or low-fidelity prototypes.
+
+Use **unmoderated** when you need speed, scale, and stable metrics — and tasks can be specified unambiguously.
+
+## ORCA-Aligned Coding
+
+All UX research findings should be coded using the ORCA scheme:
+- **O1-O5** (Objects): Naming, boundary, missing, extra, confusion
+- **R1-R5** (Relationships): Missing, incorrect, directionality, cardinality, navigation
+- **C1-C5** (CTAs): Missing, irrelevant, placement, wording, role mismatch
+- **A1-A6** (Attributes): Missing, extraneous, priority, terminology, filter/sort, conditional logic
+
+Severity: Critical (blocks tasks) > Major (significant confusion) > Minor (friction)
+
+## Task Design
+
+Anchor research tasks in objects, not features:
+- "Find a {object}..." not "Use the search feature..."
+- "From this {object}, find the related {object}..." not "Navigate to the next page..."
+- "Show me how you would {verb} this {object}..." not "Click the button..."
+
+## Sample Size Rationale
+
+Always cite the reasoning for sample sizes:
+- Formative usability (problem discovery): ~5 per round, iterated
+- Card sorting: ~15 (diminishing returns after 30)
+- Quantitative tree testing: 50–150 based on precision needs
+- Quantitative usability benchmarking: ~40 per segment
+- Interviews to saturation: depends on population diversity
+
+## Output Locations
+
+Research outputs go into the current dash directory:
+- Research plans: `dashes/{slug}/research/YYYY-MM-DD-{slug}-plan.md`
+- Research synthesis: `dashes/{slug}/research/YYYY-MM-DD-{slug}-synthesis.md`
+- Templates: `templates/ux-research-plan.md`, `templates/ux-research-synthesis.md`
+
+## Related Skills
+
+- Plan a study: `ux-research-planner` (`/orca-research-plan`)
+- Synthesize findings: `ux-research-synthesizer` (`/orca-synthesize`)
+- ORCA-aligned research concepts: `skills/2-research/`

@@ -1,0 +1,22 @@
+# OS / editor cruft
+.DS_Store
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+
+# Secrets / local env
+.env
+
+# Python
+.venv/
+__pycache__/
+
+# dashes/ holds user project artifacts produced by a dash run.
+# We keep dashes/.gitkeep so the directory is tracked. If you would rather
+# not commit generated dash outputs, uncomment the lines below to ignore
+# everything except the .gitkeep:
+# dashes/*
+# !dashes/.gitkeep

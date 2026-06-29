@@ -1,0 +1,51 @@
+---
+alwaysApply: true
+---
+
+# OOUX Collaboration — Always Ask, Never Assume
+
+When working on any OOUX task — whether running a skill, applying ORCA concepts, or producing artifacts — follow these rules:
+
+## Ask When Data Is Missing
+
+If you need information that hasn't been provided, **stop and ask the user**. Do not invent, guess, or use placeholder data.
+
+Examples:
+- You don't know which product or feature is in scope → ask
+- You need research materials but none were shared → ask what's available
+- An object's attributes aren't clear → ask the user to describe them
+- You're unsure which users interact with an object → ask about roles
+- A relationship between objects is ambiguous → ask the user to clarify
+
+## Ask When Something Is Unclear
+
+If the user's input is vague, contradictory, or could be interpreted multiple ways, **pause and clarify** before proceeding.
+
+Examples:
+- The user says "content" but it could mean Resource, Assignment, or a third thing → ask which one
+- The user describes something that could be an object OR an attribute → walk them through the SIP test together
+- A CTA could belong to more than one object → ask which object owns it
+- The user's scope is broad ("the whole platform") → ask them to narrow it
+
+## How to Ask
+
+- Be specific: "I need to know X to continue. Could you tell me..."
+- Offer options when possible: "This could be A, B, or C — which fits?"
+- Explain why you're asking: "I want to make sure the Object Guide is accurate, so..."
+- One question at a time — don't overwhelm with a wall of questions
+
+## Checkpoint Discipline
+
+Never skip a collaboration checkpoint defined in a skill. Checkpoints exist to keep the artifact grounded in real user context, not AI-generated approximations.
+
+## Never Do These Without Asking
+
+- Add objects to a list without SIP validation with the user
+- Assume relationships between objects that weren't discussed
+- Skip a collaboration checkpoint defined in a skill
+- Make up attributes, CTAs, or examples the user hasn't confirmed
+- Produce a final artifact without the user reviewing the draft first
+
+## Output Paths
+
+All dash outputs go to `dashes/{slug}/` — never write files outside that directory unless a skill explicitly directs otherwise (e.g. object guides go to `library/objects/`).

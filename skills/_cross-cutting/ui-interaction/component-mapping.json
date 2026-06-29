@@ -1,0 +1,451 @@
+{
+  "meta": {
+    "description": "Generic overlay: maps each component_catalog id in decision-tree.json to one or more generic UI component names. Entries with gap:true have no confirmed component in a typical design system and should be reviewed before implementation. Update the 'component' field with your design system's actual component names when adopting this library.",
+    "version": "0.1.0",
+    "last_updated": "2026-06-29",
+    "decision_tree_version": "1.0.0",
+    "governance": "A gap:true resolution requires design system review before build — never an ad-hoc custom build without confirmation."
+  },
+  "mappings": [
+    {
+      "component_id": "text_input",
+      "family": "input",
+      "component": "text-input",
+      "notes": "Standard single-line text entry. Use type attribute for structured values (email, tel, url).",
+      "gap": false
+    },
+    {
+      "component_id": "textarea",
+      "family": "input",
+      "component": "textarea",
+      "notes": "Multi-line text entry for longer authored responses.",
+      "gap": false
+    },
+    {
+      "component_id": "search_input",
+      "family": "input",
+      "component": "search-input",
+      "notes": "Search form with labelled input and submit. May include result count announcement.",
+      "gap": false
+    },
+    {
+      "component_id": "numeric_input",
+      "family": "input",
+      "component": "text-input",
+      "notes": "Use text-input with inputmode=numeric and appropriate validation.",
+      "gap": false
+    },
+    {
+      "component_id": "range_slider",
+      "family": "input",
+      "component": null,
+      "notes": "Range slider. Verify your design system has a slider component before use.",
+      "gap": true
+    },
+    {
+      "component_id": "date_input",
+      "family": "input",
+      "component": null,
+      "notes": "Grouped date fields for memorable dates. Verify your design system has a date-input component.",
+      "gap": true
+    },
+    {
+      "component_id": "date_picker",
+      "family": "input",
+      "component": "date-picker",
+      "notes": "Calendar-assisted date selection.",
+      "gap": false
+    },
+    {
+      "component_id": "date_range_picker",
+      "family": "input",
+      "component": null,
+      "notes": "Paired start/end date inputs with calendar. May compose from two date-picker instances.",
+      "gap": true
+    },
+    {
+      "component_id": "time_input",
+      "family": "input",
+      "component": null,
+      "notes": "Free time entry. Verify your design system has a time-input component.",
+      "gap": true
+    },
+    {
+      "component_id": "time_slot_list",
+      "family": "selection",
+      "component": null,
+      "notes": "Selection from finite appointment/session times as radio buttons or selectable tiles. May compose from radio-group.",
+      "gap": true
+    },
+    {
+      "component_id": "file_input",
+      "family": "input",
+      "component": "file-input",
+      "notes": "Standard file upload with accepted formats, size, and multi-file states.",
+      "gap": false
+    },
+    {
+      "component_id": "checkbox",
+      "family": "selection",
+      "component": "checkbox",
+      "notes": "Single independent opt-in or acknowledgment within a form.",
+      "gap": false
+    },
+    {
+      "component_id": "switch",
+      "family": "selection",
+      "component": "switch",
+      "notes": "Immediate on/off binary setting.",
+      "gap": false
+    },
+    {
+      "component_id": "radio_group",
+      "family": "selection",
+      "component": "radio-group",
+      "notes": "fieldset + legend + radio inputs for mutually exclusive single choice.",
+      "gap": false
+    },
+    {
+      "component_id": "radio_cards",
+      "family": "selection",
+      "component": null,
+      "notes": "Rich/descriptive/visual single-choice tiles. Verify your design system has radio-cards.",
+      "gap": true
+    },
+    {
+      "component_id": "segmented_control",
+      "family": "selection",
+      "component": null,
+      "notes": "Small mutually exclusive view/mode switch. May compose from radio inputs or button-group.",
+      "gap": true
+    },
+    {
+      "component_id": "select",
+      "family": "selection",
+      "component": "select",
+      "notes": "Compact single-choice list.",
+      "gap": false
+    },
+    {
+      "component_id": "combobox",
+      "family": "selection",
+      "component": "combobox",
+      "notes": "Searchable/typeahead single selection.",
+      "gap": false
+    },
+    {
+      "component_id": "autocomplete_search",
+      "family": "selection",
+      "component": null,
+      "notes": "Search-first selection from very large/dynamic/remote corpus. Verify your design system has an autocomplete component.",
+      "gap": true
+    },
+    {
+      "component_id": "checkbox_group",
+      "family": "selection",
+      "component": "checkbox-group",
+      "notes": "fieldset + legend + checkbox inputs for visible multi-selection.",
+      "gap": false
+    },
+    {
+      "component_id": "multi_select_combobox",
+      "family": "selection",
+      "component": null,
+      "notes": "Search, add, and remove multiple items from a large known set. Verify your design system has a multi-select component.",
+      "gap": true
+    },
+    {
+      "component_id": "filter_panel",
+      "family": "collection_control",
+      "component": "filter-panel",
+      "notes": "Multiple collection constraints exposed together.",
+      "gap": false
+    },
+    {
+      "component_id": "filter_chips",
+      "family": "collection_control",
+      "component": "filter-chips",
+      "notes": "Visible summary and removal of active filters.",
+      "gap": false
+    },
+    {
+      "component_id": "sort_control",
+      "family": "collection_control",
+      "component": null,
+      "notes": "Ordering control. May compose from a select component.",
+      "gap": true
+    },
+    {
+      "component_id": "search_filters",
+      "family": "collection_control",
+      "component": "search-filters",
+      "notes": "Search with labelled filter refinements.",
+      "gap": false
+    },
+    {
+      "component_id": "list",
+      "family": "content",
+      "component": "list",
+      "notes": "Ordered/unordered list of repeated items. Use semantic ul/ol.",
+      "gap": false
+    },
+    {
+      "component_id": "card_grid",
+      "family": "content",
+      "component": "card-grid",
+      "notes": "Rich distinct objects with preview metadata.",
+      "gap": false
+    },
+    {
+      "component_id": "table",
+      "family": "content",
+      "component": "data-table",
+      "notes": "Static data table with caption and headers.",
+      "gap": false
+    },
+    {
+      "component_id": "data_grid",
+      "family": "content",
+      "component": null,
+      "notes": "Interactive/editable tabular workspace requiring ARIA grid pattern. Verify your design system has a data-grid component.",
+      "gap": true
+    },
+    {
+      "component_id": "tree",
+      "family": "content",
+      "component": null,
+      "notes": "Hierarchical treeview. Verify your design system has a tree component.",
+      "gap": true
+    },
+    {
+      "component_id": "treegrid",
+      "family": "content",
+      "component": null,
+      "notes": "Hierarchical interactive table. Verify your design system has a treegrid component.",
+      "gap": true
+    },
+    {
+      "component_id": "chart_with_data",
+      "family": "content",
+      "component": null,
+      "notes": "Accessible visualization plus data summary/table. Verify your design system has chart components.",
+      "gap": true
+    },
+    {
+      "component_id": "badge",
+      "family": "status",
+      "component": "badge",
+      "notes": "Concise categorical state label (not color alone).",
+      "gap": false
+    },
+    {
+      "component_id": "progress_indicator",
+      "family": "status",
+      "component": "progress-bar",
+      "notes": "Known-progress completion indicator.",
+      "gap": false
+    },
+    {
+      "component_id": "skeleton",
+      "family": "feedback",
+      "component": "skeleton",
+      "notes": "Non-interactive layout placeholders while content loads.",
+      "gap": false
+    },
+    {
+      "component_id": "spinner",
+      "family": "feedback",
+      "component": "spinner",
+      "notes": "Indeterminate short-wait indicator with accessible status announcement.",
+      "gap": false
+    },
+    {
+      "component_id": "empty_state",
+      "family": "feedback",
+      "component": "empty-state",
+      "notes": "Heading, explanation, and relevant action for empty collections.",
+      "gap": false
+    },
+    {
+      "component_id": "inline_validation",
+      "family": "feedback",
+      "component": "inline-error",
+      "notes": "Field-specific correction guidance adjacent to field.",
+      "gap": false
+    },
+    {
+      "component_id": "error_summary",
+      "family": "feedback",
+      "component": "error-summary",
+      "notes": "Form-wide error summary with focus on submit failure.",
+      "gap": false
+    },
+    {
+      "component_id": "alert",
+      "family": "feedback",
+      "component": "alert",
+      "notes": "Persistent page or section status (warning, info, error). role=status or alert.",
+      "gap": false
+    },
+    {
+      "component_id": "toast",
+      "family": "feedback",
+      "component": "toast",
+      "notes": "Transient low-risk confirmation. Non-blocking with accessible announcement.",
+      "gap": false
+    },
+    {
+      "component_id": "modal_dialog",
+      "family": "overlay",
+      "component": "modal",
+      "notes": "Blocking decision or focused required task. ARIA dialog pattern.",
+      "gap": false
+    },
+    {
+      "component_id": "nonmodal_panel",
+      "family": "overlay",
+      "component": "drawer",
+      "notes": "Contextual support without blocking main task. Side panel / drawer pattern.",
+      "gap": false
+    },
+    {
+      "component_id": "disclosure",
+      "family": "organization",
+      "component": "disclosure",
+      "notes": "Button controlling expandable region for supplemental content.",
+      "gap": false
+    },
+    {
+      "component_id": "accordion",
+      "family": "organization",
+      "component": "accordion",
+      "notes": "Multiple independently collapsible optional sections.",
+      "gap": false
+    },
+    {
+      "component_id": "tabs",
+      "family": "organization",
+      "component": "tabs",
+      "notes": "ARIA tabs pattern for peer panels within the same context.",
+      "gap": false
+    },
+    {
+      "component_id": "step_flow",
+      "family": "organization",
+      "component": "step-indicator",
+      "notes": "Required ordered stages with step indicator.",
+      "gap": false
+    },
+    {
+      "component_id": "button",
+      "family": "action",
+      "component": "button",
+      "notes": "Standard command or state-change trigger.",
+      "gap": false
+    },
+    {
+      "component_id": "primary_button",
+      "family": "action",
+      "component": "button",
+      "notes": "Use button with the primary variant/modifier.",
+      "gap": false
+    },
+    {
+      "component_id": "menu_button",
+      "family": "action",
+      "component": "menu-button",
+      "notes": "Button revealing a compact list of related actions.",
+      "gap": false
+    },
+    {
+      "component_id": "overflow_menu",
+      "family": "action",
+      "component": "overflow-menu",
+      "notes": "Infrequent item actions without visual clutter. Menu button pattern.",
+      "gap": false
+    },
+    {
+      "component_id": "toolbar",
+      "family": "action",
+      "component": null,
+      "notes": "Recurring controls for a workspace or selection. Verify your design system has a toolbar component.",
+      "gap": true
+    },
+    {
+      "component_id": "split_button",
+      "family": "action",
+      "component": null,
+      "notes": "Primary command with closely related alternate modes. Verify your design system has a split-button component.",
+      "gap": true
+    },
+    {
+      "component_id": "link",
+      "family": "navigation",
+      "component": "link",
+      "notes": "Navigation to another destination or resource. Semantic <a href>.",
+      "gap": false
+    },
+    {
+      "component_id": "global_navigation",
+      "family": "navigation",
+      "component": "global-navigation",
+      "notes": "Primary product destination navigation (nav with links).",
+      "gap": false
+    },
+    {
+      "component_id": "side_navigation",
+      "family": "navigation",
+      "component": "side-navigation",
+      "notes": "Multi-page section/hierarchy navigation with current page indication.",
+      "gap": false
+    },
+    {
+      "component_id": "breadcrumbs",
+      "family": "navigation",
+      "component": "breadcrumbs",
+      "notes": "Ancestor path and location context (nav aria-label Breadcrumb with ordered links).",
+      "gap": false
+    },
+    {
+      "component_id": "in_page_navigation",
+      "family": "navigation",
+      "component": "in-page-navigation",
+      "notes": "Fragment links to sections on a long page.",
+      "gap": false
+    },
+    {
+      "component_id": "pagination",
+      "family": "navigation",
+      "component": "pagination",
+      "notes": "Navigation through addressable pages of results.",
+      "gap": false
+    },
+    {
+      "component_id": "load_more",
+      "family": "navigation",
+      "component": null,
+      "notes": "Append-results button pattern. Compose from a button — no standalone component required.",
+      "gap": true
+    },
+    {
+      "component_id": "infinite_scroll",
+      "family": "navigation",
+      "component": null,
+      "notes": "Continuous feed consumption. Feed ARIA pattern only. Implement cautiously with navigation alternatives.",
+      "gap": true
+    },
+    {
+      "component_id": "tooltip",
+      "family": "help",
+      "component": "tooltip",
+      "notes": "Brief supplementary message on focus or hover. Accessible tooltip pattern.",
+      "gap": false
+    }
+  ],
+  "summary": {
+    "total_entries": 62,
+    "mapped": 44,
+    "gap_true": 18,
+    "note": "gap:true entries (component:null) require design system review before build. Update this file with your own design system's component names."
+  }
+}

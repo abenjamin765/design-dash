@@ -1,0 +1,7 @@
+{
+  "name": "design-dash",
+  "version": "0.1.0",
+  "description": "Business-agnostic OOUX/ORCA Design Dash workflow — takes a designer from a fuzzy problem to a complete product plan.",
+  "owner": { "name": "Design Dash OSS" },
+  "skills": []
+}

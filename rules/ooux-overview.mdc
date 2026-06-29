@@ -1,0 +1,102 @@
+---
+alwaysApply: true
+---
+
+# OOUX Agent Skills — Overview
+
+You have access to OOUX Agent Skills that follow the ORCA (Objects, Relationships, CTAs, Attributes) process — a 3-round, 12-step framework from the X-Ray UX approach (Sophia Prater). All skills live in `.cursor/skills/` (or `~/.claude/skills/`).
+
+**Critical rule:** If data is missing or unclear, always stop and ask the user. Never guess, invent, or use placeholder data. See the `ooux-collaboration` rule for details.
+
+## The Four Ancient Truths of OOUX
+
+These truths — rooted in human perception and cognition — guide every design decision in the ORCA process:
+
+1. **Objects** — Things that are different should look different. *(Anti-pattern: Masked Objects — different objects disguised as the same thing)*
+2. **Relationships** — Humans navigate most naturally through relationships between objects. *(Anti-pattern: Isolated Objects — objects with no visible connections)*
+3. **CTAs** — Humans act on objects through direct manipulation. *(Anti-pattern: Broken Objects — objects users can see but can't act on directly)*
+4. **Attributes** — Objects that are the same should look the same, unless they have a stellar reason not to. *(Anti-pattern: Shapeshifters — the same object looking arbitrarily different across contexts)*
+
+## Available Skills
+
+### Round 1: Discovery — "What's in our system?"
+
+| # | Skill ID | Name | What It Produces |
+|---|---|---|---|
+| 01 | `01-object-discovery` | Object Discovery | Validated object list (SIP-tested) |
+| 02 | `02-nom-builder` | NOM Builder | Nested-Object Matrix |
+| 03 | `03-cta-matrix-builder` | CTA Matrix Builder | CTA Matrix |
+| 04 | `04-object-map-builder` | Object Map Builder | Object Map diagram |
+
+### Round 2: Prioritization — "What matters most?"
+
+| # | Skill ID | Name | What It Produces |
+|---|---|---|---|
+| 05 | `05-object-guide-builder` | Object Guide Builder | Prioritized Object Guide (written to `library/objects/`) |
+| 06 | `06-mcsfd-spec-writer` | MCSFD Spec Writer | Prioritized relationship specifications |
+| 07 | `07-cta-prioritization` | CTA Prioritization | Force-ranked CTAs (P/S/T/Q) |
+| 08 | `08-attribute-prioritization` | Attribute Prioritization | Force-ranked attributes + Object Map reorder |
+
+### Round 3: Representation — "How does it look and behave?"
+
+Each step in the Representation round directly addresses one of the Four Ancient Truths and fights a specific anti-pattern:
+
+| # | Skill ID | Name | Ancient Truth | Anti-Pattern Avoided | What It Produces |
+|---|---|---|---|---|---|
+| 09 | `09-object-card-designer` | Object Card Designer | Objects | Masked Objects | Visually distinct object cards |
+| 10 | `10-nav-flow-designer` | Nav Flow Designer | Relationships | Isolated Objects | Navigation blueprint with nested objects |
+| 11 | `11-cta-placement-designer` | CTA Placement Designer | CTAs | Broken Objects | CTA-equipped cards and detail pages |
+| 12 | `12-shapeshifter-matrix-builder` | Shapeshifter Matrix Builder | Attributes | Shapeshifters | Intentional object variant matrix |
+
+### Supporting Skills — Use Anytime
+
+| Skill ID | Name | Purpose |
+|---|---|---|
+| `ooux-primer` | OOUX Primer | Teach OOUX concepts tailored to user's role |
+| `orca-project-intake` | ORCA Project Intake | Scope effort, recommend skill sequence |
+| `artifact-validator` | Artifact Validator | Check artifact quality and completeness |
+| `facilitation-kit` | Workshop Facilitation Kit | Generate workshop agendas and materials |
+| `engineering-handoff` | Engineering Handoff | Translate OOUX artifacts to engineering specs |
+| `orca-planner` | ORCA Planner | Build a sequenced workflow plan and guide execution step by step |
+| `user-story-writer` | User Story Writer | Write object-oriented user stories grounded in CTAs |
+| `cross-object-artifacts` | Cross-Object Artifacts | Compile system-wide NOM + CTA Matrix |
+| `case-study-writer` | Case Study Writer | Write engaging project case studies from OOUX artifacts |
+| `ux-research-planner` | UX Research Planner | Plan moderated and unmoderated UX research studies aligned to ORCA phases |
+| `ux-research-synthesizer` | UX Research Synthesizer | Analyze research data using ORCA-aligned coding and produce artifact update recommendations |
+| `adversarial-panel` | Adversarial Panel | Convene an expert panel to challenge and defend an artifact, then synthesize a Decision Memo |
+
+## Local Object Library
+
+Complete object guides are stored in `library/objects/` for fast agent access:
+
+- **Index**: `library/objects/_index.md` — read this first to find object guides by name or domain
+- **Format reference**: `library/objects/_example-*.md`
+
+For any domain object, check `library/objects/` first. If not found, use `01-object-discovery` to model it, then use `05-object-guide-builder` to write it to the library.
+
+Access the library via the `object-library-context` skill in `skills/_cross-cutting/`.
+
+## When to Suggest Skills
+
+- User mentions objects, nouns, entities, or "what things are in the system" → suggest **01 Object Discovery**
+- User mentions relationships, connections, nested objects → suggest **02 NOM Builder** or **06 MCSFD Spec Writer**
+- User mentions actions, CTAs, what users can do → suggest **03 CTA Matrix Builder**
+- User mentions attributes, properties, fields → suggest **04 Object Map Builder** or **08 Attribute Prioritization**
+- User wants a comprehensive reference for one object → suggest **05 Object Guide Builder**
+- User mentions prioritizing or ranking CTAs, button placement → suggest **07 CTA Prioritization**
+- User wants user stories → suggest **user-story-writer**
+- User mentions navigation, page flow, information architecture → suggest **10 Nav Flow Designer**
+- User mentions cards, list views, detail pages, distinct objects → suggest **09 Object Card Designer**
+- User mentions CTA buttons, direct manipulation, action placement → suggest **11 CTA Placement Designer**
+- User mentions consistency, variants, masked objects, shapeshifters → suggest **12 Shapeshifter Matrix Builder**
+- User wants to compile everything → suggest **cross-object-artifacts**
+- User is new to OOUX → suggest **ooux-primer**
+- User is starting a project or asks "where do I start" → suggest **orca-planner** (or **orca-project-intake** for a lighter scoping session)
+- User wants to validate work → suggest **artifact-validator**
+- User is running a workshop → suggest **facilitation-kit** for prep, or `/design-dash` to facilitate a full timeboxed session
+- User wants to run a Design Dash → suggest `/design-dash` command
+- User needs engineering specs → suggest **engineering-handoff**
+- User wants to plan a UX study, usability test, card sort, tree test, or user interview aligned to ORCA → suggest **ux-research-planner** or `/orca-research-plan`
+- User has research data, session notes, or test results to analyze → suggest **ux-research-synthesizer** or `/orca-synthesize`
+- User wants a panel review, adversarial review, or multi-perspective critique → suggest **adversarial-panel** or `/orca-panel`
+- User is working on a domain object and wants its guide → check `library/objects/` and suggest **object-library-context**

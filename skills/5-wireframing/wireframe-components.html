@@ -1,0 +1,3270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe Component Library</title>
+    <style>
+        /* ── Base ── */
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            font-family: sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #000;
+            background: #fff;
+            margin: 0;
+            padding: 24px;
+        }
+        h1 { font-size: 1.5rem; margin: 0 0 8px; }
+        h2 { font-size: 1.1rem; margin: 40px 0 16px; padding-bottom: 6px; border-bottom: 2px solid #000; }
+        section { margin-bottom: 32px; }
+        .label { font-weight: bold; font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: #666; margin: 0 0 8px; }
+        .component-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; margin-bottom: 8px; }
+
+        /* ── TOC ── */
+        .toc { border: 1px solid #000; padding: 16px 20px; margin-bottom: 40px; display: inline-block; }
+        .toc h2 { margin-top: 0; border: none; padding: 0; font-size: 1rem; }
+        .toc ol { margin: 0; padding-left: 20px; column-count: 2; column-gap: 32px; }
+        .toc li { margin-bottom: 4px; }
+        .toc a { color: #000; }
+
+        /* ── Buttons ── */
+        .button, button {
+            background-color: #000;
+            color: #fff;
+            padding: 8px 16px;
+            font-weight: bold;
+            font-size: 14px;
+            border: 1px solid #000;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .button.secondary {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
+        }
+        .button.tertiary {
+            background: transparent;
+            color: #000;
+            border: none;
+            padding: 8px 4px;
+            text-decoration: underline;
+            font-weight: normal;
+        }
+        .button[disabled], .button.disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+        .icon-button {
+            background: transparent;
+            border: 1px solid #000;
+            color: #000;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+        }
+
+        /* ── Form elements ── */
+        .field { display: flex; flex-direction: column; gap: 4px; min-width: 200px; }
+        .field label { font-weight: bold; font-size: .85rem; }
+        .field .hint { font-size: .75rem; color: #666; }
+        .field .error-msg { font-size: .75rem; color: #000; font-style: italic; }
+        .field input[type="text"],
+        .field input[type="email"],
+        .field input[type="number"],
+        .field textarea,
+        .field select {
+            border: 1px solid #000;
+            padding: 8px;
+            font-size: 14px;
+            font-family: sans-serif;
+            background: #fff;
+            width: 100%;
+        }
+        .field input.error,
+        .field textarea.error,
+        .field select.error {
+            border: 2px solid #000;
+            outline: 2px dashed #000;
+            outline-offset: 2px;
+        }
+        .field textarea { resize: vertical; min-height: 80px; }
+        .search-field {
+            display: flex;
+            align-items: center;
+            border: 1px solid #000;
+            padding: 0 8px;
+            gap: 6px;
+            min-width: 220px;
+        }
+        .search-field .search-icon { font-style: normal; font-size: 13px; color: #666; }
+        .search-field input {
+            border: none;
+            padding: 8px 0;
+            font-size: 14px;
+            font-family: sans-serif;
+            flex: 1;
+            outline: none;
+        }
+
+        /* Checkbox / Radio / Toggle */
+        .check-group, .radio-group { display: flex; flex-direction: column; gap: 6px; }
+        .check-item, .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .check-item input, .radio-item input { cursor: pointer; width: 16px; height: 16px; }
+        .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+        .toggle {
+            width: 40px;
+            height: 22px;
+            border: 2px solid #000;
+            border-radius: 11px;
+            background: #fff;
+            position: relative;
+            cursor: pointer;
+        }
+        .toggle::after {
+            content: '';
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            width: 14px;
+            height: 14px;
+            background: #000;
+            border-radius: 50%;
+            transition: left .15s;
+        }
+        .toggle.on { background: #000; }
+        .toggle.on::after { left: 20px; background: #fff; }
+
+        /* ── Tabs ── */
+        .tabs-primary { display: flex; gap: 4px; padding: 4px; background: #f0f0f0; border: 1px solid #000; display: inline-flex; }
+        .tabs-primary .tab {
+            padding: 6px 14px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            background: transparent;
+            color: #000;
+        }
+        .tabs-primary .tab.active {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+        .tabs-secondary { display: flex; border-bottom: 2px solid #000; gap: 0; }
+        .tabs-secondary .tab {
+            padding: 8px 16px;
+            border: none;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            background: transparent;
+            color: #000;
+        }
+        .tabs-secondary .tab.active { border-bottom-color: #000; }
+        .tab-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid #000;
+            margin-left: 5px;
+        }
+
+        /* ── Breadcrumb ── */
+        .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; flex-wrap: wrap; }
+        .breadcrumb a { color: #000; text-decoration: underline; }
+        .breadcrumb .sep { color: #666; }
+        .breadcrumb .current { color: #666; }
+
+        /* ── Pagination ── */
+        .pagination { display: flex; align-items: center; gap: 4px; }
+        .pagination .page-btn {
+            min-width: 32px;
+            height: 32px;
+            border: 1px solid #000;
+            background: #fff;
+            color: #000;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 0 8px;
+        }
+        .pagination .page-btn.active { background: #000; color: #fff; }
+        .pagination .page-btn.disabled { opacity: .4; cursor: not-allowed; }
+        .pagination .page-info { font-size: 12px; color: #666; margin: 0 8px; }
+
+        /* ── Table ── */
+        .table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .table th, .table td { border: 1px solid #000; padding: 8px 10px; text-align: left; }
+        .table th { font-weight: bold; background: #f0f0f0; }
+        .table .sort-indicator { font-style: normal; margin-left: 4px; font-size: 10px; }
+        .table tr:nth-child(even) td { background: #fafafa; }
+        .table .row-actions { display: flex; gap: 8px; }
+
+        /* ── Badge ── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid #000;
+            background: #000;
+            color: #fff;
+        }
+        .badge.outline {
+            background: #fff;
+            color: #000;
+        }
+        .badge.dashed { border-style: dashed; background: #fff; color: #000; }
+        .badge-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+        /* ── Avatar / Bubble ── */
+        .bubble {
+            width: 36px;
+            height: 36px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            background: #fff;
+            flex-shrink: 0;
+        }
+        .bubble.large { width: 48px; height: 48px; font-size: 15px; }
+        .bubbles { display: flex; }
+        .bubbles .bubble { margin-right: -10px; background: #fff; }
+        .bubbles .bubble:last-child { margin-right: 0; }
+        .bubble-overflow {
+            width: 36px;
+            height: 36px;
+            border: 2px dashed #000;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: #666;
+            background: #f0f0f0;
+        }
+
+        /* ── Accordion ── */
+        .accordion { border: 1px solid #000; }
+        .accordion-item { border-bottom: 1px solid #000; }
+        .accordion-item:last-child { border-bottom: none; }
+        .accordion-trigger {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            font-weight: bold;
+            font-size: 14px;
+            background: #fff;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+        }
+        .accordion-trigger .chevron { font-style: normal; font-size: 12px; }
+        .accordion-body { padding: 12px 16px; border-top: 1px solid #ccc; font-size: 13px; }
+        .accordion-item.closed .accordion-body { display: none; }
+
+        /* ── Alert / Banner ── */
+        .banner {
+            border: 2px solid #000;
+            padding: 12px 16px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 13px;
+        }
+        .banner .banner-type { font-weight: bold; min-width: 56px; }
+        .banner .banner-body { flex: 1; }
+        .banner .banner-title { font-weight: bold; margin-bottom: 2px; }
+        .banner.info { border-style: solid; }
+        .banner.warning { border-style: dashed; }
+        .banner.error { border-style: double; border-width: 4px; }
+        .banner.success { border-style: solid; background: #f0f0f0; }
+
+        /* ── Empty state ── */
+        .empty-state {
+            border: 1px dashed #000;
+            padding: 48px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+        }
+        .empty-state .empty-icon {
+            width: 64px;
+            height: 64px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .empty-state .empty-title { font-weight: bold; font-size: 1rem; margin: 0; }
+        .empty-state .empty-body { color: #666; font-size: 13px; margin: 0; max-width: 320px; }
+
+        /* ── Modal / Dialog ── */
+        .modal {
+            border: 2px solid #000;
+            max-width: 480px;
+            background: #fff;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid #000;
+            font-weight: bold;
+        }
+        .modal-body { padding: 16px; font-size: 13px; }
+        .modal-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #000;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        /* ── Overflow menu ── */
+        .overflow-menu-wrap { position: relative; display: inline-block; }
+        .overflow-trigger {
+            background: #fff;
+            border: 1px solid #000;
+            color: #000;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            letter-spacing: 2px;
+            padding: 0;
+        }
+        .overflow-panel {
+            border: 1px solid #000;
+            background: #fff;
+            min-width: 160px;
+            margin-top: 2px;
+        }
+        .overflow-panel .overflow-item {
+            padding: 8px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            display: block;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .overflow-panel .overflow-item:last-child { border-bottom: none; }
+        .overflow-panel .overflow-item.destructive { font-weight: bold; }
+        .overflow-panel .overflow-item.disabled { color: #999; cursor: not-allowed; }
+
+        /* ── Lists ── */
+        .list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: .5em;
+        }
+        .list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em;
+            border: 1px solid #000;
+        }
+        .list .left { display: flex; flex-direction: column; gap: 2px; }
+        .list .title { font-weight: bold; margin: 0; }
+        .list .description { font-size: .8em; color: #666; margin: 0; }
+        .list .right { display: flex; gap: 6px; align-items: center; }
+
+        /* ── Cards ── */
+        .cards {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: .5em;
+        }
+        .cards li {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            padding: 1em;
+            border: 1px solid #000;
+        }
+        .cards .content { display: flex; flex-direction: column; gap: .5em; }
+        .cards .title { font-weight: bold; margin: 0; }
+        .cards .description { font-size: .8em; color: #666; margin: 0; }
+        .cards .actions {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            gap: .5em;
+            margin-top: auto;
+        }
+
+        /* ── Layout frame ── */
+        .layout-frame {
+            border: 2px solid #000;
+            background: #fff;
+            font-size: 13px;
+        }
+
+        /* ── Page header layout ── */
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #000;
+            gap: 16px;
+        }
+        .page-header .page-title-block .page-title { font-weight: bold; font-size: 1.2rem; margin: 0 0 2px; }
+        .page-header .page-title-block .page-subtitle { font-size: .8rem; color: #666; margin: 0; }
+        .page-header .page-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+        /* ── Educator app shell ── */
+        .app-shell { display: flex; flex-direction: column; min-height: 480px; }
+        .app-shell__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 2px solid #000;
+            background: #000;
+            color: #fff;
+            gap: 16px;
+        }
+        .app-shell__logo { font-weight: bold; font-size: 14px; white-space: nowrap; }
+        /* (header search removed — RILE global header does not have a search slot) */
+        .app-shell__user { font-size: 12px; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .app-shell__user .user-avatar {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .app-shell__body { display: flex; flex: 1; min-height: 0; }
+        .app-shell__sidebar {
+            width: 200px;
+            flex-shrink: 0;
+            border-right: 1px solid #000;
+            padding: 12px 0;
+        }
+        .app-shell__nav { list-style: none; padding: 0; margin: 0; }
+        .app-shell__nav li a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            font-size: 13px;
+            text-decoration: none;
+            color: #000;
+        }
+        .app-shell__nav li.is-active a {
+            background: #000;
+            color: #fff;
+            font-weight: bold;
+        }
+        .app-shell__nav .nav-icon {
+            width: 16px;
+            height: 16px;
+            border: 1px solid currentColor;
+            border-radius: 2px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .app-shell__nav .nav-divider {
+            height: 1px;
+            background: #ccc;
+            margin: 6px 0;
+        }
+        .app-shell__sidebar-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 11px;
+            border-top: 1px solid #000;
+            color: #666;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+        .app-shell__page-title {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid #ccc;
+        }
+        .app-shell__main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .app-shell__heading-tabs {
+            display: flex;
+            border-bottom: 2px solid #000;
+            padding: 0 20px;
+            gap: 0;
+        }
+        .app-shell__heading-tabs .htab {
+            padding: 10px 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border: none;
+            background: transparent;
+            color: #000;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            cursor: pointer;
+        }
+        .app-shell__heading-tabs .htab.active { border-bottom-color: #000; }
+        .app-shell__content { flex: 1; padding: 20px; }
+
+        /* ── Filter row ── */
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            flex-wrap: wrap;
+        }
+        .filter-row .filter-label { font-size: 12px; color: #666; font-weight: bold; }
+
+        /* ── Two-column ── */
+        .two-col { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+        .aside { border-left: 1px solid #000; padding-left: 20px; }
+
+        /* ── Form layout ── */
+        .form-section { margin-bottom: 24px; }
+        .form-section-title { font-weight: bold; font-size: .9rem; margin: 0 0 12px; padding-bottom: 6px; border-bottom: 1px solid #ccc; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .form-footer {
+            border-top: 1px solid #000;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            background: #fafafa;
+        }
+
+        /* ── Dashboard cards ── */
+        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+        .stat-card {
+            border: 1px solid #000;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .stat-card .stat-label { font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: .05em; color: #666; }
+        .stat-card .stat-value { font-size: 2rem; font-weight: bold; line-height: 1; }
+        .stat-card .stat-delta { font-size: 12px; color: #666; }
+
+        /* ── Principles strip ── */
+        .principles {
+            border: 1px solid #000;
+            background: #fafafa;
+            padding: 14px 18px;
+            margin: 0 0 32px;
+        }
+        .principles h2 { border: none; padding: 0; margin: 0 0 8px; font-size: 1rem; }
+        .principles ol { margin: 0; padding-left: 22px; font-size: 13px; }
+        .principles ol li { margin-bottom: 4px; }
+
+        /* ── Family section ── */
+        .family { margin: 0 0 32px; }
+        .family > h3 {
+            margin: 24px 0 16px;
+            font-size: .9rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            border-top: 2px solid #000;
+            padding-top: 12px;
+        }
+        .component-section { margin: 0 0 24px; padding-bottom: 16px; border-bottom: 1px dashed #ccc; }
+        .component-section:last-child { border-bottom: none; padding-bottom: 0; }
+
+        /* ── Rule note ── */
+        .rule-note {
+            border-left: 3px dashed #000;
+            background: #fafafa;
+            padding: 12px 14px;
+            margin: 12px 0 0;
+            max-width: 760px;
+        }
+        .rule-note__summary {
+            margin: 0 0 8px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .rule-note__grid {
+            margin: 0;
+            display: grid;
+            grid-template-columns: 96px 1fr;
+            gap: 4px 12px;
+            font-size: 12px;
+        }
+        .rule-note__grid dt {
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: .05em;
+            padding-top: 2px;
+        }
+        .rule-note__grid dd { margin: 0; color: #000; }
+        .rule-note code { font-family: monospace; font-size: 11px; }
+
+        /* ── Stub block ── */
+        .stub {
+            border: 1px dashed #000;
+            padding: 16px;
+            background: #fff;
+            color: #666;
+            font-size: 13px;
+            max-width: 720px;
+        }
+        .stub strong { color: #000; }
+
+        /* ── Selectable card (radio_cards) ── */
+        .select-card {
+            border: 1px solid #000;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: #fff;
+        }
+        .select-card.is-selected { border-width: 2px; }
+        .select-card__label { font-weight: bold; display: flex; align-items: center; gap: 8px; }
+        .select-card__desc { font-size: 12px; color: #666; }
+        .select-card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-width: 600px; }
+
+        /* ── Segmented control ── */
+        .segmented {
+            display: inline-flex;
+            border: 1px solid #000;
+        }
+        .segmented button {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 6px 14px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .segmented button + button { border-left: 1px solid #000; }
+        .segmented button[aria-pressed="true"],
+        .segmented button[aria-checked="true"] { background: #000; color: #fff; }
+
+        /* ── Combobox shell ── */
+        .combo-shell {
+            display: flex;
+            border: 1px solid #000;
+            align-items: stretch;
+            background: #fff;
+        }
+        .combo-shell input {
+            border: none;
+            flex: 1;
+            padding: 8px;
+            font-size: 14px;
+            font-family: sans-serif;
+            outline: none;
+            min-width: 0;
+        }
+        .combo-shell button {
+            border: none;
+            border-left: 1px solid #000;
+            background: #fff;
+            color: #000;
+            cursor: pointer;
+            padding: 0 12px;
+            font-size: 12px;
+        }
+        .combo-listbox {
+            border: 1px solid #000;
+            border-top: none;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            max-height: 200px;
+            overflow: auto;
+        }
+        .combo-listbox li {
+            padding: 8px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .combo-listbox li:last-child { border-bottom: none; }
+        .combo-listbox li[aria-selected="true"] { background: #000; color: #fff; font-weight: bold; }
+
+        /* ── Token (multi-select chips) ── */
+        .token-input {
+            border: 1px solid #000;
+            padding: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            background: #fff;
+        }
+        .token-input input {
+            border: none;
+            flex: 1;
+            min-width: 120px;
+            padding: 4px;
+            font-size: 14px;
+            outline: none;
+            font-family: sans-serif;
+        }
+        .token {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid #000;
+            background: #fff;
+            color: #000;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .token button {
+            background: transparent;
+            border: none;
+            color: #000;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
+            line-height: 1;
+        }
+
+        /* ── Time-slot grid ── */
+        .time-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; max-width: 480px; }
+        .time-slots button {
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+            padding: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .time-slots button[aria-checked="true"] { background: #000; color: #fff; }
+        .time-slots button[aria-disabled="true"],
+        .time-slots button[disabled] {
+            color: #666;
+            border-style: dashed;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        /* ── Filter panel ── */
+        .filter-panel {
+            border: 1px solid #000;
+            padding: 14px;
+            max-width: 260px;
+            background: #fff;
+        }
+        .filter-panel fieldset { border: none; padding: 0; margin: 0 0 14px; }
+        .filter-panel fieldset legend {
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 12px;
+            padding: 0;
+        }
+
+        /* ── Filter chips row ── */
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* ── Skeleton ── */
+        .skeleton-stack { display: flex; flex-direction: column; gap: 8px; max-width: 400px; }
+        .skeleton-block {
+            height: 12px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+
+        /* ── Spinner ── */
+        .spinner {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        .spinner__dot {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #000;
+            border-right-color: #fff;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* ── Toast ── */
+        .toast {
+            border: 2px solid #000;
+            background: #fff;
+            padding: 10px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 460px;
+            font-size: 13px;
+        }
+        .toast__title { font-weight: bold; }
+        .toast__body { flex: 1; }
+        .toast button.dismiss-x {
+            background: transparent;
+            border: none;
+            color: #000;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
+            line-height: 1;
+        }
+
+        /* ── Nonmodal panel ── */
+        .nonmodal {
+            display: flex;
+            border: 2px solid #000;
+            max-width: 780px;
+            background: #fff;
+        }
+        .nonmodal__main { flex: 1; padding: 16px; font-size: 13px; }
+        .nonmodal__aside {
+            width: 280px;
+            border-left: 2px solid #000;
+            padding: 16px;
+            background: #fafafa;
+            font-size: 13px;
+        }
+        .nonmodal__aside button.dismiss-x {
+            background: transparent;
+            border: none;
+            color: #000;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
+            line-height: 1;
+        }
+
+        /* ── Step flow ── */
+        .step-flow {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            border: 1px solid #000;
+            font-size: 12px;
+        }
+        .step-flow li {
+            flex: 1;
+            padding: 10px 14px;
+            background: #fff;
+            color: #666;
+            border-right: 1px solid #000;
+        }
+        .step-flow li:last-child { border-right: none; }
+        .step-flow li.is-done { background: #000; color: #fff; }
+        .step-flow li[aria-current="step"] {
+            background: #fff;
+            color: #000;
+            border-top: 3px solid #000;
+        }
+        .step-flow .step-label {
+            display: block;
+            font-weight: bold;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: 2px;
+        }
+
+        /* ── Toolbar ── */
+        .toolbar {
+            display: inline-flex;
+            border: 1px solid #000;
+            background: #fff;
+        }
+        .toolbar button {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .toolbar button + button { border-left: 1px solid #000; }
+        .toolbar button[aria-pressed="true"] { background: #000; color: #fff; }
+        .toolbar__sep {
+            width: 1px;
+            background: #000;
+            align-self: stretch;
+        }
+
+        /* ── Split button ── */
+        .split-btn {
+            display: inline-flex;
+            border: 1px solid #000;
+        }
+        .split-btn button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .split-btn button + button { border-left: 1px solid #fff; padding: 8px 10px; }
+
+        /* ── Menu button ── */
+        .menu-trigger {
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+            padding: 8px 12px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ── Tooltip ── */
+        .tooltip-shell {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+            padding-top: 44px;
+        }
+        .tooltip-bubble {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: 1px solid #000;
+            background: #fff;
+            padding: 6px 10px;
+            font-size: 12px;
+            max-width: 240px;
+        }
+        .tooltip-bubble::after {
+            content: '';
+            position: absolute;
+            left: 14px;
+            bottom: -5px;
+            width: 8px;
+            height: 8px;
+            border-right: 1px solid #000;
+            border-bottom: 1px solid #000;
+            background: #fff;
+            transform: rotate(45deg);
+        }
+        .tooltip-trigger {
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* ── Lo-fi calendar (date_picker) ── */
+        .calendar {
+            border: 1px solid #000;
+            padding: 8px;
+            width: 240px;
+            font-size: 11px;
+            background: #fff;
+            margin-top: 6px;
+        }
+        .calendar__head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        .calendar__head button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: #000;
+            font-size: 14px;
+            padding: 0 6px;
+        }
+        .calendar__grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            text-align: center;
+        }
+        .calendar__grid .dow { color: #666; font-weight: bold; font-size: 10px; }
+        .calendar__grid .day { padding: 3px 0; }
+        .calendar__grid .day.is-today { border: 1px dashed #000; }
+        .calendar__grid .day.is-selected { background: #000; color: #fff; font-weight: bold; }
+
+        /* ── Date range pair ── */
+        .date-range { display: flex; gap: 8px; align-items: flex-end; max-width: 420px; }
+        .date-range > .field { flex: 1; min-width: 0; }
+        .date-range__sep { padding: 0 4px 12px; color: #666; }
+
+        /* ── Multi-input date (memorable) ── */
+        .multi-input { display: flex; gap: 6px; }
+        .multi-input input {
+            padding: 8px;
+            border: 1px solid #000;
+            background: #fff;
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+
+        /* ── In-page nav ── */
+        .in-page-nav { border: 1px solid #000; padding: 12px 14px; max-width: 240px; background: #fff; }
+        .in-page-nav ol { list-style: none; padding: 0; margin: 0; font-size: 13px; display: flex; flex-direction: column; gap: 4px; }
+        .in-page-nav a { color: #000; }
+        .in-page-nav a[aria-current="true"] {
+            font-weight: bold;
+            text-decoration: none;
+            border-left: 3px solid #000;
+            padding-left: 8px;
+            margin-left: -11px;
+        }
+
+        /* ── File input ── */
+        .file-drop {
+            border: 1px dashed #000;
+            padding: 16px;
+            background: #fafafa;
+            text-align: center;
+        }
+
+        /* ── Range slider value display ── */
+        .field input[type="range"] { width: 100%; }
+        .field input[type="number"] { width: 100%; }
+
+        /* ── Disclosure (details/summary) ── */
+        .disclosure {
+            border: 1px solid #000;
+            padding: 8px 12px;
+            max-width: 480px;
+            background: #fff;
+        }
+        .disclosure summary {
+            font-weight: bold;
+            cursor: pointer;
+            padding: 4px 0;
+        }
+        .disclosure[open] summary { border-bottom: 1px solid #ccc; padding-bottom: 8px; margin-bottom: 8px; }
+
+        /* ── Cross-ref note ── */
+        .crossref {
+            border: 1px solid #000;
+            padding: 12px 14px;
+            background: #fff;
+            font-size: 13px;
+            max-width: 720px;
+        }
+        .crossref a { color: #000; }
+    </style>
+</head>
+<body>
+
+    <!-- TOC -->
+    <h1>Wireframe Component Library</h1>
+    <p style="color:#666;font-size:13px;margin:0 0 16px;">Monochrome lo-fi patterns for Design Dash HTML wireframes. Use these classes before writing new CSS. Components and rule notes are sourced from the <code>ui-design</code> skill's interaction decision tree (<code>component_catalog</code> + <code>rules</code>).</p>
+
+    <!-- Principles strip -->
+    <section class="principles" id="principles" aria-labelledby="principles-heading">
+        <h2 id="principles-heading">Principles</h2>
+        <ol>
+            <li>Choose components from the user's goal first.</li>
+            <li>Treat numeric thresholds as defaults; contextual overrides outrank counts.</li>
+            <li>Keep essential information and consequential choices visible.</li>
+            <li>Prefer native semantic elements.</li>
+            <li>Do not turn read-only tabular information into an interactive grid.</li>
+            <li>Do not hide primary actions or task-critical help.</li>
+            <li>Insert review and confirmation for consequential AI actions.</li>
+        </ol>
+    </section>
+
+    <nav class="toc" aria-label="Contents">
+        <h2>Contents</h2>
+        <ol>
+            <li><a href="#principles">Principles</a></li>
+            <li><a href="#components">Components</a>
+                <ol>
+                    <li><a href="#f-input">Input</a>
+                        <ol>
+                            <li><a href="#c-text-input">Text input</a></li>
+                            <li><a href="#c-textarea">Textarea</a></li>
+                            <li><a href="#c-search-input">Search input</a></li>
+                            <li><a href="#c-numeric-input">Numeric input</a></li>
+                            <li><a href="#c-range-slider">Range slider</a></li>
+                            <li><a href="#c-date-input">Date input</a></li>
+                            <li><a href="#c-date-picker">Date picker</a></li>
+                            <li><a href="#c-date-range-picker">Date range picker</a></li>
+                            <li><a href="#c-time-input">Time input</a></li>
+                            <li><a href="#c-file-input">File input</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-selection">Selection</a>
+                        <ol>
+                            <li><a href="#c-checkbox">Checkbox</a></li>
+                            <li><a href="#c-switch">Switch</a></li>
+                            <li><a href="#c-radio-group">Radio group</a></li>
+                            <li><a href="#c-radio-cards">Radio cards</a></li>
+                            <li><a href="#c-segmented-control">Segmented control</a></li>
+                            <li><a href="#c-select">Select</a></li>
+                            <li><a href="#c-combobox">Combobox</a></li>
+                            <li><a href="#c-autocomplete-search">Autocomplete search</a></li>
+                            <li><a href="#c-checkbox-group">Checkbox group</a></li>
+                            <li><a href="#c-multi-select-combobox">Multi-select combobox</a></li>
+                            <li><a href="#c-time-slot-list">Time slot list</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-collection-control">Collection control</a>
+                        <ol>
+                            <li><a href="#c-filter-panel">Filter panel</a></li>
+                            <li><a href="#c-filter-chips">Filter chips</a></li>
+                            <li><a href="#c-sort-control">Sort control</a></li>
+                            <li><a href="#c-search-filters">Search + filters</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-content">Content</a>
+                        <ol>
+                            <li><a href="#c-list">List</a></li>
+                            <li><a href="#c-card-grid">Card grid</a></li>
+                            <li><a href="#c-table">Table</a></li>
+                            <li><a href="#c-data-grid">Data grid (stub)</a></li>
+                            <li><a href="#c-tree">Tree (stub)</a></li>
+                            <li><a href="#c-treegrid">Treegrid (stub)</a></li>
+                            <li><a href="#c-chart-with-data">Chart with data (stub)</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-status">Status</a>
+                        <ol>
+                            <li><a href="#c-badge">Badge</a></li>
+                            <li><a href="#c-progress-indicator">Progress indicator</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-feedback">Feedback</a>
+                        <ol>
+                            <li><a href="#c-skeleton">Skeleton</a></li>
+                            <li><a href="#c-spinner">Spinner</a></li>
+                            <li><a href="#c-empty-state">Empty state</a></li>
+                            <li><a href="#c-inline-validation">Inline validation</a></li>
+                            <li><a href="#c-error-summary">Error summary</a></li>
+                            <li><a href="#c-alert">Alert</a></li>
+                            <li><a href="#c-toast">Toast</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-overlay">Overlay</a>
+                        <ol>
+                            <li><a href="#c-modal">Modal dialog</a></li>
+                            <li><a href="#c-nonmodal-panel">Nonmodal panel</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-organization">Organization</a>
+                        <ol>
+                            <li><a href="#c-disclosure">Disclosure</a></li>
+                            <li><a href="#c-accordion">Accordion</a></li>
+                            <li><a href="#c-tabs">Tabs</a></li>
+                            <li><a href="#c-step-flow">Step flow</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-action">Action</a>
+                        <ol>
+                            <li><a href="#c-button">Button</a></li>
+                            <li><a href="#c-primary-button">Primary button</a></li>
+                            <li><a href="#c-menu-button">Menu button</a></li>
+                            <li><a href="#c-overflow-menu">Overflow menu</a></li>
+                            <li><a href="#c-toolbar">Toolbar</a></li>
+                            <li><a href="#c-split-button">Split button</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-navigation">Navigation</a>
+                        <ol>
+                            <li><a href="#c-link">Link</a></li>
+                            <li><a href="#c-global-navigation">Global navigation</a></li>
+                            <li><a href="#c-side-navigation">Side navigation</a></li>
+                            <li><a href="#c-breadcrumb">Breadcrumb</a></li>
+                            <li><a href="#c-in-page-navigation">In-page navigation</a></li>
+                            <li><a href="#c-pagination">Pagination</a></li>
+                            <li><a href="#c-load-more">Load more</a></li>
+                            <li><a href="#c-infinite-scroll">Infinite scroll (stub)</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#f-help">Help</a>
+                        <ol>
+                            <li><a href="#c-tooltip">Tooltip</a></li>
+                        </ol>
+                    </li>
+                </ol>
+            </li>
+            <li><a href="#layouts">Layouts</a>
+                <ol>
+                    <li><a href="#l-page-header">Page header</a></li>
+                    <li><a href="#l-app-shell">Educator app shell</a></li>
+                    <li><a href="#l-list-page">List page</a></li>
+                    <li><a href="#l-detail-page">Detail page</a></li>
+                    <li><a href="#l-dashboard">Dashboard</a></li>
+                    <li><a href="#l-two-col">Two-column page</a></li>
+                    <li><a href="#l-form-page">Form page</a></li>
+                </ol>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- ════════════════════════════════════════════
+         COMPONENTS
+         ════════════════════════════════════════════ -->
+    <h2 id="components">Components</h2>
+    <p style="color:#666;font-size:12px;margin:0 0 16px;max-width:760px;">Each component below pairs a lo-fi mock with a rule note drawn from the decision tree. The note's <em>summary</em> and <em>semantics</em> come straight from <code>component_catalog</code>; the <em>when-to-use / avoid-when</em> guidance cites matched rule IDs from the <code>rules</code> array.</p>
+
+    <!-- ░░░░ FAMILY: input ░░░░ -->
+    <section class="family" id="f-input" aria-labelledby="f-input-h">
+        <h3 id="f-input-h">Input family</h3>
+
+        <section class="component-section" id="c-text-input">
+            <p class="label">Text input</p>
+            <div class="field" style="max-width:300px;">
+                <label for="wf-text">Assessment name</label>
+                <input id="wf-text" type="text" placeholder="e.g. Star Math — Spring 2026">
+                <span class="hint">Up to 80 characters</span>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Single-line entry for short or structured freeform values.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Short freeform values up to ~80 characters (names, titles, codes, IDs).</dd>
+                    <dt>Avoid when</dt><dd>Multi-sentence responses (use textarea) or values that should be picked from a known list (use select/combobox).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;input&gt;</code> with associated <code>&lt;label&gt;</code></dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_SHORT_TEXT</code>, <code>META_PREFER_NATIVE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-textarea">
+            <p class="label">Textarea</p>
+            <div class="field" style="max-width:480px;">
+                <label for="wf-textarea">Lesson notes</label>
+                <textarea id="wf-textarea" placeholder="Describe your observations…"></textarea>
+                <span class="hint">81+ characters expected; resizable</span>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Multi-line entry for longer authored responses.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Multi-sentence freeform input ≥ 81 characters (notes, comments, descriptions).</dd>
+                    <dt>Avoid when</dt><dd>Single-line short values fit a text input.</dd>
+                    <dt>Semantics</dt><dd><code>&lt;textarea&gt;</code> with associated <code>&lt;label&gt;</code></dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_LONG_TEXT</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-search-input">
+            <p class="label">Search input</p>
+            <div class="field" style="max-width:300px;">
+                <label for="wf-search">Search assessments</label>
+                <div class="search-field">
+                    <span class="search-icon" aria-hidden="true">[&#x2315;]</span>
+                    <input id="wf-search" type="search" placeholder="Search…">
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Input optimized for finding results by user-supplied query.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>User-driven retrieval where the target is named or describable; collection size ≥ 20.</dd>
+                    <dt>Avoid when</dt><dd>The choice is from a known small set (use radio_group, select, or combobox instead).</dd>
+                    <dt>Semantics</dt><dd>Form with labelled <code>&lt;input type="search"&gt;</code> and submit button</dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_SEARCH_QUERY</code>, <code>COLLECTION_SEARCH_KNOWN_TARGET</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-numeric-input">
+            <p class="label">Numeric input</p>
+            <div class="field" style="max-width:160px;">
+                <label for="wf-num">Score (out of 100)</label>
+                <input id="wf-num" type="number" inputmode="numeric" min="0" max="100" value="92">
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Exact numeric value entry.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Exact numbers — counts, scores, ages, quantities.</dd>
+                    <dt>Avoid when</dt><dd>Approximate selection on a continuum is fine — prefer a range slider when relative position matters more than precision.</dd>
+                    <dt>Semantics</dt><dd><code>&lt;input&gt;</code> with appropriate <code>type</code>/<code>inputmode</code> and label</dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_EXACT_NUMBER</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-range-slider">
+            <p class="label">Range slider</p>
+            <div class="field" style="max-width:300px;">
+                <label for="wf-range">Difficulty (1–10)</label>
+                <input id="wf-range" type="range" min="1" max="10" value="6">
+                <span class="hint" aria-live="polite">Selected: 6</span>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Approximate selection on a continuum when relative position matters.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Approximate values where seeing the position on a known range matters more than exact precision.</dd>
+                    <dt>Avoid when</dt><dd>Exact numbers are required (use numeric input) or values are not on a continuum (use a select).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;input type="range"&gt;</code> with visible label and live value</dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_APPROXIMATE_CONTINUUM</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-date-input">
+            <p class="label">Date input (memorable)</p>
+            <div class="field" style="max-width:320px;">
+                <span class="label" style="text-transform:none;font-size:.85rem;" id="bday-lbl">Birthdate</span>
+                <div class="multi-input" role="group" aria-labelledby="bday-lbl">
+                    <input type="text" inputmode="numeric" placeholder="MM" aria-label="Month" style="width:60px;">
+                    <input type="text" inputmode="numeric" placeholder="DD" aria-label="Day" style="width:60px;">
+                    <input type="text" inputmode="numeric" placeholder="YYYY" aria-label="Year" style="width:90px;">
+                </div>
+                <span class="hint">Type the date you remember — no calendar needed</span>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Typed date for memorable or known dates.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Dates the user already knows by heart (birthdates, anniversaries) or any date that doesn't need calendar context.</dd>
+                    <dt>Avoid when</dt><dd>Weekday or availability matters — use a date picker with calendar enhancement.</dd>
+                    <dt>Semantics</dt><dd>Grouped date fields or a validated text/date input</dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_MEMORABLE_DATE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-date-picker">
+            <p class="label">Date picker</p>
+            <div class="field" style="max-width:300px;">
+                <label for="wf-date">Due date</label>
+                <div class="combo-shell">
+                    <input id="wf-date" type="text" placeholder="MM/DD/YYYY" value="05/24/2026">
+                    <button type="button" aria-label="Open calendar">[cal]</button>
+                </div>
+                <div class="calendar" aria-label="May 2026">
+                    <div class="calendar__head">
+                        <button type="button" aria-label="Previous month">&lsaquo;</button>
+                        <span>May 2026</span>
+                        <button type="button" aria-label="Next month">&rsaquo;</button>
+                    </div>
+                    <div class="calendar__grid">
+                        <span class="dow">S</span><span class="dow">M</span><span class="dow">T</span><span class="dow">W</span><span class="dow">T</span><span class="dow">F</span><span class="dow">S</span>
+                        <span class="day"></span><span class="day"></span><span class="day"></span><span class="day"></span><span class="day"></span><span class="day">1</span><span class="day">2</span>
+                        <span class="day">3</span><span class="day">4</span><span class="day">5</span><span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day">9</span>
+                        <span class="day">10</span><span class="day">11</span><span class="day">12</span><span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span>
+                        <span class="day">17</span><span class="day">18</span><span class="day">19</span><span class="day">20</span><span class="day">21</span><span class="day">22</span><span class="day">23</span>
+                        <span class="day is-selected">24</span><span class="day">25</span><span class="day is-today">26</span><span class="day">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span>
+                        <span class="day">31</span>
+                    </div>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Calendar-assisted date selection where calendar context matters.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Scheduling, due dates, weekday matters, or availability matters — anywhere users need to see surrounding days.</dd>
+                    <dt>Avoid when</dt><dd>The date is already known by heart — a typed date input is faster.</dd>
+                    <dt>Semantics</dt><dd>Labelled input with accessible date-picker enhancement</dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_CALENDAR_CONTEXT_DATE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-date-range-picker">
+            <p class="label">Date range picker</p>
+            <div class="date-range">
+                <div class="field">
+                    <label for="wf-start">Report from</label>
+                    <input id="wf-start" type="text" placeholder="MM/DD/YYYY" value="04/01/2026">
+                </div>
+                <span class="date-range__sep" aria-hidden="true">→</span>
+                <div class="field">
+                    <label for="wf-end">Report to</label>
+                    <input id="wf-end" type="text" placeholder="MM/DD/YYYY" value="04/30/2026">
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Selecting related start and end dates.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Any start/end date pair where order matters — report periods, enrollment windows, schedule blocks.</dd>
+                    <dt>Avoid when</dt><dd>Only a single date is needed (use date picker or date input).</dd>
+                    <dt>Semantics</dt><dd>Paired labelled inputs with accessible calendar enhancement</dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_DATE_RANGE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-time-input">
+            <p class="label">Time input</p>
+            <div class="field" style="max-width:200px;">
+                <label for="wf-time">Start time</label>
+                <input id="wf-time" type="text" inputmode="numeric" placeholder="HH:MM AM/PM" value="9:30 AM">
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Known or freely chosen time entry.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Any time the user can type freely — start times, due times — when no slot list is required.</dd>
+                    <dt>Avoid when</dt><dd>Only certain slots are valid (use a time slot list to prevent errors).</dd>
+                    <dt>Semantics</dt><dd>Labelled time input</dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_TIME_FREE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-file-input">
+            <p class="label">File input</p>
+            <div class="field" style="max-width:400px;">
+                <label for="wf-file">Roster CSV <span aria-hidden="true">*</span></label>
+                <div class="file-drop">
+                    <input id="wf-file" type="file" accept=".csv">
+                    <p style="margin:8px 0 0;font-size:12px;color:#666;">CSV up to 5 MB · 1 file</p>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">User supplies one or more files.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Anything that requires uploading a document, image, or data file.</dd>
+                    <dt>Avoid when</dt><dd>Content is freeform text — use a textarea so the user can edit in place.</dd>
+                    <dt>Semantics</dt><dd><code>&lt;input type="file"&gt;</code> with label, accepted formats, max size, multi-file behavior, and upload/progress/failure states</dd>
+                    <dt>Family</dt><dd>input</dd>
+                    <dt>Rules</dt><dd><code>INPUT_FILE_UPLOAD</code></dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: selection ░░░░ -->
+    <section class="family" id="f-selection" aria-labelledby="f-selection-h">
+        <h3 id="f-selection-h">Selection family</h3>
+
+        <section class="component-section" id="c-checkbox">
+            <p class="label">Checkbox</p>
+            <div class="check-group" role="group" aria-labelledby="chk-single">
+                <span class="label" style="text-transform:none;font-size:.85rem;" id="chk-single">Acknowledgement</span>
+                <label class="check-item"><input type="checkbox" checked> I have reviewed the assessment settings</label>
+                <label class="check-item"><input type="checkbox"> Send confirmation email to parents</label>
+                <label class="check-item"><input type="checkbox" disabled> Archive previous assessments (disabled)</label>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Independent opt-in, acknowledgment, or inclusion within submitted form.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>A boolean that takes effect on form submit (terms acceptance, opt-in, "send email").</dd>
+                    <dt>Avoid when</dt><dd>The toggle takes effect immediately — use a switch instead.</dd>
+                    <dt>Semantics</dt><dd><code>&lt;input type="checkbox"&gt;</code> with associated label</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_BOOLEAN_FORM_OPT_IN</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-switch">
+            <p class="label">Switch</p>
+            <div class="component-row" style="gap:24px;">
+                <div class="toggle-wrap">
+                    <div class="toggle on" role="switch" aria-checked="true" aria-label="Notifications"></div>
+                    <span>Notifications: <strong>On</strong></span>
+                </div>
+                <div class="toggle-wrap">
+                    <div class="toggle" role="switch" aria-checked="false" aria-label="Auto-grade"></div>
+                    <span>Auto-grade: <strong>Off</strong></span>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Binary setting that takes effect immediately and has an on/off state.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>An immediate on/off setting (preference toggle) where the change applies the moment it is flipped.</dd>
+                    <dt>Avoid when</dt><dd>Two named alternatives (use a radio group); on-submit forms (use a checkbox).</dd>
+                    <dt>Semantics</dt><dd>Native checkbox styled/announced as <code>switch</code>, or established switch pattern</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_BOOLEAN_IMMEDIATE_SETTING</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-radio-group">
+            <p class="label">Radio group</p>
+            <div class="field" style="max-width:320px;">
+                <span class="label" style="text-transform:none;font-size:.85rem;">Difficulty</span>
+                <div class="radio-group" role="radiogroup">
+                    <label class="radio-item"><input type="radio" name="wf-radio" checked> Easy</label>
+                    <label class="radio-item"><input type="radio" name="wf-radio"> Standard</label>
+                    <label class="radio-item"><input type="radio" name="wf-radio"> Challenging</label>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Exactly one choice with all choices visible.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Single-select from 2–5 short choices, or two named alternatives that are real choices (not on/off).</dd>
+                    <dt>Avoid when</dt><dd>Choices are descriptive/visual or comparison matters (use radio cards); &gt; 5 options (use select or combobox).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;fieldset&gt;</code>, <code>&lt;legend&gt;</code>, radio inputs</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_SINGLE_2_TO_5</code>, <code>SELECT_BOOLEAN_NAMED_ALTERNATIVES</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-radio-cards">
+            <p class="label">Radio cards</p>
+            <div role="radiogroup" aria-label="Plan" class="select-card-grid">
+                <label class="select-card is-selected">
+                    <span class="select-card__label"><input type="radio" name="wf-plan" checked> Standard</span>
+                    <span class="select-card__desc">Includes all core assessments. $0/year.</span>
+                </label>
+                <label class="select-card">
+                    <span class="select-card__label"><input type="radio" name="wf-plan"> Premium</span>
+                    <span class="select-card__desc">Adds adaptive reports + parent dashboard. $120/year.</span>
+                </label>
+                <label class="select-card">
+                    <span class="select-card__label"><input type="radio" name="wf-plan"> Schoolwide</span>
+                    <span class="select-card__desc">Premium + admin tools across all classrooms. Quote.</span>
+                </label>
+                <label class="select-card">
+                    <span class="select-card__label"><input type="radio" name="wf-plan"> Custom</span>
+                    <span class="select-card__desc">Mix and match. Pricing depends on roster size.</span>
+                </label>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Exactly one rich/described/visual choice, visibly comparable.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Single-select where each option needs a description, image, or price — and users need to compare before picking.</dd>
+                    <dt>Avoid when</dt><dd>Options are short labels (a plain radio group is lighter); &gt; ~6 options (consider select or combobox).</dd>
+                    <dt>Semantics</dt><dd>Radio inputs represented as selectable tiles, with a group label</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_SINGLE_RICH_OR_CONSEQUENTIAL</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-segmented-control">
+            <p class="label">Segmented control</p>
+            <div class="field">
+                <span class="label" style="text-transform:none;font-size:.85rem;">View</span>
+                <div class="segmented" role="radiogroup" aria-label="View">
+                    <button type="button" role="radio" aria-checked="true">List</button>
+                    <button type="button" role="radio" aria-checked="false">Grid</button>
+                    <button type="button" role="radio" aria-checked="false">Table</button>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Very small mutually exclusive view or mode switch with short parallel labels.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>2–3 short, parallel local view modes that toggle a panel immediately (List / Grid / Table; Day / Week / Month).</dd>
+                    <dt>Avoid when</dt><dd>Labels are long or count is &gt; 3 (use radio group); the control commits a value rather than switching a view (use radio_group).</dd>
+                    <dt>Semantics</dt><dd>Radio-group semantics for view selection; buttons only if the segment triggers a command</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_VIEW_MODE_SMALL</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-select">
+            <p class="label">Select</p>
+            <div class="field" style="max-width:300px;">
+                <label for="wf-select">Subject</label>
+                <select id="wf-select">
+                    <option>-- Select a subject --</option>
+                    <option>Math</option>
+                    <option>ELA</option>
+                    <option>Science</option>
+                    <option>Social Studies</option>
+                    <option>World Languages</option>
+                    <option>Health</option>
+                </select>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Compact single-choice list with brief labels and low comparison need.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Single-select from 6–15 short labels where comparison isn't needed.</dd>
+                    <dt>Avoid when</dt><dd>2–5 options (radio group is faster); &gt; 15 options (combobox or autocomplete); rich/visual options (radio cards).</dd>
+                    <dt>Semantics</dt><dd>Labelled <code>&lt;select&gt;</code></dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_SINGLE_6_TO_15</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-combobox">
+            <p class="label">Combobox (typeahead)</p>
+            <div class="field" style="max-width:320px;">
+                <label for="wf-combo">State</label>
+                <div class="combo-shell">
+                    <input id="wf-combo" type="text" role="combobox" aria-expanded="true" aria-autocomplete="list" value="Mas">
+                    <button type="button" aria-label="Show options">▾</button>
+                </div>
+                <ul class="combo-listbox" role="listbox">
+                    <li role="option" aria-selected="false">Maryland</li>
+                    <li role="option" aria-selected="true">Massachusetts</li>
+                    <li role="option" aria-selected="false">Michigan</li>
+                    <li role="option" aria-selected="false">Minnesota</li>
+                    <li role="option" aria-selected="false">Mississippi</li>
+                </ul>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Searchable/typeahead choice from a known option set.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Single-select from 16–100 options, or any familiar named catalog (states, countries, months) where typing is efficient.</dd>
+                    <dt>Avoid when</dt><dd>≤ 15 options (use select); the corpus is unbounded, dynamic, or remote (use autocomplete search).</dd>
+                    <dt>Semantics</dt><dd>ARIA-compliant <code>combobox</code> backed by listbox options</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_SINGLE_16_TO_100</code>, <code>SELECT_SINGLE_FAMILIAR_LARGE_SET</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-autocomplete-search">
+            <p class="label">Autocomplete search</p>
+            <div class="field" style="max-width:420px;">
+                <label for="wf-auto">Add student</label>
+                <div class="search-field">
+                    <span class="search-icon" aria-hidden="true">[&#x2315;]</span>
+                    <input id="wf-auto" type="search" role="combobox" aria-expanded="true" aria-autocomplete="list" value="ja">
+                </div>
+                <ul class="combo-listbox" role="listbox">
+                    <li role="option" aria-selected="false"><strong>Jacob Allen</strong> · Grade 5 · Jefferson</li>
+                    <li role="option" aria-selected="true"><strong>Jamie Park</strong> · Grade 4 · Lincoln</li>
+                    <li role="option" aria-selected="false"><strong>James Brown</strong> · Grade 5 · Jefferson</li>
+                    <li role="option" aria-selected="false"><strong>Jasmine Lee</strong> · Grade 3 · Lincoln</li>
+                </ul>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Search-first selection from a very large, dynamic, or remote corpus.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>≥ 101 options, or any dynamic/remote/unbounded set where the user must query to retrieve a value.</dd>
+                    <dt>Avoid when</dt><dd>The set is small enough to scan (use combobox or select).</dd>
+                    <dt>Semantics</dt><dd>Search/combobox pattern with result list and announcements</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_SINGLE_101_PLUS</code>, <code>SELECT_SINGLE_DYNAMIC_REMOTE_SET</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-checkbox-group">
+            <p class="label">Checkbox group</p>
+            <div class="field">
+                <span class="label" style="text-transform:none;font-size:.85rem;">Subjects covered</span>
+                <div class="check-group" role="group" aria-label="Subjects">
+                    <label class="check-item"><input type="checkbox" checked> Math</label>
+                    <label class="check-item"><input type="checkbox" checked> ELA</label>
+                    <label class="check-item"><input type="checkbox"> Science</label>
+                    <label class="check-item"><input type="checkbox"> Social Studies</label>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Multiple visible choices from a manageable set.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Multi-select from 2–10 visible options with non–very-long labels; also bulk row selection in lists or tables.</dd>
+                    <dt>Avoid when</dt><dd>≥ 11 options with searchability (use multi-select combobox); ≥ 11 options needing comparison (use a filter panel).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;fieldset&gt;</code>, <code>&lt;legend&gt;</code>, checkbox inputs</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_MULTI_FEW_VISIBLE</code>, <code>COLLECTION_BULK_SELECTION</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-multi-select-combobox">
+            <p class="label">Multi-select combobox</p>
+            <div class="field" style="max-width:520px;">
+                <label for="wf-multi">Tags</label>
+                <div class="token-input">
+                    <span class="token">Math <button type="button" aria-label="Remove Math">✕</button></span>
+                    <span class="token">Reading <button type="button" aria-label="Remove Reading">✕</button></span>
+                    <span class="token">Grade 5 <button type="button" aria-label="Remove Grade 5">✕</button></span>
+                    <input id="wf-multi" type="text" role="combobox" aria-multiselectable="true" placeholder="Add tag…">
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Search, add, and remove several items from a large known set.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Multi-select from ≥ 11 searchable options where users add/remove tokens incrementally.</dd>
+                    <dt>Avoid when</dt><dd>≤ 10 options (use checkbox group); options need comparison side-by-side (use filter panel).</dd>
+                    <dt>Semantics</dt><dd>Accessible multi-selection pattern with selected tokens and a list of suggestions</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>SELECT_MULTI_MANY_SEARCHABLE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-time-slot-list">
+            <p class="label">Time slot list</p>
+            <div class="field">
+                <span class="label" style="text-transform:none;font-size:.85rem;">Available times — Mon May 26</span>
+                <div class="time-slots" role="radiogroup" aria-label="Available times Monday May 26">
+                    <button type="button" role="radio" aria-checked="false">9:00 AM</button>
+                    <button type="button" role="radio" aria-checked="false">9:30 AM</button>
+                    <button type="button" role="radio" aria-checked="true">10:00 AM</button>
+                    <button type="button" disabled aria-disabled="true">10:30 AM</button>
+                    <button type="button" role="radio" aria-checked="false">11:00 AM</button>
+                    <button type="button" disabled aria-disabled="true">11:30 AM</button>
+                    <button type="button" role="radio" aria-checked="false">1:00 PM</button>
+                    <button type="button" role="radio" aria-checked="false">1:30 PM</button>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Selection from finite appointment/session times.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Time selection where only certain slots are valid — appointments, testing windows, conference times.</dd>
+                    <dt>Avoid when</dt><dd>Any time of day is acceptable — use a time input.</dd>
+                    <dt>Semantics</dt><dd>Radio group or selectable buttons with single-select semantics</dd>
+                    <dt>Family</dt><dd>selection</dd>
+                    <dt>Rules</dt><dd><code>INPUT_TIME_AVAILABLE_SLOTS</code></dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: collection_control ░░░░ -->
+    <section class="family" id="f-collection-control" aria-labelledby="f-cc-h">
+        <h3 id="f-cc-h">Collection control family</h3>
+
+        <section class="component-section" id="c-filter-panel">
+            <p class="label">Filter panel</p>
+            <aside class="filter-panel" aria-label="Filters">
+                <p class="label" style="margin:0 0 12px;">Filters</p>
+                <fieldset>
+                    <legend>Grade</legend>
+                    <div class="check-group">
+                        <label class="check-item"><input type="checkbox" checked> K–2</label>
+                        <label class="check-item"><input type="checkbox"> 3–5</label>
+                        <label class="check-item"><input type="checkbox"> 6–8</label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Status</legend>
+                    <div class="check-group">
+                        <label class="check-item"><input type="checkbox"> Active</label>
+                        <label class="check-item"><input type="checkbox"> Draft</label>
+                        <label class="check-item"><input type="checkbox" checked> Closed</label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Score range</legend>
+                    <div class="multi-input">
+                        <input type="number" inputmode="numeric" placeholder="Min" aria-label="Minimum score" style="width:70px;">
+                        <input type="number" inputmode="numeric" placeholder="Max" aria-label="Maximum score" style="width:70px;">
+                    </div>
+                </fieldset>
+                <button class="button secondary" style="font-size:12px;padding:6px 10px;">Clear all</button>
+            </aside>
+            <div class="rule-note">
+                <p class="rule-note__summary">Multiple collection constraints exposed together.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>One or more predictable filter attributes (grade, status, date range) shown side-by-side; also multi-select from ≥ 11 items needing comparison.</dd>
+                    <dt>Avoid when</dt><dd>The page only sorts (use sort control); active filters are not visible (also pair with filter chips).</dd>
+                    <dt>Semantics</dt><dd>Labelled checkbox/radio/range controls inside grouped fieldsets</dd>
+                    <dt>Family</dt><dd>collection_control</dd>
+                    <dt>Rules</dt><dd><code>COLLECTION_FILTER_ATTRIBUTES</code>, <code>SELECT_MULTI_FILTER_LIST</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-filter-chips">
+            <p class="label">Filter chips</p>
+            <div class="filter-chips" role="group" aria-label="Active filters">
+                <span class="filter-label">2 filters:</span>
+                <span class="token">Grade: 3–5 <button type="button" aria-label="Remove Grade 3–5 filter">✕</button></span>
+                <span class="token">Status: Active <button type="button" aria-label="Remove Status Active filter">✕</button></span>
+                <button type="button" class="button tertiary" style="font-size:13px;">Clear all</button>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Visible summary and removal of active filters.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Whenever any filter is applied — show the active set and let users remove individual constraints.</dd>
+                    <dt>Avoid when</dt><dd>As the only filter UI — chips are a summary, not a hidden filter set; users still need filter_panel or search.</dd>
+                    <dt>Semantics</dt><dd>Buttons (or button-typed chips) for removal; never chip-only hidden filters</dd>
+                    <dt>Family</dt><dd>collection_control</dd>
+                    <dt>Rules</dt><dd><code>COLLECTION_ACTIVE_FILTER_VISIBILITY</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-sort-control">
+            <p class="label">Sort control</p>
+            <div class="field" style="max-width:240px;">
+                <label for="wf-sort">Sort by</label>
+                <select id="wf-sort">
+                    <option>Newest first</option>
+                    <option>Oldest first</option>
+                    <option>Name (A–Z)</option>
+                    <option>Name (Z–A)</option>
+                    <option>Score (high–low)</option>
+                </select>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Change ordering of results without filtering.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>≥ 2 sort options. Always label by criterion + direction ("Newest first", not just "New").</dd>
+                    <dt>Avoid when</dt><dd>Only one sensible order exists; the user is selecting a value (not ordering) — that's a select, not a sort.</dd>
+                    <dt>Semantics</dt><dd>Labelled select or menu describing the sort criterion and order</dd>
+                    <dt>Family</dt><dd>collection_control</dd>
+                    <dt>Rules</dt><dd><code>COLLECTION_SORT</code>, <code>SELECT_SINGLE_SORT_NOT_SELECTION</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-search-filters">
+            <p class="label">Search + filters</p>
+            <div style="display:flex;flex-direction:column;gap:8px;max-width:640px;">
+                <div class="search-field">
+                    <span class="search-icon" aria-hidden="true">[&#x2315;]</span>
+                    <input type="search" placeholder="Search assessments…" aria-label="Search assessments">
+                </div>
+                <div class="filter-row" style="padding:0;">
+                    <span class="filter-label">Refine:</span>
+                    <select aria-label="Filter by grade" style="border:1px solid #000;padding:6px 8px;font-size:13px;background:#fff;">
+                        <option>All grades</option>
+                    </select>
+                    <select aria-label="Filter by status" style="border:1px solid #000;padding:6px 8px;font-size:13px;background:#fff;">
+                        <option>All statuses</option>
+                    </select>
+                    <select aria-label="Filter by subject" style="border:1px solid #000;padding:6px 8px;font-size:13px;background:#fff;">
+                        <option>All subjects</option>
+                    </select>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Find and narrow a collection using search plus refinements.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Large collections (≥ 20) where users may know the target by keyword <em>and</em> want to narrow by predictable attributes.</dd>
+                    <dt>Avoid when</dt><dd>Either alone suffices — don't add filters if a simple search will do.</dd>
+                    <dt>Semantics</dt><dd>Search input with labelled filters; pair with filter chips when filters are applied</dd>
+                    <dt>Family</dt><dd>collection_control</dd>
+                    <dt>Rules</dt><dd><code>COLLECTION_SEARCH_KNOWN_TARGET</code>, <code>COLLECTION_FILTER_ATTRIBUTES</code></dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: content ░░░░ -->
+    <section class="family" id="f-content" aria-labelledby="f-content-h">
+        <h3 id="f-content-h">Content family</h3>
+
+        <section class="component-section" id="c-list">
+            <p class="label">List</p>
+            <ol class="list">
+                <li>
+                    <div class="left">
+                        <p class="title">Assessment Title</p>
+                        <p class="description">Due May 30, 2026 · Grades 3–5</p>
+                    </div>
+                    <div class="right">
+                        <span class="badge outline">Active</span>
+                        <button class="button secondary">View results</button>
+                    </div>
+                </li>
+                <li>
+                    <div class="left">
+                        <p class="title">Another Assessment</p>
+                        <p class="description">Due Jun 10, 2026 · Grades 6–8</p>
+                    </div>
+                    <div class="right">
+                        <span class="badge dashed">Draft</span>
+                        <button class="button secondary">View results</button>
+                    </div>
+                </li>
+                <li>
+                    <div class="left">
+                        <p class="title">Completed Assessment</p>
+                        <p class="description">Ended Apr 15, 2026 · Grades K–2</p>
+                    </div>
+                    <div class="right">
+                        <span class="badge">Closed</span>
+                        <button class="button secondary">View results</button>
+                    </div>
+                </li>
+            </ol>
+            <div class="rule-note">
+                <p class="rule-note__summary">Scan ordered or repeated items without column comparison.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Sequential or repeated minimal/medium-rich items read in order — search results, activity feeds, simple object indexes.</dd>
+                    <dt>Avoid when</dt><dd>Items need column-aligned comparison (use a table); items are rich/visual (use card grid).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;ul&gt;</code> / <code>&lt;ol&gt;</code> or structured repeated <code>&lt;article&gt;</code> elements</dd>
+                    <dt>Family</dt><dd>content</dd>
+                    <dt>Rules</dt><dd><code>DISPLAY_SIMPLE_SEQUENCE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-card-grid">
+            <p class="label">Card grid</p>
+            <ol class="cards">
+                <li>
+                    <div class="content">
+                        <p class="title">Lesson Title</p>
+                        <p class="description">Brief description of this lesson with supporting detail text.</p>
+                    </div>
+                    <div class="actions">
+                        <button class="button secondary">Preview</button>
+                    </div>
+                </li>
+                <li>
+                    <div class="content">
+                        <p class="title">Lesson Title</p>
+                        <p class="description">Brief description of this lesson with supporting detail text.</p>
+                    </div>
+                    <div class="actions">
+                        <button class="button secondary">Preview</button>
+                    </div>
+                </li>
+                <li>
+                    <div class="content">
+                        <p class="title">Lesson Title</p>
+                        <p class="description">Brief description of this lesson with supporting detail text.</p>
+                    </div>
+                    <div class="actions">
+                        <button class="button secondary">Preview</button>
+                    </div>
+                </li>
+                <li>
+                    <div class="content">
+                        <p class="title">Lesson Title</p>
+                        <p class="description">Brief description of this lesson with supporting detail text.</p>
+                    </div>
+                    <div class="actions">
+                        <button class="button secondary">Preview</button>
+                    </div>
+                </li>
+            </ol>
+            <div class="rule-note">
+                <p class="rule-note__summary">Browse rich distinct objects with preview metadata or imagery.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Browsable rich objects (lessons, books, students) where preview imagery, descriptions, or per-item actions matter and comparison is low.</dd>
+                    <dt>Avoid when</dt><dd>Aligned column comparison is needed (use table); items are minimal sequence content (use list).</dd>
+                    <dt>Semantics</dt><dd>Collection/list of <code>&lt;article&gt;</code> elements with headings</dd>
+                    <dt>Family</dt><dd>content</dd>
+                    <dt>Rules</dt><dd><code>DISPLAY_RICH_BROWSABLE_OBJECTS</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-table">
+            <p class="label">Table</p>
+            <table class="table">
+                <caption class="label" style="text-align:left;caption-side:top;">Student roster</caption>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" aria-label="Select all"></th>
+                        <th>Student name <span class="sort-indicator" aria-label="sorted ascending">▲</span></th>
+                        <th>Grade</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" aria-label="Select Ava Wilson"></td>
+                        <td>Ava Wilson</td>
+                        <td>5</td>
+                        <td>92</td>
+                        <td><span class="badge outline">Active</span></td>
+                        <td><div class="row-actions"><button class="button tertiary">View</button><button class="button tertiary">Edit</button></div></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" aria-label="Select Benjamin Lee"></td>
+                        <td>Benjamin Lee</td>
+                        <td>5</td>
+                        <td>78</td>
+                        <td><span class="badge outline">Active</span></td>
+                        <td><div class="row-actions"><button class="button tertiary">View</button><button class="button tertiary">Edit</button></div></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" aria-label="Select Clara Nguyen"></td>
+                        <td>Clara Nguyen</td>
+                        <td>4</td>
+                        <td>—</td>
+                        <td><span class="badge dashed">Not started</span></td>
+                        <td><div class="row-actions"><button class="button tertiary">View</button><button class="button tertiary">Edit</button></div></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rule-note">
+                <p class="rule-note__summary">Read and compare consistently structured values by row and column.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Records with consistent fields where users need aligned comparison — and read-only browsing/viewing.</dd>
+                    <dt>Avoid when</dt><dd>Cell-level keyboard navigation, inline edit, or range selection are needed (use data grid); items are rich/visual without aligned attributes (use card grid).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;table&gt;</code> with <code>&lt;caption&gt;</code> and <code>&lt;th&gt;</code> headers</dd>
+                    <dt>Family</dt><dd>content</dd>
+                    <dt>Rules</dt><dd><code>DISPLAY_COMPARABLE_RECORDS</code>, <code>DISPLAY_TABULAR_READ_ONLY</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-data-grid">
+            <p class="label">Data grid (stub)</p>
+            <div class="stub"><strong>Editable tabular workspace with grid-style keyboard navigation.</strong> Lo-fi wireframes do not render a live grid; use a plain <a href="#c-table">table</a> mock and annotate "data grid behavior: cell-level keyboard nav, inline edit". Only escalate to data_grid when cell-level interaction is genuinely required.</div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Keyboard-navigable interactive/editable tabular workspace.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Editing or manipulating tabular data with cell-level keyboard navigation, inline edit, range selection, or row/column reorder.</dd>
+                    <dt>Avoid when</dt><dd>Read-only tabular content — never turn a comparison table into a grid (avoid_when from catalog).</dd>
+                    <dt>Semantics</dt><dd>ARIA <code>grid</code> pattern only when required</dd>
+                    <dt>Family</dt><dd>content</dd>
+                    <dt>Rules</dt><dd><code>DISPLAY_INTERACTIVE_EDITABLE_TABULAR</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-tree">
+            <p class="label">Tree (stub)</p>
+            <div class="stub"><strong>Hierarchical navigator.</strong> Use only when expansion/collapse and directional keyboard navigation materially aid the task — file pickers, deeply nested taxonomies. Most education app navigation is flatter than it appears; prefer a list, breadcrumb, or side navigation before reaching for a tree.</div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Navigate hierarchical items.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Browsing or navigating a true hierarchy where users need to expand/collapse branches and move directionally.</dd>
+                    <dt>Avoid when</dt><dd>The hierarchy is shallow or non-essential — use a list, breadcrumb, or side navigation.</dd>
+                    <dt>Semantics</dt><dd>WAI-ARIA <code>treeview</code> only when interaction benefits outweigh complexity</dd>
+                    <dt>Family</dt><dd>content</dd>
+                    <dt>Rules</dt><dd><code>DISPLAY_HIERARCHY</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-treegrid">
+            <p class="label">Treegrid (stub)</p>
+            <div class="stub"><strong>Hierarchical records with aligned fields.</strong> Reserved for true hierarchical interactive tables (org charts with editable cells, gradebooks with subject/skill expansion). For read-only nested data, render a flat <a href="#c-table">table</a> with grouping rows; for navigation only, use a <a href="#c-tree">tree</a>.</div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Interact with hierarchical records containing aligned fields.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Hierarchical records with aligned fields and cell-level interaction or expansion (rare).</dd>
+                    <dt>Avoid when</dt><dd>Read-only hierarchical data fits a list or table; non-tabular hierarchies fit a tree.</dd>
+                    <dt>Semantics</dt><dd>WAI-ARIA <code>treegrid</code> pattern only for true hierarchical interactive tables</dd>
+                    <dt>Family</dt><dd>content</dd>
+                    <dt>Rules</dt><dd><code>DISPLAY_HIERARCHICAL_TABLE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-chart-with-data">
+            <p class="label">Chart with data (stub)</p>
+            <div class="stub"><strong>Accessible visualization paired with an inspectable table.</strong> Wireframe stub only — chart visuals belong in real prototypes. In a wireframe, drop a labelled placeholder ("Bar chart: scores by class, May 2026") and a sibling <a href="#c-table">table</a> with the same numbers. Never communicate trend by color alone.</div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Understand patterns while preserving inspectable values.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Showing trend, distribution, comparison summary, or progress patterns — always paired with an accessible data table or text summary.</dd>
+                    <dt>Avoid when</dt><dd>Exact values matter most — show a table directly. Never substitute color hue for a meaningful axis label.</dd>
+                    <dt>Semantics</dt><dd>Accessible visualization plus summary/table; no color-alone encoding</dd>
+                    <dt>Family</dt><dd>content</dd>
+                    <dt>Rules</dt><dd><code>DISPLAY_PATTERN_TREND</code></dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: status ░░░░ -->
+    <section class="family" id="f-status" aria-labelledby="f-status-h">
+        <h3 id="f-status-h">Status family</h3>
+
+        <section class="component-section" id="c-badge">
+            <p class="label">Badge</p>
+            <div class="badge-group">
+                <span class="badge">Closed</span>
+                <span class="badge outline">Active</span>
+                <span class="badge dashed">Draft</span>
+            </div>
+            <p style="font-size:12px;color:#666;margin:8px 0 0;">Distinguish status variants with border style + text label — not color alone. Filled = closed/complete; outline = active/live; dashed = draft/pending.</p>
+            <div class="rule-note">
+                <p class="rule-note__summary">Concise categorical state label.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Compact categorical status next to an item (Active, Draft, Closed). Always include a text label.</dd>
+                    <dt>Avoid when</dt><dd>The "status" is actually progress through a process (use a progress indicator); status meaning depends on color alone.</dd>
+                    <dt>Semantics</dt><dd>Visible text label; never color alone — pair color with shape, border style, or word</dd>
+                    <dt>Family</dt><dd>status</dd>
+                    <dt>Rules</dt><dd><code>DISPLAY_STATUS_CATEGORY</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-progress-indicator">
+            <p class="label">Progress indicator</p>
+            <div class="field" style="max-width:400px;">
+                <span class="label" style="text-transform:none;font-size:.85rem;" id="prog-lbl">Upload progress</span>
+                <progress value="62" max="100" aria-labelledby="prog-lbl" style="width:100%;height:14px;"></progress>
+                <span class="hint">62% — 31 of 50 files uploaded</span>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Progress through measurable work.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Determinate progress where completion is measurable (uploads, quiz progress, sync). Always pair with text count.</dd>
+                    <dt>Avoid when</dt><dd>Wait time is unknown or short — use a spinner; layout is predictable while content loads — use a skeleton.</dd>
+                    <dt>Semantics</dt><dd><code>&lt;progress&gt;</code> element or accessible labelled indicator with announcements</dd>
+                    <dt>Family</dt><dd>status</dd>
+                    <dt>Rules</dt><dd><code>STATE_PROGRESS_DETERMINATE</code>, <code>DISPLAY_PROGRESS_KNOWN</code></dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: feedback ░░░░ -->
+    <section class="family" id="f-feedback" aria-labelledby="f-feedback-h">
+        <h3 id="f-feedback-h">Feedback family</h3>
+
+        <section class="component-section" id="c-skeleton">
+            <p class="label">Skeleton</p>
+            <div class="skeleton-stack" role="presentation" aria-busy="true" aria-label="Loading content">
+                <div class="skeleton-block" style="width:60%;height:14px;"></div>
+                <div class="skeleton-block" style="width:90%;"></div>
+                <div class="skeleton-block" style="width:80%;"></div>
+                <div class="skeleton-block" style="width:75%;"></div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Reserved layout while predictable content is loading.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Short-to-medium loads where the eventual layout is known — list rows, cards, table cells.</dd>
+                    <dt>Avoid when</dt><dd>Layout is unknown — use a spinner; load is determinate — use a progress indicator.</dd>
+                    <dt>Semantics</dt><dd>Non-interactive placeholders, hidden appropriately from AT (aria-busy on the wrapping region)</dd>
+                    <dt>Family</dt><dd>feedback</dd>
+                    <dt>Rules</dt><dd><code>STATE_LOADING_PREDICTABLE_LAYOUT</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-spinner">
+            <p class="label">Spinner</p>
+            <div class="spinner" role="status" aria-live="polite">
+                <span class="spinner__dot" aria-hidden="true"></span>
+                <span>Loading…</span>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Indeterminate wait for short operation.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Short, indeterminate waits where layout is unknown — submit-in-progress, quick fetches.</dd>
+                    <dt>Avoid when</dt><dd>Layout is predictable (use a skeleton); progress is measurable (use a progress indicator).</dd>
+                    <dt>Semantics</dt><dd>Visible text status with appropriate live-region announcement</dd>
+                    <dt>Family</dt><dd>feedback</dd>
+                    <dt>Rules</dt><dd><code>STATE_LOADING_INDETERMINATE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-empty-state">
+            <p class="label">Empty state</p>
+            <div class="empty-state" style="max-width:400px;">
+                <div class="empty-icon" aria-hidden="true">[ ]</div>
+                <p class="empty-title">No results found</p>
+                <p class="empty-body">Try adjusting your search or filters to find what you're looking for.</p>
+                <button class="button primary">Clear filters</button>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Explain why a collection is empty and provide next action.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Search/filter no-matches, or first-use empty states. Always include a clear-filters / revise-search / create action.</dd>
+                    <dt>Avoid when</dt><dd>Loading is in progress (show skeleton/spinner); error blocks loading (use alert).</dd>
+                    <dt>Semantics</dt><dd>Heading, plain-language explanation, relevant action</dd>
+                    <dt>Family</dt><dd>feedback</dd>
+                    <dt>Rules</dt><dd><code>STATE_EMPTY_NO_RESULTS</code>, <code>STATE_EMPTY_FIRST_USE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-inline-validation">
+            <p class="label">Inline validation</p>
+            <div class="field" style="max-width:320px;">
+                <label for="wf-text-error">Assessment name <span aria-hidden="true">*</span></label>
+                <input id="wf-text-error" type="text" value="" class="error" aria-invalid="true" aria-describedby="wf-text-error-msg">
+                <span class="error-msg" id="wf-text-error-msg">This field is required</span>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Field-specific correction guidance.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>One field is wrong — show the recovery instruction adjacent to that field.</dd>
+                    <dt>Avoid when</dt><dd>Two or more fields fail on submit (also show an error summary at the top).</dd>
+                    <dt>Semantics</dt><dd>Error message text programmatically associated with the field via <code>aria-describedby</code> + <code>aria-invalid</code></dd>
+                    <dt>Family</dt><dd>feedback</dd>
+                    <dt>Rules</dt><dd><code>FEEDBACK_FIELD_ERROR</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-error-summary">
+            <p class="label">Error summary</p>
+            <div class="banner error" role="alert" aria-labelledby="err-summary-title" style="max-width:600px;">
+                <span class="banner-type">Errors:</span>
+                <div class="banner-body">
+                    <p class="banner-title" id="err-summary-title">3 fields need attention before submitting</p>
+                    <ul style="margin:6px 0 0;padding-left:20px;font-size:13px;">
+                        <li><a href="#fp-name">Assessment name is required</a></li>
+                        <li><a href="#fp-start">Start date must be in the future</a></li>
+                        <li><a href="#fp-end">End date must be after start date</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Summarize submission errors and link to affected fields.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>2+ field errors after a form submit — list each with a link that focuses the field.</dd>
+                    <dt>Avoid when</dt><dd>A single field error (use inline validation alone).</dd>
+                    <dt>Semantics</dt><dd>Alert region with focus moved on submit failure; each linked error focuses its field</dd>
+                    <dt>Family</dt><dd>feedback</dd>
+                    <dt>Rules</dt><dd><code>FEEDBACK_MULTI_FIELD_ERRORS</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-alert">
+            <p class="label">Alert / Banner</p>
+            <p style="font-size:12px;color:#666;margin:0 0 8px;">Variants use border style + explicit text label — not color alone.</p>
+            <div style="display:flex;flex-direction:column;gap:8px;max-width:600px;">
+                <div class="banner info" role="status">
+                    <span class="banner-type">Info:</span>
+                    <div class="banner-body">
+                        <p class="banner-title">Informational heading</p>
+                        <p style="margin:0;font-size:13px;">Supporting detail text explaining the situation.</p>
+                    </div>
+                </div>
+                <div class="banner warning" role="alert">
+                    <span class="banner-type">Warning:</span>
+                    <div class="banner-body">
+                        <p class="banner-title">Something needs attention</p>
+                        <p style="margin:0;font-size:13px;">3 students have not completed their work.</p>
+                    </div>
+                    <button class="button secondary" style="font-size:12px;padding:4px 10px;flex-shrink:0;">View</button>
+                </div>
+                <div class="banner error" role="alert">
+                    <span class="banner-type">Error:</span>
+                    <div class="banner-body">
+                        <p class="banner-title">Something went wrong</p>
+                        <p style="margin:0;font-size:13px;">Please try again or contact support.</p>
+                    </div>
+                </div>
+                <div class="banner success" role="status">
+                    <span class="banner-type">Success:</span>
+                    <div class="banner-body">
+                        <p class="banner-title">Changes saved</p>
+                        <p style="margin:0;font-size:13px;">Your assessment has been scheduled.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Persistent important page or section status.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Persistent service status, warnings, or important information at page/section scope; also load-error recovery.</dd>
+                    <dt>Avoid when</dt><dd>The message is transient and low-risk (use a toast); response is required to continue (use a modal dialog).</dd>
+                    <dt>Semantics</dt><dd><code>role="status"</code> for non-urgent, <code>role="alert"</code> for urgent; vary by border style + label, not color alone</dd>
+                    <dt>Family</dt><dd>feedback</dd>
+                    <dt>Rules</dt><dd><code>FEEDBACK_PERSISTENT_PAGE_STATUS</code>, <code>STATE_LOAD_ERROR</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-toast">
+            <p class="label">Toast</p>
+            <div class="toast" role="status" aria-live="polite">
+                <span class="toast__title">Saved.</span>
+                <span class="toast__body">Assessment scheduled for May 30.</span>
+                <button type="button" class="button tertiary" style="padding:0;">Undo</button>
+                <button type="button" class="dismiss-x" aria-label="Dismiss">✕</button>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Transient low-risk confirmation that does not require response.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Brief, non-blocking success confirmations for low-risk actions ("Saved", "Sent"). Pair with an Undo affordance for reversible destructive actions.</dd>
+                    <dt>Avoid when</dt><dd>Status is persistent or important (use alert); user must respond before continuing (use modal dialog).</dd>
+                    <dt>Semantics</dt><dd>Non-blocking status/snackbar with accessible announcement (<code>role="status"</code>, <code>aria-live="polite"</code>)</dd>
+                    <dt>Family</dt><dd>feedback</dd>
+                    <dt>Rules</dt><dd><code>FEEDBACK_TRANSIENT_SUCCESS</code>, <code>ACTION_DESTRUCTIVE_REVERSIBLE</code> (offer-undo alternative)</dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: overlay ░░░░ -->
+    <section class="family" id="f-overlay" aria-labelledby="f-overlay-h">
+        <h3 id="f-overlay-h">Overlay family</h3>
+
+        <section class="component-section" id="c-modal">
+            <p class="label">Modal dialog</p>
+            <p style="font-size:12px;color:#666;margin:0 0 8px;">Shown inline in wireframes — not as an overlay. Use <code>.modal</code> wherever a dialog appears in the layout.</p>
+            <div class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+                <div class="modal-header">
+                    <span id="modal-title">Confirm delete</span>
+                    <button class="icon-button" aria-label="Close dialog">✕</button>
+                </div>
+                <div class="modal-body">
+                    <p style="margin:0 0 12px;">Delete <strong>Star Math — Spring Benchmark</strong> and all 124 student responses? This cannot be undone.</p>
+                    <div class="field">
+                        <label for="modal-input">Type DELETE to confirm</label>
+                        <input id="modal-input" type="text" placeholder="DELETE">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="button secondary">Cancel</button>
+                    <button class="button primary">Delete assessment</button>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Blocking decision or focused required task.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Blocking decisions the user must answer before continuing; irreversible/high-impact actions; AI-initiated external/destructive consequences awaiting review.</dd>
+                    <dt>Avoid when</dt><dd>Reversible low-risk action — execute immediately and offer undo via toast; supplemental help — use a nonmodal panel.</dd>
+                    <dt>Semantics</dt><dd>WAI-ARIA <code>dialog</code> pattern with focus trap and restoration</dd>
+                    <dt>Family</dt><dd>overlay</dd>
+                    <dt>Rules</dt><dd><code>FEEDBACK_BLOCKING_DECISION</code>, <code>ACTION_DESTRUCTIVE_IRREVERSIBLE</code>, <code>META_HIGH_IMPACT_AI_REVIEW</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-nonmodal-panel">
+            <p class="label">Nonmodal panel</p>
+            <div class="nonmodal">
+                <div class="nonmodal__main">
+                    <p style="margin:0 0 8px;font-weight:bold;">Page content</p>
+                    <p style="margin:0;">Main task remains usable while the support panel is open. Focus is not trapped; the user can keep working.</p>
+                </div>
+                <aside class="nonmodal__aside" aria-label="Help">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <p style="margin:0;font-weight:bold;">Step-by-step help</p>
+                        <button type="button" class="dismiss-x" aria-label="Close panel">✕</button>
+                    </div>
+                    <ol style="margin:0;padding-left:18px;">
+                        <li>Pick a subject and grade.</li>
+                        <li>Choose a window.</li>
+                        <li>Select students.</li>
+                        <li>Review and schedule.</li>
+                    </ol>
+                </aside>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Contextual support without blocking main task.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Supplemental but interactive help, in-context guides, or side panels the user may want open while continuing the main task.</dd>
+                    <dt>Avoid when</dt><dd>The decision must block continuation (use a modal dialog); content is brief, non-interactive supplementary text (use a tooltip).</dd>
+                    <dt>Semantics</dt><dd>Complementary region or non-modal dialog as applicable, focusable but not focus-trapping</dd>
+                    <dt>Family</dt><dd>overlay</dd>
+                    <dt>Rules</dt><dd><code>HELP_INTERACTIVE_CONTEXT</code></dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: organization ░░░░ -->
+    <section class="family" id="f-organization" aria-labelledby="f-organization-h">
+        <h3 id="f-organization-h">Organization family</h3>
+
+        <section class="component-section" id="c-disclosure">
+            <p class="label">Disclosure</p>
+            <details class="disclosure">
+                <summary>Show advanced options</summary>
+                <div style="font-size:13px;">
+                    <p style="margin:0 0 8px;">Optional supplementary settings appear only when the trigger is expanded.</p>
+                    <label class="check-item"><input type="checkbox"> Allow paper-based responses</label>
+                </div>
+            </details>
+            <div class="rule-note">
+                <p class="rule-note__summary">Reveal optional or supplemental content inline.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>One block of supplemental, optional detail that should not crowd the default view.</dd>
+                    <dt>Avoid when</dt><dd>The content is required for the current decision (show by default); 2+ independent supplemental sections (use accordion).</dd>
+                    <dt>Semantics</dt><dd>Button controlling an expandable region — natively <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code></dd>
+                    <dt>Family</dt><dd>organization</dd>
+                    <dt>Rules</dt><dd><code>ORG_DISCLOSE_SUPPLEMENTAL</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-accordion">
+            <p class="label">Accordion</p>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-trigger" aria-expanded="true">
+                        Section One (open)
+                        <span class="chevron" aria-hidden="true">&#9650;</span>
+                    </button>
+                    <div class="accordion-body">
+                        Content for section one. Replace with real content. This body is visible when the item is open.
+                    </div>
+                </div>
+                <div class="accordion-item closed">
+                    <button class="accordion-trigger" aria-expanded="false">
+                        Section Two (closed)
+                        <span class="chevron" aria-hidden="true">&#9660;</span>
+                    </button>
+                    <div class="accordion-body">
+                        Content for section two.
+                    </div>
+                </div>
+                <div class="accordion-item closed">
+                    <button class="accordion-trigger" aria-expanded="false">
+                        Section Three (closed)
+                        <span class="chevron" aria-hidden="true">&#9660;</span>
+                    </button>
+                    <div class="accordion-body">
+                        Content for section three.
+                    </div>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Independently reveal multiple optional content sections.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>2+ independent supplemental sections that the user might want to expand individually, where cross-section comparison isn't needed.</dd>
+                    <dt>Avoid when</dt><dd>Sections are peer views of one context (use tabs); content is required and must compare side-by-side (show all sections by default).</dd>
+                    <dt>Semantics</dt><dd>Accessible disclosure group — keyboard expand/collapse with <code>aria-expanded</code></dd>
+                    <dt>Family</dt><dd>organization</dd>
+                    <dt>Rules</dt><dd><code>ORG_ACCORDION_OPTIONAL_SECTIONS</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-tabs">
+            <p class="label">Tabs</p>
+            <p class="label" style="text-transform:none;color:#000;">Primary (pill)</p>
+            <nav aria-label="Filter tabs">
+                <div class="tabs-primary" role="tablist">
+                    <button class="tab active" role="tab" aria-selected="true">All <span class="tab-count">24</span></button>
+                    <button class="tab" role="tab" aria-selected="false">Math <span class="tab-count">12</span></button>
+                    <button class="tab" role="tab" aria-selected="false">ELA</button>
+                    <button class="tab" role="tab" aria-selected="false">Science</button>
+                </div>
+            </nav>
+            <p class="label" style="margin-top:20px;text-transform:none;color:#000;">Secondary (underline)</p>
+            <nav aria-label="Section tabs">
+                <div class="tabs-secondary" role="tablist">
+                    <button class="tab active" role="tab" aria-selected="true">Overview</button>
+                    <button class="tab" role="tab" aria-selected="false">Assignments <span class="tab-count">5</span></button>
+                    <button class="tab" role="tab" aria-selected="false">Results</button>
+                    <button class="tab" role="tab" aria-selected="false">Settings</button>
+                </div>
+            </nav>
+            <div class="rule-note">
+                <p class="rule-note__summary">Switch among peer panels in the same local context.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Peer views of the same local object — Overview / Students / Results / Settings — where simultaneous comparison isn't required and the sequence is non-linear.</dd>
+                    <dt>Avoid when</dt><dd>Users need to compare values across panels at once — show side-by-side instead; required ordered stages — use a step flow.</dd>
+                    <dt>Semantics</dt><dd>WAI-ARIA tabs pattern with <code>role="tablist"</code>, <code>role="tab"</code>, <code>aria-selected</code></dd>
+                    <dt>Family</dt><dd>organization</dd>
+                    <dt>Rules</dt><dd><code>ORG_TABS_PEER_PANELS</code> (avoid via <code>ORG_AVOID_TABS_REQUIRED_COMPARE</code>)</dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-step-flow">
+            <p class="label">Step flow</p>
+            <nav aria-label="Schedule assessment progress">
+                <ol class="step-flow">
+                    <li class="is-done"><span class="step-label">Step 1 · Done</span><span>Details</span></li>
+                    <li aria-current="step"><span class="step-label">Step 2 · Current</span><span>Students</span></li>
+                    <li><span class="step-label">Step 3</span><span>Review</span></li>
+                </ol>
+            </nav>
+            <div class="rule-note">
+                <p class="rule-note__summary">Complete ordered required stages.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Ordered required steps where users must complete an earlier stage before a later one — schedule wizards, onboarding flows, multi-page forms.</dd>
+                    <dt>Avoid when</dt><dd>Stages are peer views with no required order (use tabs).</dd>
+                    <dt>Semantics</dt><dd>Pages or sections plus a step indicator with <code>aria-current="step"</code></dd>
+                    <dt>Family</dt><dd>organization</dd>
+                    <dt>Rules</dt><dd><code>ORG_SEQUENTIAL_REQUIRED</code></dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: action ░░░░ -->
+    <section class="family" id="f-action" aria-labelledby="f-action-h">
+        <h3 id="f-action-h">Action family</h3>
+
+        <section class="component-section" id="c-button">
+            <p class="label">Button</p>
+            <div class="component-row">
+                <button class="button primary">Primary</button>
+                <button class="button secondary">Secondary</button>
+                <button class="button tertiary">Tertiary (text link)</button>
+                <button class="button primary disabled" aria-disabled="true">Disabled</button>
+                <button class="icon-button" aria-label="More options">···</button>
+            </div>
+            <p style="font-size:12px;color:#666;margin:4px 0 0;">Use <code>.button.primary</code>, <code>.button.secondary</code>, <code>.button.tertiary</code>. Apply <code>.disabled</code> + <code>aria-disabled="true"</code> for disabled states.</p>
+            <div class="rule-note">
+                <p class="rule-note__summary">Trigger a command or state change.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Any low/medium-risk command or state change in the local task. For reversible destructive actions, execute immediately and offer undo via toast.</dd>
+                    <dt>Avoid when</dt><dd>The effect is navigation to a destination — use a link; the change is irreversible/high-impact — gate behind a modal dialog.</dd>
+                    <dt>Semantics</dt><dd><code>&lt;button&gt;</code> with an action verb label</dd>
+                    <dt>Family</dt><dd>action</dd>
+                    <dt>Rules</dt><dd><code>ACTION_TRIGGER_COMMAND</code>, <code>ACTION_DESTRUCTIVE_REVERSIBLE</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-primary-button">
+            <p class="label">Primary button</p>
+            <div class="component-row">
+                <button class="button primary">Schedule assessment</button>
+                <button class="button primary">Save</button>
+                <button class="button primary">Submit</button>
+            </div>
+            <p style="font-size:12px;color:#666;margin:4px 0 0;">One primary button per local task — the most important forward or commit command.</p>
+            <div class="rule-note">
+                <p class="rule-note__summary">Most important forward or commit command in a local task.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>The single forward/commit verb of a local task — Submit, Save, Continue, Create, Apply.</dd>
+                    <dt>Avoid when</dt><dd>Multiple primaries on the same task — demote secondaries; the action is destructive (use modal dialog instead).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;button&gt;</code> styled as primary, with an action-verb label and visible focus state</dd>
+                    <dt>Family</dt><dd>action</dd>
+                    <dt>Rules</dt><dd><code>ACTION_PRIMARY_COMMIT</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-menu-button">
+            <p class="label">Menu button</p>
+            <div style="display:flex;gap:24px;align-items:flex-start;">
+                <div>
+                    <p style="font-size:11px;color:#666;margin:0 0 4px;">Trigger</p>
+                    <button class="menu-trigger" aria-haspopup="menu" aria-expanded="false">Actions <span aria-hidden="true">▾</span></button>
+                </div>
+                <div>
+                    <p style="font-size:11px;color:#666;margin:0 0 4px;">Open</p>
+                    <div class="overflow-panel" role="menu">
+                        <a class="overflow-item" role="menuitem" href="#">Duplicate</a>
+                        <a class="overflow-item" role="menuitem" href="#">Export</a>
+                        <a class="overflow-item" role="menuitem" href="#">Print</a>
+                    </div>
+                </div>
+            </div>
+            <p style="font-size:12px;color:#666;margin:6px 0 0;">Cross-reference: also see <a href="#c-overflow-menu">overflow menu</a> for icon-only triggers on rows.</p>
+            <div class="rule-note">
+                <p class="rule-note__summary">Reveal a compact list of related actions.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>A labelled trigger ("Actions") opening a menu of 3+ closely related secondary commands.</dd>
+                    <dt>Avoid when</dt><dd>Only 1–2 actions exist (show them inline); commands are unrelated workspace controls (use a toolbar).</dd>
+                    <dt>Semantics</dt><dd>Button with menu pattern — <code>aria-haspopup="menu"</code>, <code>aria-expanded</code>, keyboard arrow navigation</dd>
+                    <dt>Family</dt><dd>action</dd>
+                    <dt>Rules</dt><dd><code>ACTION_RELATED_SECONDARY_MENU</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-overflow-menu">
+            <p class="label">Overflow menu</p>
+            <p style="font-size:12px;color:#666;margin:0 0 8px;">Show the trigger + open panel side by side in wireframes.</p>
+            <div style="display:flex;gap:24px;align-items:flex-start;">
+                <div>
+                    <p style="font-size:11px;color:#666;margin:0 0 4px;">Trigger (closed)</p>
+                    <div class="overflow-menu-wrap">
+                        <button class="overflow-trigger" aria-label="Row actions" aria-haspopup="menu" aria-expanded="false">···</button>
+                    </div>
+                </div>
+                <div>
+                    <p style="font-size:11px;color:#666;margin:0 0 4px;">Panel (open)</p>
+                    <div class="overflow-panel" role="menu">
+                        <a class="overflow-item" role="menuitem" href="#">Edit</a>
+                        <a class="overflow-item" role="menuitem" href="#">Duplicate</a>
+                        <a class="overflow-item disabled" role="menuitem" aria-disabled="true" href="#">Archive</a>
+                        <a class="overflow-item destructive" role="menuitem" href="#">Delete</a>
+                    </div>
+                </div>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Keep infrequent item actions available without visual clutter.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Per-row or per-card secondary actions (Edit, Duplicate, Archive, Delete) used infrequently. The primary action stays inline; the rest collapse behind <code>···</code>.</dd>
+                    <dt>Avoid when</dt><dd>Hiding the primary action — never the primary; commands are frequent workspace controls (use a toolbar).</dd>
+                    <dt>Semantics</dt><dd>Menu button with <code>aria-haspopup="menu"</code> and accessible label</dd>
+                    <dt>Family</dt><dd>action</dd>
+                    <dt>Rules</dt><dd><code>ACTION_RELATED_SECONDARY_MENU</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-toolbar">
+            <p class="label">Toolbar</p>
+            <div class="toolbar" role="toolbar" aria-label="Text formatting">
+                <button type="button" aria-label="Bold" aria-pressed="true">B</button>
+                <button type="button" aria-label="Italic" aria-pressed="false" style="font-style:italic;">I</button>
+                <button type="button" aria-label="Underline" aria-pressed="false" style="text-decoration:underline;">U</button>
+                <button type="button" aria-label="Bulleted list">•≡</button>
+                <button type="button" aria-label="Numbered list">1≡</button>
+            </div>
+            <p style="font-size:12px;color:#666;margin:6px 0 0;">Cross-reference: when controls collapse on small screens, use an <a href="#c-overflow-menu">overflow menu</a> for less-frequent items.</p>
+            <div class="rule-note">
+                <p class="rule-note__summary">Group recurring controls that operate on a workspace or selection.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>3+ frequent workspace controls operating on a document, canvas, or selection — formatting bars, table actions, editor controls.</dd>
+                    <dt>Avoid when</dt><dd>Commands are infrequent secondary actions on a single item (use overflow_menu); the bar contains a single primary action.</dd>
+                    <dt>Semantics</dt><dd>WAI-ARIA <code>toolbar</code> pattern with arrow-key navigation between controls</dd>
+                    <dt>Family</dt><dd>action</dd>
+                    <dt>Rules</dt><dd><code>ACTION_WORKSPACE_CONTROLS</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-split-button">
+            <p class="label">Split button</p>
+            <div class="split-btn" role="group" aria-label="Save options">
+                <button type="button">Save</button>
+                <button type="button" aria-label="Other save options" aria-haspopup="menu" aria-expanded="false">▾</button>
+            </div>
+            <p style="font-size:12px;color:#666;margin:6px 0 0;">Closely related alternates only — e.g. Save / Save as draft / Save and continue.</p>
+            <div class="rule-note">
+                <p class="rule-note__summary">Primary command with closely related alternate modes.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>A safe-default primary action (Save) with closely related alternates (Save as draft, Save and continue) where the default dominates the alternates.</dd>
+                    <dt>Avoid when</dt><dd>Alternates are uncommon or high-risk (avoid_when from catalog) — a separate confirm flow is safer.</dd>
+                    <dt>Semantics</dt><dd>Button + menu button with related role grouping; action verb on both halves</dd>
+                    <dt>Family</dt><dd>action</dd>
+                    <dt>Rules</dt><dd><code>ACTION_SPLIT_MODE</code></dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: navigation ░░░░ -->
+    <section class="family" id="f-navigation" aria-labelledby="f-navigation-h">
+        <h3 id="f-navigation-h">Navigation family</h3>
+
+        <section class="component-section" id="c-link">
+            <p class="label">Link</p>
+            <p style="font-size:13px;max-width:600px;">A standard <a href="#">text link</a> uses native <code>&lt;a href&gt;</code> semantics — keyboard focus, right-click open-in-new-tab, and screen-reader "link" announcement come for free. Reserve buttons for commands that change state.</p>
+            <div class="rule-note">
+                <p class="rule-note__summary">Navigate to another destination or resource.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Any navigation to a URL, page, anchor, or downloadable resource.</dd>
+                    <dt>Avoid when</dt><dd>The effect is a state change or command in place — use a button.</dd>
+                    <dt>Semantics</dt><dd><code>&lt;a href&gt;</code> with descriptive text and visible focus</dd>
+                    <dt>Family</dt><dd>navigation</dd>
+                    <dt>Rules</dt><dd><code>ACTION_NAVIGATE_DESTINATION</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-global-navigation">
+            <p class="label">Global navigation</p>
+            <div class="crossref">
+                Wireframes mock global navigation as the dark <strong>app shell header</strong>. See the rendered example in the <a href="#l-app-shell">Educator app shell layout</a> — the <code>app-shell__header</code> region with logo, district name, and user avatar represents global product navigation.
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Navigate among primary product destinations.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Persistent top-level orientation across the product — branding, account, sign-out, switch-product.</dd>
+                    <dt>Avoid when</dt><dd>The user is navigating within a single section (use side navigation) or jumping between page sections (use in-page navigation).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;nav&gt;</code> with links and an accessible name</dd>
+                    <dt>Family</dt><dd>navigation</dd>
+                    <dt>Rules</dt><dd><code>NAV_PRIMARY_AREAS</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-side-navigation">
+            <p class="label">Side navigation</p>
+            <div class="crossref">
+                Wireframes mock side navigation as the <strong>app shell sidebar</strong>. See the rendered example in the <a href="#l-app-shell">Educator app shell layout</a> — the <code>app-shell__sidebar</code> region with grouped instructional and resource pages, current-page indicator, and divider.
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Navigate within a multi-page section/hierarchy.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>A section with 3+ pages and ≥ 2 hierarchy depth where users need persistent local navigation and a current-page indicator.</dd>
+                    <dt>Avoid when</dt><dd>Section is shallow (use breadcrumbs only); the destinations are top-level products (use global navigation).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;nav&gt;</code> with current page indication via <code>aria-current="page"</code> — never color alone</dd>
+                    <dt>Family</dt><dd>navigation</dd>
+                    <dt>Rules</dt><dd><code>NAV_SECTION_HIERARCHY</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-breadcrumb">
+            <p class="label">Breadcrumb</p>
+            <nav aria-label="Breadcrumb">
+                <ol class="breadcrumb" style="list-style:none;padding:0;margin:0;">
+                    <li><a href="#">Home</a></li>
+                    <li class="sep" aria-hidden="true">/</li>
+                    <li><a href="#">Assessments</a></li>
+                    <li class="sep" aria-hidden="true">/</li>
+                    <li class="current" aria-current="page">Star Math — May 2026</li>
+                </ol>
+            </nav>
+            <div class="rule-note">
+                <p class="rule-note__summary">Communicate location and ancestor paths in hierarchy.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Deep interior pages (≥ 3 levels) that aren't a home/landing page — show the path back up.</dd>
+                    <dt>Avoid when</dt><dd>The user is on a top-level page; only one level deep (a back link is enough).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;nav aria-label="Breadcrumb"&gt;</code> with an ordered list of links and <code>aria-current="page"</code> on the leaf</dd>
+                    <dt>Family</dt><dd>navigation</dd>
+                    <dt>Rules</dt><dd><code>NAV_HIERARCHY_LOCATION</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-in-page-navigation">
+            <p class="label">In-page navigation</p>
+            <nav aria-label="On this page" class="in-page-nav">
+                <p class="label" style="margin:0 0 8px;">On this page</p>
+                <ol>
+                    <li><a href="#">Overview</a></li>
+                    <li><a href="#" aria-current="true">Setup</a></li>
+                    <li><a href="#">Students</a></li>
+                    <li><a href="#">Reporting</a></li>
+                    <li><a href="#">Troubleshooting</a></li>
+                </ol>
+            </nav>
+            <div class="rule-note">
+                <p class="rule-note__summary">Jump to sections on a long page.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Long pages with 4+ distinct sections — settings pages, documentation, multi-section detail views.</dd>
+                    <dt>Avoid when</dt><dd>The page is short or has no structural sections; sections are peer panels of one context (use tabs).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;nav&gt;</code> with fragment links and current-section indication</dd>
+                    <dt>Family</dt><dd>navigation</dd>
+                    <dt>Rules</dt><dd><code>NAV_LONG_DOCUMENT</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-pagination">
+            <p class="label">Pagination</p>
+            <nav aria-label="Page navigation">
+                <div class="pagination">
+                    <button class="page-btn disabled" aria-disabled="true">&#8592; Prev</button>
+                    <button class="page-btn active" aria-current="page">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <span class="page-info">…</span>
+                    <button class="page-btn">12</button>
+                    <button class="page-btn">Next &#8594;</button>
+                </div>
+            </nav>
+            <p style="font-size:12px;color:#666;margin:6px 0 0;">Showing 1–10 of 127 students</p>
+            <div class="rule-note">
+                <p class="rule-note__summary">Move through addressable pages of results.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Large collections (locate, compare, revisit, administer tasks) where stable page positions help users recall where things are.</dd>
+                    <dt>Avoid when</dt><dd>Browsing a feed where appending more is preferable (use load more); position recall isn't required.</dd>
+                    <dt>Semantics</dt><dd><code>&lt;nav&gt;</code> with links/buttons, <code>aria-current="page"</code> on the active page</dd>
+                    <dt>Family</dt><dd>navigation</dd>
+                    <dt>Rules</dt><dd><code>NAV_PAGINATED_TASK_DATA</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-load-more">
+            <p class="label">Load more</p>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 0;max-width:600px;">
+                <p style="margin:0;font-size:12px;color:#666;">Showing 1–10 of 47 results</p>
+                <button class="button secondary">Load more</button>
+            </div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Append more browsable results while preserving current context.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Browsable exploration where users don't need to recall an exact position and the page footer must remain reachable.</dd>
+                    <dt>Avoid when</dt><dd>Position recall is required (use pagination); endless feed consumption (cautiously consider infinite scroll).</dd>
+                    <dt>Semantics</dt><dd><code>&lt;button&gt;</code> with announcement of newly loaded count</dd>
+                    <dt>Family</dt><dd>navigation</dd>
+                    <dt>Rules</dt><dd><code>NAV_BROWSE_APPEND</code></dd>
+                </dl>
+            </div>
+        </section>
+
+        <section class="component-section" id="c-infinite-scroll">
+            <p class="label">Infinite scroll (stub)</p>
+            <div class="stub"><strong>Feed pattern. Use cautiously; provide navigation or access alternatives.</strong> Wireframe stub only — never default to infinite scroll for administrative, comparative, or stable-position workflows. If used, always pair with a "back to top" control, a reachable footer, and an alternative way to access older items (date jump, search). Prefer <a href="#c-load-more">load more</a> or <a href="#c-pagination">pagination</a> in education tools.</div>
+            <div class="rule-note">
+                <p class="rule-note__summary">Continuous feed consumption, cautiously used.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Continuous feed consumption (social, news, browse-to-discover) where position recall and footer reachability aren't required.</dd>
+                    <dt>Avoid when</dt><dd>Administrative tasks, comparative tasks, stable-position workflows, or pages with essential footer navigation (avoid list from catalog).</dd>
+                    <dt>Semantics</dt><dd>Feed pattern only with navigation/access alternatives; announce new items via live region</dd>
+                    <dt>Family</dt><dd>navigation</dd>
+                    <dt>Rules</dt><dd><code>NAV_CONTINUOUS_FEED_CAUTION</code></dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+    <!-- ░░░░ FAMILY: help ░░░░ -->
+    <section class="family" id="f-help" aria-labelledby="f-help-h">
+        <h3 id="f-help-h">Help family</h3>
+
+        <section class="component-section" id="c-tooltip">
+            <p class="label">Tooltip</p>
+            <div class="tooltip-shell">
+                <div class="tooltip-bubble" id="tt-desc" role="tooltip">Brief supplemental info — never required for completion.</div>
+                <button type="button" class="tooltip-trigger" aria-describedby="tt-desc">Hover / focus me</button>
+            </div>
+            <p style="font-size:12px;color:#666;margin:8px 0 0;">Wireframes show the tooltip in its visible state next to its trigger so reviewers can read both.</p>
+            <div class="rule-note">
+                <p class="rule-note__summary">A brief supplementary message shown on focus or hover; never required for completion.</p>
+                <dl class="rule-note__grid">
+                    <dt>When to use</dt><dd>Brief, non-interactive supplementary text on a control (icon-only buttons, abbreviations, optional context).</dd>
+                    <dt>Avoid when</dt><dd>The information is required for the task — keep it visible inline; the content needs interaction or scroll (use a nonmodal panel).</dd>
+                    <dt>Semantics</dt><dd>Accessible tooltip pattern associated with trigger via <code>aria-describedby</code>; works on focus as well as hover; dismissible via Escape</dd>
+                    <dt>Family</dt><dd>help</dd>
+                    <dt>Rules</dt><dd><code>HELP_SHORT_SUPPLEMENT</code> (avoid via <code>HELP_ESSENTIAL_VISIBLE</code>)</dd>
+                </dl>
+            </div>
+        </section>
+    </section>
+
+
+
+    <!-- ════════════════════════════════════════════
+         LAYOUTS
+         ════════════════════════════════════════════ -->
+    <h2 id="layouts">Layouts</h2>
+
+    <!-- Page header -->
+    <section id="l-page-header">
+        <p class="label">Page header</p>
+        <div class="layout-frame">
+            <div class="page-header">
+                <div class="page-title-block">
+                    <p class="page-title">Page Title</p>
+                    <p class="page-subtitle">Optional subtitle or supporting context</p>
+                </div>
+                <div class="page-actions">
+                    <button class="button secondary">Secondary action</button>
+                    <button class="button primary">Primary action</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App shell -->
+    <section id="l-app-shell">
+        <p class="label">App shell layout</p>
+        <p style="font-size:12px;color:#666;margin:0 0 10px;">Full-width global header → sidebar + main content area. Optional heading tabs span the main area above the page title when a page has sub-views.</p>
+        <div class="layout-frame app-shell">
+
+            <!-- ① Global header — full width -->
+            <header class="app-shell__header">
+                <span class="app-shell__logo">&#9632; Product</span>
+                <div class="app-shell__user">
+                    <span>Organization name</span>
+                    <div class="user-avatar" aria-hidden="true">JD</div>
+                    <span>Jane Doe &#9660;</span>
+                </div>
+            </header>
+
+            <div class="app-shell__body">
+
+                <!-- ② Sidebar — left rail -->
+                <nav class="app-shell__sidebar" aria-label="Primary navigation">
+                    <ul class="app-shell__nav">
+                        <li><a href="#"><span class="nav-icon" aria-hidden="true"></span> Dashboard</a></li>
+                        <li class="is-active" aria-current="page">
+                            <a href="#"><span class="nav-icon" aria-hidden="true"></span> Primary object</a>
+                        </li>
+                        <li><a href="#"><span class="nav-icon" aria-hidden="true"></span> Secondary object</a></li>
+                        <li><a href="#"><span class="nav-icon" aria-hidden="true"></span> Reports</a></li>
+                        <li class="nav-divider" aria-hidden="true"></li>
+                        <li><a href="#"><span class="nav-icon" aria-hidden="true"></span> Settings</a></li>
+                        <li><a href="#"><span class="nav-icon" aria-hidden="true"></span> Help</a></li>
+                    </ul>
+                </nav>
+
+                <!-- ③ Main content area -->
+                <main class="app-shell__main" id="main-content">
+
+                    <!-- ③a Heading tabs — optional sub-view switcher when page has multiple views -->
+                    <div class="app-shell__heading-tabs" role="tablist" aria-label="View">
+                        <button class="htab active" role="tab" aria-selected="true">View A</button>
+                        <button class="htab" role="tab" aria-selected="false">View B</button>
+                    </div>
+
+                    <!-- ③b Page title -->
+                    <div class="app-shell__page-title">
+                        <div class="page-title-block">
+                            <p class="page-title" style="font-size:1.2rem;font-weight:bold;margin:0 0 2px;">Page title</p>
+                            <p class="page-subtitle" style="font-size:.8rem;color:#666;margin:0;">Optional subtitle or supporting context</p>
+                        </div>
+                    </div>
+
+                    <!-- ③c Page body content -->
+                    <div class="app-shell__content">
+                        <div style="border:1px dashed #999;padding:24px;text-align:center;color:#999;font-size:12px;">
+                            Page content — replace with List page, Detail page, or Dashboard layout
+                        </div>
+                    </div>
+
+                </main>
+            </div>
+        </div>
+
+        <!-- Annotation -->
+        <table style="margin-top:10px;font-size:12px;border-collapse:collapse;width:100%;">
+            <tr style="border-bottom:1px solid #ccc;">
+                <th style="text-align:left;padding:4px 8px;font-weight:bold;width:160px;">Region</th>
+                <th style="text-align:left;padding:4px 8px;font-weight:bold;">Component hint</th>
+                <th style="text-align:left;padding:4px 8px;font-weight:bold;">Notes</th>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:4px 8px;">Global header</td>
+                <td style="padding:4px 8px;"><code>global-navigation</code></td>
+                <td style="padding:4px 8px;">Full-width; product logo, user name, avatar</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:4px 8px;">Sidebar</td>
+                <td style="padding:4px 8px;"><code>side-navigation</code></td>
+                <td style="padding:4px 8px;">Primary nav items; use a divider between sections</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:4px 8px;">Heading tabs</td>
+                <td style="padding:4px 8px;"><code>tabs</code></td>
+                <td style="padding:4px 8px;">Optional; only when a page has multiple peer sub-views</td>
+            </tr>
+            <tr>
+                <td style="padding:4px 8px;">Page title</td>
+                <td style="padding:4px 8px;"><code>page-heading</code></td>
+                <td style="padding:4px 8px;">Inside content area, below heading tabs if present</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- List page -->
+    <section id="l-list-page">
+        <p class="label">List page</p>
+        <div class="layout-frame">
+            <div class="page-header">
+                <div class="page-title-block">
+                    <p class="page-title">Assessments</p>
+                    <p class="page-subtitle">24 assessments</p>
+                </div>
+                <div class="page-actions">
+                    <button class="button secondary">Export</button>
+                    <button class="button primary">+ Schedule assessment</button>
+                </div>
+            </div>
+            <div style="padding:12px 20px;">
+                <!-- Filter row -->
+                <div class="filter-row">
+                    <span class="filter-label">Filter:</span>
+                    <div class="search-field" style="max-width:220px;">
+                        <span class="search-icon" aria-hidden="true">[&#x2315;]</span>
+                        <input type="search" placeholder="Search assessments…" aria-label="Search assessments">
+                    </div>
+                    <select aria-label="Filter by grade" style="border:1px solid #000;padding:6px 8px;font-size:13px;background:#fff;">
+                        <option>All grades</option>
+                    </select>
+                    <select aria-label="Filter by status" style="border:1px solid #000;padding:6px 8px;font-size:13px;background:#fff;">
+                        <option>All statuses</option>
+                    </select>
+                    <div class="tabs-primary" style="margin-left:auto;" role="tablist">
+                        <button class="tab active" role="tab" aria-selected="true">All</button>
+                        <button class="tab" role="tab" aria-selected="false">Active</button>
+                        <button class="tab" role="tab" aria-selected="false">Draft</button>
+                        <button class="tab" role="tab" aria-selected="false">Closed</button>
+                    </div>
+                </div>
+                <!-- List -->
+                <ol class="list">
+                    <li>
+                        <div class="left">
+                            <p class="title">Star Math — Spring Benchmark</p>
+                            <p class="description">Grades 3–5 · Due May 30, 2026 · 124 students</p>
+                        </div>
+                        <div class="right">
+                            <span class="badge outline">Active</span>
+                            <button class="button secondary">View results</button>
+                            <button class="overflow-trigger" aria-label="More options" aria-haspopup="menu">···</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="left">
+                            <p class="title">Reading Fluency Check</p>
+                            <p class="description">Grades K–2 · Due Jun 5, 2026 · 89 students</p>
+                        </div>
+                        <div class="right">
+                            <span class="badge dashed">Draft</span>
+                            <button class="button secondary">View results</button>
+                            <button class="overflow-trigger" aria-label="More options" aria-haspopup="menu">···</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="left">
+                            <p class="title">End-of-year Math Assessment</p>
+                            <p class="description">Grades 6–8 · Ended Apr 15, 2026 · 203 students</p>
+                        </div>
+                        <div class="right">
+                            <span class="badge">Closed</span>
+                            <button class="button secondary">View results</button>
+                            <button class="overflow-trigger" aria-label="More options" aria-haspopup="menu">···</button>
+                        </div>
+                    </li>
+                </ol>
+                <!-- Pagination -->
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 4px;">
+                    <p style="font-size:12px;color:#666;margin:0;">Showing 1–10 of 24 assessments</p>
+                    <nav aria-label="Page navigation">
+                        <div class="pagination">
+                            <button class="page-btn disabled" aria-disabled="true">&#8592;</button>
+                            <button class="page-btn active" aria-current="page">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn">&#8594;</button>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detail page -->
+    <section id="l-detail-page">
+        <p class="label">Detail page</p>
+        <div class="layout-frame">
+            <div style="padding:14px 20px;">
+                <nav aria-label="Breadcrumb">
+                    <ol class="breadcrumb" style="list-style:none;padding:0;margin:0 0 12px;">
+                        <li><a href="#">Assessments</a></li>
+                        <li class="sep" aria-hidden="true">/</li>
+                        <li class="current" aria-current="page">Star Math — Spring Benchmark</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="page-header">
+                <div class="page-title-block">
+                    <p class="page-title">Star Math — Spring Benchmark</p>
+                    <p class="page-subtitle">Grades 3–5 · Due May 30, 2026 <span class="badge outline" style="margin-left:6px;vertical-align:middle;">Active</span></p>
+                </div>
+                <div class="page-actions">
+                    <button class="button secondary">Edit</button>
+                    <button class="button primary">View report</button>
+                </div>
+            </div>
+            <nav aria-label="Assessment sections">
+                <div class="tabs-secondary" role="tablist" style="padding:0 20px;">
+                    <button class="tab active" role="tab" aria-selected="true">Overview</button>
+                    <button class="tab" role="tab" aria-selected="false">Students <span class="tab-count">124</span></button>
+                    <button class="tab" role="tab" aria-selected="false">Results</button>
+                    <button class="tab" role="tab" aria-selected="false">Settings</button>
+                </div>
+            </nav>
+            <div style="padding:20px;display:grid;grid-template-columns:1fr 280px;gap:24px;">
+                <div>
+                    <p class="form-section-title" style="border-bottom:1px solid #ccc;padding-bottom:6px;margin:0 0 12px;">Assessment details</p>
+                    <div style="border:1px dashed #999;padding:24px;text-align:center;color:#999;font-size:12px;">
+                        Primary content area (table, chart, description)
+                    </div>
+                </div>
+                <aside style="border-left:1px solid #000;padding-left:20px;">
+                    <p class="form-section-title" style="border-bottom:1px solid #ccc;padding-bottom:6px;margin:0 0 12px;">Summary</p>
+                    <div class="stat-grid" style="grid-template-columns:1fr;">
+                        <div class="stat-card">
+                            <span class="stat-label">Students assigned</span>
+                            <span class="stat-value">124</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Completed</span>
+                            <span class="stat-value">86</span>
+                            <span class="stat-delta">69% completion rate</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="l-dashboard">
+        <p class="label">Dashboard</p>
+        <div class="layout-frame">
+            <div class="page-header">
+                <div class="page-title-block">
+                    <p class="page-title">Class Overview</p>
+                    <p class="page-subtitle">Week of May 26, 2026</p>
+                </div>
+                <div class="page-actions">
+                    <select aria-label="Select class" style="border:1px solid #000;padding:6px 8px;font-size:13px;background:#fff;">
+                        <option>Period 2 — Math</option>
+                    </select>
+                </div>
+            </div>
+            <div style="padding:0 20px 20px;">
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <span class="stat-label">Students active</span>
+                        <span class="stat-value">28</span>
+                        <span class="stat-delta">of 31 enrolled</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Assignments due this week</span>
+                        <span class="stat-value">4</span>
+                        <span class="stat-delta">2 past due</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Avg. score (last assessment)</span>
+                        <span class="stat-value">84</span>
+                        <span class="stat-delta">Star Math — May 2026</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Students needing attention</span>
+                        <span class="stat-value">6</span>
+                        <span class="stat-delta">Below benchmark</span>
+                    </div>
+                </div>
+                <div style="margin-top:20px;border:1px dashed #999;padding:24px;text-align:center;color:#999;font-size:12px;">
+                    Activity feed / chart area
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Two-column page -->
+    <section id="l-two-col">
+        <p class="label">Two-column page</p>
+        <div class="layout-frame">
+            <div class="page-header">
+                <div class="page-title-block">
+                    <p class="page-title">Student Profile — Ava Wilson</p>
+                    <p class="page-subtitle">Grade 5 · Jefferson Elementary</p>
+                </div>
+                <div class="page-actions">
+                    <button class="button secondary">Message student</button>
+                    <button class="button primary">Add to group</button>
+                </div>
+            </div>
+            <div style="padding:20px;" class="two-col">
+                <main>
+                    <nav aria-label="Profile sections">
+                        <div class="tabs-secondary" role="tablist">
+                            <button class="tab active" role="tab" aria-selected="true">Reading</button>
+                            <button class="tab" role="tab" aria-selected="false">Math</button>
+                            <button class="tab" role="tab" aria-selected="false">Assessments</button>
+                        </div>
+                    </nav>
+                    <div style="margin-top:16px;border:1px dashed #999;padding:24px;text-align:center;color:#999;font-size:12px;">
+                        Main content area (score history table, chart)
+                    </div>
+                </main>
+                <aside class="aside">
+                    <p class="form-section-title" style="border-bottom:1px solid #ccc;padding-bottom:6px;margin:0 0 12px;">Student info</p>
+                    <div class="stat-card" style="margin-bottom:12px;">
+                        <span class="stat-label">Reading level</span>
+                        <span class="stat-value" style="font-size:1.4rem;">4.2</span>
+                        <span class="stat-delta">ATOS · Grade equivalent</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Star Reading</span>
+                        <span class="stat-value" style="font-size:1.4rem;">720L</span>
+                        <span class="stat-delta">Lexile range</span>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form page -->
+    <section id="l-form-page">
+        <p class="label">Form page</p>
+        <div class="layout-frame" style="display:flex;flex-direction:column;">
+            <div class="page-header">
+                <div class="page-title-block">
+                    <p class="page-title">Schedule Assessment</p>
+                    <p class="page-subtitle">Fill in all required fields before scheduling</p>
+                </div>
+            </div>
+            <div style="padding:20px;flex:1;">
+                <!-- Section 1 -->
+                <div class="form-section">
+                    <p class="form-section-title">Assessment details</p>
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="fp-name">Assessment name <span aria-hidden="true">*</span></label>
+                            <input id="fp-name" type="text" placeholder="e.g. Star Math — Spring 2026">
+                        </div>
+                        <div class="field">
+                            <label for="fp-type">Assessment type <span aria-hidden="true">*</span></label>
+                            <select id="fp-type">
+                                <option>-- Select type --</option>
+                                <option>Star Math</option>
+                                <option>Star Reading</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="fp-start">Start date <span aria-hidden="true">*</span></label>
+                            <input id="fp-start" type="text" placeholder="MM/DD/YYYY">
+                        </div>
+                        <div class="field">
+                            <label for="fp-end">End date <span aria-hidden="true">*</span></label>
+                            <input id="fp-end" type="text" placeholder="MM/DD/YYYY">
+                        </div>
+                    </div>
+                </div>
+                <!-- Section 2 -->
+                <div class="form-section">
+                    <p class="form-section-title">Students</p>
+                    <div class="field" style="max-width:400px;">
+                        <label for="fp-grade">Grade(s)</label>
+                        <select id="fp-grade">
+                            <option>All grades</option>
+                            <option>Grades 3–5</option>
+                            <option>Grades 6–8</option>
+                        </select>
+                    </div>
+                    <div class="check-group" style="margin-top:12px;">
+                        <label class="check-item"><input type="checkbox"> Include students with accommodations</label>
+                        <label class="check-item"><input type="checkbox" checked> Send notification to students</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-footer">
+                <button class="button secondary">Cancel</button>
+                <button class="button primary">Schedule assessment</button>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

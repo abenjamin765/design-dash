@@ -1,0 +1,3167 @@
+{
+  "id": "ui-interaction-decision-tree",
+  "version": "1.0.0",
+  "title": "UI interaction decision tree for AI coding agents",
+  "artifact_type": "prioritized_decision_tree_with_rule_catalog",
+  "description": "A prioritized, context-aware rule set for selecting common UI interaction patterns. Designed for use in Cursor rules, prompts, or local retrieval context.",
+  "last_updated": "2026-05-26",
+  "schema_standard": "JSON; embedded input/response schemas use JSON Schema Draft 2020-12 conventions",
+  "principles": [
+    "Choose components from the user's goal before visual preference.",
+    "Treat numeric thresholds as defaults; contextual overrides outrank counts.",
+    "Keep essential information and consequential choices visible.",
+    "Prefer native semantic elements; custom widgets inherit full accessibility obligations.",
+    "Do not turn read-only tabular information into an interactive grid.",
+    "Do not hide primary actions or task-critical help.",
+    "Insert review and confirmation for consequential AI actions."
+  ],
+  "cursor_instructions": {
+    "purpose": "Use this file before generating, refactoring, or reviewing interaction-heavy UI.",
+    "agent_directive": [
+      "First populate input_context from the feature requirements and current UI.",
+      "Apply rules by descending priority.",
+      "When rules conflict, choose the highest-priority contextual override over a generic count threshold.",
+      "Always include the referenced requirements in implementation and review comments.",
+      "Return assumptions or request missing context when a recommendation affects accessibility, data loss, external actions, or high-impact workflows."
+    ],
+    "suggested_cursor_rule_trigger": "Apply whenever implementing forms, controls, collections, navigation, dialogs, feedback states, AI-generated actions, or accessibility reviews.",
+    "recommendation_response_schema": {
+      "type": "object",
+      "required": [
+        "primary_component",
+        "matched_rule_ids",
+        "rationale",
+        "requirements",
+        "confidence"
+      ],
+      "properties": {
+        "primary_component": {
+          "type": "string"
+        },
+        "matched_rule_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "rationale": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing_context": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "states_to_design": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avoid": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "condition_operator_grammar": {
+      "plain_property": "Exact match: {\"user_goal\":\"select\"}.",
+      "in": "Value is one member of an allowed set: {\"risk_level\":{\"in\":[\"irreversible\",\"high_impact\"]}}.",
+      "not_in": "Value is absent from a disallowed set.",
+      "min_max": "Numeric inclusive comparison; use min, max, or both.",
+      "any": "Logical OR across child condition objects; all sibling properties outside any are additionally required.",
+      "any_missing": "A rule matches when one or more named context properties are absent."
+    }
+  },
+  "input_context_schema": {
+    "description": "Facts an AI agent should identify before recommending UI components. Omit unknown optional fields and disclose assumptions.",
+    "type": "object",
+    "properties": {
+      "user_goal": {
+        "enum": [
+          "input",
+          "select",
+          "find",
+          "sort",
+          "browse",
+          "view",
+          "compare",
+          "edit",
+          "manipulate",
+          "navigate",
+          "act",
+          "monitor",
+          "understand_pattern",
+          "change_view",
+          "consume_feed"
+        ]
+      },
+      "actor": {
+        "enum": [
+          "user",
+          "ai_agent",
+          "system"
+        ]
+      },
+      "selection_mode": {
+        "enum": [
+          "boolean",
+          "single",
+          "multiple"
+        ]
+      },
+      "option_count": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "option_complexity": {
+        "enum": [
+          "short_labels",
+          "descriptive",
+          "visual",
+          "very_long"
+        ]
+      },
+      "option_label_length": {
+        "enum": [
+          "short",
+          "medium",
+          "long"
+        ]
+      },
+      "option_source": {
+        "enum": [
+          "static",
+          "dynamic",
+          "remote",
+          "unbounded"
+        ]
+      },
+      "option_dataset": {
+        "enum": [
+          "generic",
+          "states",
+          "countries",
+          "months_or_dates",
+          "familiar_named_catalog"
+        ]
+      },
+      "comparison_needed": {
+        "enum": [
+          "low",
+          "medium",
+          "high"
+        ]
+      },
+      "choice_consequence": {
+        "enum": [
+          "low",
+          "financial",
+          "eligibility",
+          "workflow_significant"
+        ]
+      },
+      "effect_timing": {
+        "enum": [
+          "immediate",
+          "on_submit"
+        ]
+      },
+      "value_type": {
+        "enum": [
+          "text",
+          "number",
+          "date",
+          "date_range",
+          "time",
+          "file"
+        ]
+      },
+      "precision": {
+        "enum": [
+          "exact",
+          "approximate"
+        ]
+      },
+      "date_context": {
+        "enum": [
+          "known_from_memory",
+          "schedule",
+          "weekday_matters",
+          "availability_matters"
+        ]
+      },
+      "data_shape": {
+        "enum": [
+          "sequence",
+          "activity_feed",
+          "search_results",
+          "objects",
+          "records",
+          "tabular",
+          "hierarchy"
+        ]
+      },
+      "fields_consistent": {
+        "type": "boolean"
+      },
+      "cell_interaction": {
+        "enum": [
+          "none",
+          "row_action",
+          "inline_edit",
+          "keyboard_cell_navigation",
+          "range_selection",
+          "reorder"
+        ]
+      },
+      "item_richness": {
+        "enum": [
+          "minimal",
+          "medium",
+          "rich"
+        ]
+      },
+      "risk_level": {
+        "enum": [
+          "low",
+          "medium",
+          "destructive",
+          "irreversible",
+          "high_impact"
+        ]
+      },
+      "reversible": {
+        "type": "boolean"
+      },
+      "scope": {
+        "enum": [
+          "single_low_impact",
+          "bulk",
+          "external_system"
+        ]
+      },
+      "information_priority": {
+        "enum": [
+          "required_for_current_decision",
+          "supplemental",
+          "optional"
+        ]
+      },
+      "content_relationship": {
+        "enum": [
+          "independent",
+          "peer_views_same_context",
+          "sequential"
+        ]
+      },
+      "state": {
+        "enum": [
+          "idle",
+          "loading",
+          "empty",
+          "validation_error",
+          "error",
+          "success",
+          "warning",
+          "service_status",
+          "important_information"
+        ]
+      },
+      "progress_known": {
+        "type": "boolean"
+      },
+      "confidence": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "action_consequence": {
+        "enum": [
+          "none",
+          "reversible",
+          "external",
+          "destructive",
+          "irreversible",
+          "high_impact"
+        ]
+      }
+    },
+    "required": [
+      "user_goal"
+    ]
+  },
+  "evaluation_algorithm": [
+    {
+      "step": 1,
+      "action": "Normalize the proposed UI task into input_context fields. Do not infer consequential fields silently."
+    },
+    {
+      "step": 2,
+      "action": "Apply global constraints and meta rules before choosing a component."
+    },
+    {
+      "step": 3,
+      "action": "Evaluate matching rules in descending priority; contextual override rules beat numeric defaults."
+    },
+    {
+      "step": 4,
+      "action": "Return one primary recommendation, at most two alternatives, rationale, assumptions, requirements, and states."
+    },
+    {
+      "step": 5,
+      "action": "For custom composite widgets, include implementation obligations from A11Y_COMPOSITE_PATTERN."
+    },
+    {
+      "step": 6,
+      "action": "For user-visible collections or actions, specify empty, loading, error, success, and permission states when applicable."
+    },
+    {
+      "step": 7,
+      "action": "For AI-initiated or high-risk actions, insert review/confirmation before execution."
+    }
+  ],
+  "global_requirements": {
+    "A11Y_VISIBLE_LABEL": {
+      "requirement": "Inputs have a persistent visible label; placeholder text is not a substitute for a label.",
+      "severity": "must"
+    },
+    "A11Y_GROUP_LABEL": {
+      "requirement": "Grouped controls expose a group name using semantic grouping such as fieldset and legend where applicable.",
+      "severity": "must"
+    },
+    "A11Y_KEYBOARD": {
+      "requirement": "All interactive behavior is operable with keyboard alone and preserves logical focus order.",
+      "severity": "must"
+    },
+    "A11Y_FOCUS_VISIBLE": {
+      "requirement": "Interactive controls have a clear visible focus indicator.",
+      "severity": "must"
+    },
+    "A11Y_SEMANTIC_NATIVE": {
+      "requirement": "Prefer native semantic HTML over custom ARIA widgets when native behavior fulfills the need.",
+      "severity": "must"
+    },
+    "A11Y_NO_COLOR_ONLY": {
+      "requirement": "State, errors, selection, and status are not communicated by color alone.",
+      "severity": "must"
+    },
+    "A11Y_TOUCH_TARGET": {
+      "requirement": "Interactive targets are large and spaced enough for pointer and touch input.",
+      "severity": "should"
+    },
+    "A11Y_ERROR_ASSOCIATION": {
+      "requirement": "Validation errors identify the field, describe recovery, and are programmatically associated with the input.",
+      "severity": "must"
+    },
+    "A11Y_DYNAMIC_ANNOUNCE": {
+      "requirement": "Meaningful dynamic results or status changes are announced appropriately without excessive interruption.",
+      "severity": "must_when_dynamic"
+    },
+    "A11Y_DIALOG_FOCUS": {
+      "requirement": "Modal dialogs move focus inside on open, keep focus within while open, support Escape where appropriate, and return focus on close.",
+      "severity": "must"
+    },
+    "A11Y_TABLE_HEADERS": {
+      "requirement": "Static data tables include a caption where useful and correctly associated row/column headers using scope or headers/id for complex headers.",
+      "severity": "must"
+    },
+    "A11Y_SORT_ANNOUNCE": {
+      "requirement": "Sortable tabular views expose sort state and announce changes to assistive technology.",
+      "severity": "must_when_sortable"
+    },
+    "A11Y_COMPOSITE_PATTERN": {
+      "requirement": "Custom composite widgets implement the full expected ARIA pattern and keyboard behavior, not roles alone.",
+      "severity": "must"
+    },
+    "A11Y_REDUCED_MOTION": {
+      "requirement": "Animations do not block comprehension and respect reduced-motion preferences.",
+      "severity": "should"
+    },
+    "CONTENT_PLAIN_LANGUAGE": {
+      "requirement": "Labels describe the outcome in concise user language; avoid internal system terminology.",
+      "severity": "must"
+    },
+    "CONTENT_ACTION_VERB": {
+      "requirement": "Action labels begin with a specific verb describing the result, such as Save, Delete, Send, or Download.",
+      "severity": "should"
+    },
+    "CONTENT_ERROR_RECOVERY": {
+      "requirement": "Error messages explain what happened and the next available recovery action.",
+      "severity": "must"
+    },
+    "CONTENT_DESTRUCTIVE_SCOPE": {
+      "requirement": "Destructive confirmations name the affected object, scope, and irreversibility or recovery method.",
+      "severity": "must"
+    },
+    "AGENT_NO_INVENTED_COMPLEXITY": {
+      "requirement": "Do not introduce a complex widget when a native control or visible content solves the task.",
+      "severity": "must"
+    },
+    "AGENT_STATE_ALL_STATES": {
+      "requirement": "Specify loading, empty, error, permission, and success states for generated UI.",
+      "severity": "should"
+    },
+    "AGENT_RISK_REVIEW": {
+      "requirement": "External, irreversible, destructive, or high-impact AI actions require a review or confirmation step before execution.",
+      "severity": "must"
+    },
+    "AGENT_DECLARE_ASSUMPTIONS": {
+      "requirement": "When context is insufficient for a high-confidence recommendation, return assumptions and missing variables rather than silently choosing.",
+      "severity": "must"
+    }
+  },
+  "component_catalog": {
+    "text_input": {
+      "family": "input",
+      "summary": "Single-line entry for short or structured freeform values.",
+      "preferred_semantics": "input"
+    },
+    "textarea": {
+      "family": "input",
+      "summary": "Multi-line entry for longer authored responses.",
+      "preferred_semantics": "textarea"
+    },
+    "search_input": {
+      "family": "input",
+      "summary": "Input optimized for finding results by user-supplied query.",
+      "preferred_semantics": "form with labelled search input and submit button"
+    },
+    "numeric_input": {
+      "family": "input",
+      "summary": "Exact numeric value entry.",
+      "preferred_semantics": "input with appropriate inputmode/type and label"
+    },
+    "range_slider": {
+      "family": "input",
+      "summary": "Approximate selection on a continuum when relative position matters.",
+      "preferred_semantics": "input type=range"
+    },
+    "date_input": {
+      "family": "input",
+      "summary": "Typed date for memorable or known dates.",
+      "preferred_semantics": "grouped date fields or validated text/date input"
+    },
+    "date_picker": {
+      "family": "input",
+      "summary": "Calendar-assisted date selection where calendar context matters.",
+      "preferred_semantics": "labelled input with accessible date picker enhancement"
+    },
+    "date_range_picker": {
+      "family": "input",
+      "summary": "Selecting related start and end dates.",
+      "preferred_semantics": "paired labelled inputs with accessible calendar enhancement"
+    },
+    "time_input": {
+      "family": "input",
+      "summary": "Known or freely chosen time entry.",
+      "preferred_semantics": "labelled time input"
+    },
+    "time_slot_list": {
+      "family": "selection",
+      "summary": "Selection from finite appointment/session times.",
+      "preferred_semantics": "radio group or selectable buttons with single-select semantics"
+    },
+    "file_input": {
+      "family": "input",
+      "summary": "User supplies one or more files.",
+      "preferred_semantics": "input type=file"
+    },
+    "checkbox": {
+      "family": "selection",
+      "summary": "Independent opt-in, acknowledgment, or inclusion within submitted form.",
+      "preferred_semantics": "input type=checkbox"
+    },
+    "switch": {
+      "family": "selection",
+      "summary": "Binary setting that takes effect immediately and has an on/off state.",
+      "preferred_semantics": "native checkbox styled/announced as switch or established switch pattern"
+    },
+    "radio_group": {
+      "family": "selection",
+      "summary": "Exactly one choice with all choices visible.",
+      "preferred_semantics": "fieldset, legend, radio inputs"
+    },
+    "radio_cards": {
+      "family": "selection",
+      "summary": "Exactly one rich/described/visual choice, visibly comparable.",
+      "preferred_semantics": "radio inputs represented as selectable tiles"
+    },
+    "segmented_control": {
+      "family": "selection",
+      "summary": "Very small mutually exclusive view or mode switch with short parallel labels.",
+      "preferred_semantics": "radio-group semantics for selection; buttons only if triggering commands"
+    },
+    "select": {
+      "family": "selection",
+      "summary": "Compact single-choice list with brief labels and low comparison need.",
+      "preferred_semantics": "labelled select"
+    },
+    "combobox": {
+      "family": "selection",
+      "summary": "Searchable/typeahead choice from a known option set.",
+      "preferred_semantics": "ARIA-compliant combobox backed by listbox options"
+    },
+    "autocomplete_search": {
+      "family": "selection",
+      "summary": "Search-first selection from a very large, dynamic, or remote corpus.",
+      "preferred_semantics": "search/combobox pattern with result list"
+    },
+    "checkbox_group": {
+      "family": "selection",
+      "summary": "Multiple visible choices from a manageable set.",
+      "preferred_semantics": "fieldset, legend, checkbox inputs"
+    },
+    "multi_select_combobox": {
+      "family": "selection",
+      "summary": "Search, add, and remove several items from a large known set.",
+      "preferred_semantics": "accessible multi-selection pattern with selected tokens"
+    },
+    "filter_panel": {
+      "family": "collection_control",
+      "summary": "Multiple collection constraints exposed together.",
+      "preferred_semantics": "labelled checkbox/radio/range controls"
+    },
+    "filter_chips": {
+      "family": "collection_control",
+      "summary": "Visible summary and removal of active filters.",
+      "preferred_semantics": "buttons for removal; no chip-only hidden filters"
+    },
+    "sort_control": {
+      "family": "collection_control",
+      "summary": "Change ordering of results without filtering.",
+      "preferred_semantics": "labelled select/menu describing sort criterion and order"
+    },
+    "search_filters": {
+      "family": "collection_control",
+      "summary": "Find and narrow a collection using search plus refinements.",
+      "preferred_semantics": "search with labelled filters"
+    },
+    "list": {
+      "family": "content",
+      "summary": "Scan ordered or repeated items without column comparison.",
+      "preferred_semantics": "ul/ol or structured repeated articles"
+    },
+    "card_grid": {
+      "family": "content",
+      "summary": "Browse rich distinct objects with preview metadata or imagery.",
+      "preferred_semantics": "collection/list of articles with headings"
+    },
+    "table": {
+      "family": "content",
+      "summary": "Read and compare consistently structured values by row and column.",
+      "preferred_semantics": "table with caption and headers"
+    },
+    "data_grid": {
+      "family": "content",
+      "summary": "Keyboard-navigable interactive/editable tabular workspace.",
+      "preferred_semantics": "ARIA grid pattern only when required",
+      "avoid_when": "read-only tabular content"
+    },
+    "tree": {
+      "family": "content",
+      "summary": "Navigate hierarchical items.",
+      "preferred_semantics": "treeview only when interaction benefits outweigh complexity"
+    },
+    "treegrid": {
+      "family": "content",
+      "summary": "Interact with hierarchical records containing aligned fields.",
+      "preferred_semantics": "treegrid pattern only for true hierarchical interactive table"
+    },
+    "chart_with_data": {
+      "family": "content",
+      "summary": "Understand patterns while preserving inspectable values.",
+      "preferred_semantics": "accessible visualization plus summary/table"
+    },
+    "badge": {
+      "family": "status",
+      "summary": "Concise categorical state label.",
+      "preferred_semantics": "text label; not color alone"
+    },
+    "progress_indicator": {
+      "family": "status",
+      "summary": "Progress through measurable work.",
+      "preferred_semantics": "progress element or accessible labelled indicator"
+    },
+    "skeleton": {
+      "family": "feedback",
+      "summary": "Reserved layout while predictable content is loading.",
+      "preferred_semantics": "non-interactive placeholders hidden appropriately from AT"
+    },
+    "spinner": {
+      "family": "feedback",
+      "summary": "Indeterminate wait for short operation.",
+      "preferred_semantics": "status text with appropriate announcement"
+    },
+    "empty_state": {
+      "family": "feedback",
+      "summary": "Explain why a collection is empty and provide next action.",
+      "preferred_semantics": "heading, explanation, relevant action"
+    },
+    "inline_validation": {
+      "family": "feedback",
+      "summary": "Field-specific correction guidance.",
+      "preferred_semantics": "associated error text adjacent to field"
+    },
+    "error_summary": {
+      "family": "feedback",
+      "summary": "Summarize submission errors and link to affected fields.",
+      "preferred_semantics": "alert region with focus on submit failure"
+    },
+    "alert": {
+      "family": "feedback",
+      "summary": "Persistent important page or section status.",
+      "preferred_semantics": "role=status or alert depending urgency"
+    },
+    "toast": {
+      "family": "feedback",
+      "summary": "Transient low-risk confirmation that does not require response.",
+      "preferred_semantics": "non-blocking status/snackbar with accessible announcement"
+    },
+    "modal_dialog": {
+      "family": "overlay",
+      "summary": "Blocking decision or focused required task.",
+      "preferred_semantics": "ARIA dialog pattern"
+    },
+    "nonmodal_panel": {
+      "family": "overlay",
+      "summary": "Contextual support without blocking main task.",
+      "preferred_semantics": "complementary region/dialog as applicable"
+    },
+    "disclosure": {
+      "family": "organization",
+      "summary": "Reveal optional or supplemental content inline.",
+      "preferred_semantics": "button controlling expandable region/details"
+    },
+    "accordion": {
+      "family": "organization",
+      "summary": "Independently reveal multiple optional content sections.",
+      "preferred_semantics": "accessible disclosure group"
+    },
+    "tabs": {
+      "family": "organization",
+      "summary": "Switch among peer panels in the same local context.",
+      "preferred_semantics": "ARIA tabs pattern"
+    },
+    "step_flow": {
+      "family": "organization",
+      "summary": "Complete ordered required stages.",
+      "preferred_semantics": "pages/sections plus step indicator"
+    },
+    "button": {
+      "family": "action",
+      "summary": "Trigger a command or state change.",
+      "preferred_semantics": "button"
+    },
+    "primary_button": {
+      "family": "action",
+      "summary": "Most important forward or commit command in a local task.",
+      "preferred_semantics": "button"
+    },
+    "menu_button": {
+      "family": "action",
+      "summary": "Reveal a compact list of related actions.",
+      "preferred_semantics": "button with menu pattern when keyboard interaction is warranted"
+    },
+    "overflow_menu": {
+      "family": "action",
+      "summary": "Keep infrequent item actions available without visual clutter.",
+      "preferred_semantics": "menu button"
+    },
+    "toolbar": {
+      "family": "action",
+      "summary": "Group recurring controls that operate on a workspace or selection.",
+      "preferred_semantics": "toolbar pattern when keyboard navigation is implemented"
+    },
+    "split_button": {
+      "family": "action",
+      "summary": "Primary command with closely related alternate modes.",
+      "preferred_semantics": "button plus menu button",
+      "avoid_when": "uncommon or high-risk alternatives"
+    },
+    "link": {
+      "family": "navigation",
+      "summary": "Navigate to another destination or resource.",
+      "preferred_semantics": "a href"
+    },
+    "global_navigation": {
+      "family": "navigation",
+      "summary": "Navigate among primary product destinations.",
+      "preferred_semantics": "nav with links"
+    },
+    "side_navigation": {
+      "family": "navigation",
+      "summary": "Navigate within a multi-page section/hierarchy.",
+      "preferred_semantics": "nav with current page indication"
+    },
+    "breadcrumbs": {
+      "family": "navigation",
+      "summary": "Communicate location and ancestor paths in hierarchy.",
+      "preferred_semantics": "nav aria-label Breadcrumb with ordered links"
+    },
+    "in_page_navigation": {
+      "family": "navigation",
+      "summary": "Jump to sections on a long page.",
+      "preferred_semantics": "nav with fragment links"
+    },
+    "pagination": {
+      "family": "navigation",
+      "summary": "Move through addressable pages of results.",
+      "preferred_semantics": "navigation with links/buttons and current page"
+    },
+    "load_more": {
+      "family": "navigation",
+      "summary": "Append more browsable results while preserving current context.",
+      "preferred_semantics": "button"
+    },
+    "infinite_scroll": {
+      "family": "navigation",
+      "summary": "Continuous feed consumption, cautiously used.",
+      "preferred_semantics": "feed pattern only with navigation/access alternatives"
+    },
+    "tooltip": {
+      "family": "help",
+      "summary": "A brief supplementary message shown on focus or hover; never required for completion.",
+      "preferred_semantics": "accessible tooltip pattern associated with trigger"
+    }
+  },
+  "strategy_catalog": {
+    "prefer_native_semantic_control": {
+      "summary": "Replace unnecessary custom widget behavior with the most fitting native semantic control."
+    },
+    "review_then_confirm": {
+      "summary": "Present the proposed consequence for review and require explicit user confirmation before executing."
+    },
+    "request_confirmation_with_assumptions": {
+      "summary": "Surface uncertainty and assumptions, then request confirmation before consequential execution."
+    },
+    "editable_preview": {
+      "summary": "Display AI-generated content as a reviewable, editable draft before sending, submitting, or publishing."
+    },
+    "diff_preview": {
+      "summary": "Display meaningful changes against the existing content before applying them."
+    },
+    "show_by_default": {
+      "summary": "Render required information visibly without disclosure interaction."
+    },
+    "show_side_by_side_or_sections": {
+      "summary": "Expose content simultaneously for comparison rather than hiding panels behind tabs."
+    },
+    "inline_help_text": {
+      "summary": "Keep completion-critical help persistently visible in context."
+    }
+  },
+  "decision_tree": {
+    "root": {
+      "id": "ROOT_UI_COMPONENT_SELECTION",
+      "question": "What does the user need to accomplish and what consequence follows from the interaction?",
+      "evaluate_first": [
+        "meta",
+        "ai_action"
+      ],
+      "branches": [
+        {
+          "id": "BRANCH_META",
+          "label": "Resolve context and semantic constraints",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "META_REQUIRE_MINIMUM_CONTEXT",
+            "META_PREFER_NATIVE"
+          ]
+        },
+        {
+          "id": "BRANCH_AI_ACTION",
+          "label": "Gate AI-initiated consequences",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "META_HIGH_IMPACT_AI_REVIEW"
+          ]
+        },
+        {
+          "id": "BRANCH_SELECTION",
+          "label": "Choose options and toggles",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "SELECT_SINGLE_RICH_OR_CONSEQUENTIAL",
+            "SELECT_BOOLEAN_NAMED_ALTERNATIVES",
+            "SELECT_BOOLEAN_FORM_OPT_IN",
+            "SELECT_BOOLEAN_IMMEDIATE_SETTING",
+            "SELECT_SINGLE_DYNAMIC_REMOTE_SET",
+            "SELECT_SINGLE_FAMILIAR_LARGE_SET",
+            "SELECT_MULTI_FILTER_LIST",
+            "SELECT_MULTI_FEW_VISIBLE",
+            "SELECT_MULTI_MANY_SEARCHABLE",
+            "SELECT_SINGLE_2_TO_5",
+            "SELECT_VIEW_MODE_SMALL",
+            "SELECT_SINGLE_101_PLUS",
+            "SELECT_SINGLE_16_TO_100",
+            "SELECT_SINGLE_6_TO_15"
+          ]
+        },
+        {
+          "id": "BRANCH_INPUT",
+          "label": "Enter data",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "INPUT_SEARCH_QUERY",
+            "INPUT_FILE_UPLOAD",
+            "INPUT_DATE_RANGE",
+            "INPUT_TIME_AVAILABLE_SLOTS",
+            "INPUT_CALENDAR_CONTEXT_DATE",
+            "INPUT_MEMORABLE_DATE",
+            "INPUT_APPROXIMATE_CONTINUUM",
+            "INPUT_EXACT_NUMBER",
+            "INPUT_TIME_FREE",
+            "INPUT_LONG_TEXT",
+            "INPUT_SHORT_TEXT"
+          ]
+        },
+        {
+          "id": "BRANCH_CONTENT",
+          "label": "Present content and data",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "DISPLAY_INTERACTIVE_EDITABLE_TABULAR",
+            "DISPLAY_HIERARCHICAL_TABLE",
+            "DISPLAY_COMPARABLE_RECORDS",
+            "DISPLAY_TABULAR_READ_ONLY",
+            "DISPLAY_HIERARCHY",
+            "DISPLAY_PATTERN_TREND",
+            "DISPLAY_RICH_BROWSABLE_OBJECTS",
+            "DISPLAY_SIMPLE_SEQUENCE"
+          ]
+        },
+        {
+          "id": "BRANCH_STATUS",
+          "label": "Represent status and progress",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "DISPLAY_PROGRESS_KNOWN",
+            "DISPLAY_STATUS_CATEGORY"
+          ]
+        },
+        {
+          "id": "BRANCH_ACTION",
+          "label": "Trigger commands",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "ACTION_DESTRUCTIVE_IRREVERSIBLE",
+            "ACTION_PRIMARY_COMMIT",
+            "ACTION_DESTRUCTIVE_REVERSIBLE",
+            "ACTION_NAVIGATE_DESTINATION",
+            "ACTION_TRIGGER_COMMAND",
+            "ACTION_WORKSPACE_CONTROLS",
+            "ACTION_RELATED_SECONDARY_MENU",
+            "ACTION_SPLIT_MODE"
+          ]
+        },
+        {
+          "id": "BRANCH_ORGANIZATION",
+          "label": "Organize and reveal content",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "ORG_SHOW_ESSENTIAL",
+            "ORG_AVOID_TABS_REQUIRED_COMPARE",
+            "ORG_SEQUENTIAL_REQUIRED",
+            "ORG_TABS_PEER_PANELS",
+            "ORG_DISCLOSE_SUPPLEMENTAL",
+            "ORG_ACCORDION_OPTIONAL_SECTIONS"
+          ]
+        },
+        {
+          "id": "BRANCH_HELP",
+          "label": "Provide contextual help",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "HELP_ESSENTIAL_VISIBLE",
+            "HELP_INTERACTIVE_CONTEXT",
+            "HELP_SHORT_SUPPLEMENT"
+          ]
+        },
+        {
+          "id": "BRANCH_NAVIGATION",
+          "label": "Move through locations or results",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "NAV_PAGINATED_TASK_DATA",
+            "NAV_SECTION_HIERARCHY",
+            "NAV_HIERARCHY_LOCATION",
+            "NAV_BROWSE_APPEND",
+            "NAV_PRIMARY_AREAS",
+            "NAV_LONG_DOCUMENT",
+            "NAV_CONTINUOUS_FEED_CAUTION"
+          ]
+        },
+        {
+          "id": "BRANCH_COLLECTION_CONTROL",
+          "label": "Search, filter, sort, and bulk select",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "SELECT_SINGLE_SORT_NOT_SELECTION",
+            "COLLECTION_BULK_SELECTION",
+            "COLLECTION_ACTIVE_FILTER_VISIBILITY",
+            "COLLECTION_FILTER_ATTRIBUTES",
+            "COLLECTION_SEARCH_KNOWN_TARGET",
+            "COLLECTION_SORT"
+          ]
+        },
+        {
+          "id": "BRANCH_FEEDBACK",
+          "label": "Report validation and system feedback",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "FEEDBACK_MULTI_FIELD_ERRORS",
+            "FEEDBACK_BLOCKING_DECISION",
+            "FEEDBACK_FIELD_ERROR",
+            "FEEDBACK_PERSISTENT_PAGE_STATUS",
+            "FEEDBACK_TRANSIENT_SUCCESS"
+          ]
+        },
+        {
+          "id": "BRANCH_STATE",
+          "label": "Represent asynchronous and empty states",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "STATE_LOAD_ERROR",
+            "STATE_EMPTY_NO_RESULTS",
+            "STATE_PROGRESS_DETERMINATE",
+            "STATE_EMPTY_FIRST_USE",
+            "STATE_LOADING_INDETERMINATE",
+            "STATE_LOADING_PREDICTABLE_LAYOUT"
+          ]
+        },
+        {
+          "id": "BRANCH_AI_INTERACTION",
+          "label": "Present or approve AI output",
+          "match_on": "rule.when",
+          "ordered_rule_ids": [
+            "AI_UNCERTAIN_CONSEQUENTIAL",
+            "AI_MODIFY_EXISTING",
+            "AI_DRAFT_CONTENT",
+            "AI_PROPOSE_OPTIONS_COMPARE",
+            "AI_PROPOSE_OPTIONS_SIMPLE"
+          ]
+        }
+      ]
+    },
+    "rule_resolution": {
+      "strategy": "highest_priority_matching_rule_with_contextual_overrides",
+      "tie_breaker": "prefer_more_specific_conditions_then_native_semantics",
+      "note": "The decision tree indexes rules by task branch; the prioritized rules are executable decision leaves."
+    }
+  },
+  "rules": [
+    {
+      "id": "META_REQUIRE_MINIMUM_CONTEXT",
+      "category": "meta",
+      "priority": 1000,
+      "when": {
+        "any_missing": [
+          "user_goal"
+        ]
+      },
+      "rationale": "The component family cannot be reliably chosen until the user's primary task is identified.",
+      "requirements": [
+        "AGENT_DECLARE_ASSUMPTIONS"
+      ],
+      "agent_output_notes": "Ask for or infer user_goal only when low-risk. Return candidate families if rendering must proceed.",
+      "recommendation": null
+    },
+    {
+      "id": "META_PREFER_NATIVE",
+      "category": "meta",
+      "priority": 990,
+      "when": {
+        "custom_widget_proposed": true,
+        "native_control_satisfies_task": true
+      },
+      "rationale": "Native HTML controls typically provide more reliable keyboard, focus, and platform behavior than bespoke widgets.",
+      "requirements": [
+        "A11Y_SEMANTIC_NATIVE",
+        "A11Y_KEYBOARD",
+        "AGENT_NO_INVENTED_COMPLEXITY"
+      ],
+      "recommendation": {
+        "kind": "strategy",
+        "id": "prefer_native_semantic_control"
+      }
+    },
+    {
+      "id": "META_HIGH_IMPACT_AI_REVIEW",
+      "category": "ai_action",
+      "priority": 980,
+      "when": {
+        "actor": "ai_agent",
+        "action_consequence": {
+          "in": [
+            "external",
+            "destructive",
+            "irreversible",
+            "high_impact"
+          ]
+        }
+      },
+      "rationale": "AI execution should be reviewable before it changes external systems or consequential records.",
+      "requirements": [
+        "AGENT_RISK_REVIEW",
+        "CONTENT_DESTRUCTIVE_SCOPE",
+        "A11Y_DIALOG_FOCUS"
+      ],
+      "recommendation": {
+        "kind": "strategy",
+        "id": "review_then_confirm"
+      }
+    },
+    {
+      "id": "ACTION_DESTRUCTIVE_IRREVERSIBLE",
+      "category": "action",
+      "priority": 970,
+      "when": {
+        "user_goal": "act",
+        "any": [
+          {
+            "risk_level": {
+              "in": [
+                "irreversible",
+                "high_impact"
+              ]
+            }
+          },
+          {
+            "scope": {
+              "in": [
+                "bulk",
+                "external_system"
+              ]
+            }
+          }
+        ]
+      },
+      "rationale": "Consequential or irreversible actions warrant a focused confirmation decision before execution.",
+      "requirements": [
+        "A11Y_DIALOG_FOCUS",
+        "CONTENT_DESTRUCTIVE_SCOPE",
+        "AGENT_RISK_REVIEW"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "modal_dialog"
+      }
+    },
+    {
+      "id": "AI_UNCERTAIN_CONSEQUENTIAL",
+      "category": "ai_interaction",
+      "priority": 960,
+      "when": {
+        "actor": "ai_agent",
+        "confidence": {
+          "max": 0.69
+        },
+        "action_consequence": {
+          "in": [
+            "external",
+            "destructive",
+            "high_impact"
+          ]
+        }
+      },
+      "rationale": "Low-confidence consequential choices must expose assumptions and request confirmation.",
+      "requirements": [
+        "AGENT_DECLARE_ASSUMPTIONS",
+        "AGENT_RISK_REVIEW"
+      ],
+      "recommendation": {
+        "kind": "strategy",
+        "id": "request_confirmation_with_assumptions"
+      }
+    },
+    {
+      "id": "ORG_SHOW_ESSENTIAL",
+      "category": "organization",
+      "priority": 950,
+      "when": {
+        "information_priority": "required_for_current_decision"
+      },
+      "rationale": "Information needed for the current task should not be hidden behind interaction.",
+      "requirements": [
+        "CONTENT_PLAIN_LANGUAGE"
+      ],
+      "recommendation": {
+        "kind": "strategy",
+        "id": "show_by_default"
+      }
+    },
+    {
+      "id": "SELECT_SINGLE_SORT_NOT_SELECTION",
+      "category": "collection_control",
+      "priority": 950,
+      "when": {
+        "user_goal": "sort"
+      },
+      "rationale": "Sorting is an ordering command, not a generic field selection question.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "CONTENT_PLAIN_LANGUAGE"
+      ],
+      "source_refs": [
+        "VADS_RADIO_SELECTION_THRESHOLDS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "sort_control"
+      }
+    },
+    {
+      "id": "HELP_ESSENTIAL_VISIBLE",
+      "category": "help",
+      "priority": 930,
+      "when": {
+        "user_goal": "understand",
+        "information_priority": "required_for_completion"
+      },
+      "rationale": "Required instructions must remain visible rather than depend on hover, focus, or discovery.",
+      "requirements": [
+        "CONTENT_PLAIN_LANGUAGE",
+        "A11Y_SEMANTIC_NATIVE"
+      ],
+      "recommendation": {
+        "kind": "strategy",
+        "id": "inline_help_text"
+      }
+    },
+    {
+      "id": "SELECT_SINGLE_RICH_OR_CONSEQUENTIAL",
+      "category": "selection",
+      "priority": 930,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "any": [
+          {
+            "option_complexity": {
+              "in": [
+                "descriptive",
+                "visual"
+              ]
+            }
+          },
+          {
+            "comparison_needed": "high"
+          },
+          {
+            "choice_consequence": {
+              "in": [
+                "financial",
+                "eligibility",
+                "workflow_significant"
+              ]
+            }
+          }
+        ]
+      },
+      "rationale": "Keep rich or consequential options visible so users can read and compare before selection.",
+      "requirements": [
+        "A11Y_GROUP_LABEL",
+        "A11Y_KEYBOARD",
+        "A11Y_NO_COLOR_ONLY",
+        "A11Y_TOUCH_TARGET"
+      ],
+      "source_refs": [
+        "VADS_RADIO_SELECTION_THRESHOLDS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "radio_cards"
+      }
+    },
+    {
+      "id": "ACTION_PRIMARY_COMMIT",
+      "category": "action",
+      "priority": 920,
+      "when": {
+        "user_goal": "act",
+        "action_rank": "primary",
+        "effect": {
+          "in": [
+            "submit",
+            "save",
+            "continue",
+            "create",
+            "apply"
+          ]
+        }
+      },
+      "rationale": "A local task should expose its primary forward or commit action clearly.",
+      "requirements": [
+        "CONTENT_ACTION_VERB",
+        "A11Y_FOCUS_VISIBLE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "primary_button"
+      }
+    },
+    {
+      "id": "FEEDBACK_MULTI_FIELD_ERRORS",
+      "category": "feedback",
+      "priority": 920,
+      "when": {
+        "state": "validation_error",
+        "error_scope": "form",
+        "error_count": {
+          "min": 2
+        }
+      },
+      "rationale": "A submission with multiple errors needs a summary plus inline field messages.",
+      "requirements": [
+        "A11Y_ERROR_ASSOCIATION",
+        "A11Y_FOCUS_VISIBLE",
+        "CONTENT_ERROR_RECOVERY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "error_summary"
+      }
+    },
+    {
+      "id": "AI_MODIFY_EXISTING",
+      "category": "ai_interaction",
+      "priority": 910,
+      "when": {
+        "actor": "ai_agent",
+        "effect": "modify_existing_content",
+        "change_scope": {
+          "in": [
+            "meaningful",
+            "large"
+          ]
+        }
+      },
+      "rationale": "Meaningful modifications need a before/after view or change summary before applying.",
+      "requirements": [
+        "AGENT_RISK_REVIEW"
+      ],
+      "recommendation": {
+        "kind": "strategy",
+        "id": "diff_preview"
+      }
+    },
+    {
+      "id": "ORG_AVOID_TABS_REQUIRED_COMPARE",
+      "category": "organization",
+      "priority": 910,
+      "when": {
+        "content_relationship": "peer_views_same_context",
+        "simultaneous_comparison_needed": true
+      },
+      "rationale": "Tabs hide values required for direct comparison.",
+      "requirements": [
+        "AGENT_NO_INVENTED_COMPLEXITY"
+      ],
+      "recommendation": {
+        "kind": "strategy",
+        "id": "show_side_by_side_or_sections"
+      }
+    },
+    {
+      "id": "SELECT_BOOLEAN_NAMED_ALTERNATIVES",
+      "category": "selection",
+      "priority": 905,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": 2,
+        "options_are_named_alternatives": true
+      },
+      "rationale": "Two meaningful alternatives are choices, not merely an on/off state.",
+      "requirements": [
+        "A11Y_GROUP_LABEL",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "radio_group"
+      }
+    },
+    {
+      "id": "ACTION_DESTRUCTIVE_REVERSIBLE",
+      "category": "action",
+      "priority": 900,
+      "when": {
+        "user_goal": "act",
+        "risk_level": "destructive",
+        "reversible": true,
+        "scope": "single_low_impact"
+      },
+      "rationale": "For easily recoverable destructive actions, immediate execution with undo can reduce needless interruption.",
+      "requirements": [
+        "CONTENT_ACTION_VERB",
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "alternatives": [
+        {
+          "purpose": "offer undo",
+          "recommendation": {
+            "kind": "component",
+            "id": "toast"
+          }
+        }
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "button"
+      }
+    },
+    {
+      "id": "ACTION_NAVIGATE_DESTINATION",
+      "category": "action",
+      "priority": 900,
+      "when": {
+        "user_goal": "navigate",
+        "effect": "go_to_destination"
+      },
+      "rationale": "Navigation to a resource or page is semantically a link.",
+      "requirements": [
+        "A11Y_KEYBOARD",
+        "A11Y_FOCUS_VISIBLE",
+        "CONTENT_PLAIN_LANGUAGE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "link"
+      }
+    },
+    {
+      "id": "ACTION_TRIGGER_COMMAND",
+      "category": "action",
+      "priority": 900,
+      "when": {
+        "user_goal": "act",
+        "effect": "change_state",
+        "risk_level": {
+          "in": [
+            "low",
+            "medium"
+          ]
+        }
+      },
+      "rationale": "A command or state change is semantically a button action.",
+      "requirements": [
+        "A11Y_SEMANTIC_NATIVE",
+        "A11Y_KEYBOARD",
+        "CONTENT_ACTION_VERB"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "button"
+      }
+    },
+    {
+      "id": "AI_DRAFT_CONTENT",
+      "category": "ai_interaction",
+      "priority": 900,
+      "when": {
+        "actor": "ai_agent",
+        "output_type": {
+          "in": [
+            "draft",
+            "generated_content"
+          ]
+        },
+        "requires_human_approval": true
+      },
+      "rationale": "Generated content that may be sent, submitted, or published must be reviewed before commitment.",
+      "requirements": [
+        "AGENT_RISK_REVIEW",
+        "AGENT_DECLARE_ASSUMPTIONS"
+      ],
+      "recommendation": {
+        "kind": "strategy",
+        "id": "editable_preview"
+      }
+    },
+    {
+      "id": "DISPLAY_INTERACTIVE_EDITABLE_TABULAR",
+      "category": "content",
+      "priority": 900,
+      "when": {
+        "user_goal": {
+          "in": [
+            "edit",
+            "manipulate"
+          ]
+        },
+        "data_shape": "tabular",
+        "cell_interaction": {
+          "in": [
+            "inline_edit",
+            "keyboard_cell_navigation",
+            "range_selection",
+            "reorder"
+          ]
+        }
+      },
+      "rationale": "A grid is warranted only when the table behaves as an interactive workspace requiring directional navigation.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD",
+        "A11Y_FOCUS_VISIBLE"
+      ],
+      "source_refs": [
+        "WAI_APG_PATTERNS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "data_grid"
+      }
+    },
+    {
+      "id": "FEEDBACK_BLOCKING_DECISION",
+      "category": "feedback",
+      "priority": 900,
+      "when": {
+        "requires_response": true,
+        "continuation_blocked": true
+      },
+      "rationale": "When users must decide before continuation, focus should be contained in a dialog.",
+      "requirements": [
+        "A11Y_DIALOG_FOCUS"
+      ],
+      "source_refs": [
+        "WAI_APG_PATTERNS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "modal_dialog"
+      }
+    },
+    {
+      "id": "FEEDBACK_FIELD_ERROR",
+      "category": "feedback",
+      "priority": 900,
+      "when": {
+        "state": "validation_error",
+        "error_scope": "field"
+      },
+      "rationale": "Field-specific errors need proximity and an explicit recovery instruction.",
+      "requirements": [
+        "A11Y_ERROR_ASSOCIATION",
+        "CONTENT_ERROR_RECOVERY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "inline_validation"
+      }
+    },
+    {
+      "id": "SELECT_BOOLEAN_FORM_OPT_IN",
+      "category": "selection",
+      "priority": 900,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "boolean",
+        "effect_timing": "on_submit"
+      },
+      "rationale": "Checkboxes fit opt-in or acknowledgment values committed as part of form submission.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "checkbox"
+      }
+    },
+    {
+      "id": "SELECT_BOOLEAN_IMMEDIATE_SETTING",
+      "category": "selection",
+      "priority": 900,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "boolean",
+        "effect_timing": "immediate",
+        "value_semantics": "on_off"
+      },
+      "rationale": "A switch conveys an immediate on/off state change.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_KEYBOARD",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "source_refs": [
+        "WAI_APG_PATTERNS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "switch"
+      }
+    },
+    {
+      "id": "DISPLAY_HIERARCHICAL_TABLE",
+      "category": "content",
+      "priority": 860,
+      "when": {
+        "user_goal": {
+          "in": [
+            "browse",
+            "edit"
+          ]
+        },
+        "data_shape": "hierarchy",
+        "tabular_attributes": true,
+        "interaction_depth": "high"
+      },
+      "rationale": "Interactive hierarchical records with aligned fields require a specialized treegrid pattern.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "treegrid"
+      }
+    },
+    {
+      "id": "COLLECTION_BULK_SELECTION",
+      "category": "collection_control",
+      "priority": 850,
+      "when": {
+        "user_goal": "act",
+        "bulk_action_available": true,
+        "collection_layout": {
+          "in": [
+            "table",
+            "data_grid",
+            "list"
+          ]
+        }
+      },
+      "rationale": "Bulk actions require explicit record selection and visible scope.",
+      "requirements": [
+        "A11Y_GROUP_LABEL",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "agent_output_notes": "Treat row checkboxes as selection controls; display selected count and action scope.",
+      "recommendation": {
+        "kind": "component",
+        "id": "checkbox_group"
+      }
+    },
+    {
+      "id": "DISPLAY_COMPARABLE_RECORDS",
+      "category": "content",
+      "priority": 850,
+      "when": {
+        "user_goal": {
+          "in": [
+            "view",
+            "browse",
+            "compare"
+          ]
+        },
+        "data_shape": "records",
+        "comparison_needed": "high",
+        "fields_consistent": true,
+        "cell_interaction": "none"
+      },
+      "rationale": "Aligned columns enable exact comparison of consistent record attributes.",
+      "requirements": [
+        "A11Y_TABLE_HEADERS",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "source_refs": [
+        "USWDS_TABLE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "table"
+      }
+    },
+    {
+      "id": "ORG_SEQUENTIAL_REQUIRED",
+      "category": "organization",
+      "priority": 850,
+      "when": {
+        "step_sequence": true,
+        "steps_required": true
+      },
+      "rationale": "Required ordered stages should be represented as a process rather than tabs.",
+      "requirements": [
+        "A11Y_KEYBOARD",
+        "AGENT_STATE_ALL_STATES"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "step_flow"
+      }
+    },
+    {
+      "id": "SELECT_SINGLE_DYNAMIC_REMOTE_SET",
+      "category": "selection",
+      "priority": 850,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_source": {
+          "in": [
+            "remote",
+            "dynamic",
+            "unbounded"
+          ]
+        }
+      },
+      "rationale": "Dynamic or unbounded values require query-driven retrieval and result feedback.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "autocomplete_search"
+      }
+    },
+    {
+      "id": "SELECT_SINGLE_FAMILIAR_LARGE_SET",
+      "category": "selection",
+      "priority": 840,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_dataset": {
+          "in": [
+            "states",
+            "countries",
+            "months_or_dates",
+            "familiar_named_catalog"
+          ]
+        },
+        "typing_is_efficient": true
+      },
+      "rationale": "Known datasets may benefit from both typing and scrolling regardless of raw count.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_COMPOSITE_PATTERN"
+      ],
+      "source_refs": [
+        "VADS_RADIO_SELECTION_THRESHOLDS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "combobox"
+      }
+    },
+    {
+      "id": "DISPLAY_TABULAR_READ_ONLY",
+      "category": "content",
+      "priority": 820,
+      "when": {
+        "user_goal": {
+          "in": [
+            "view",
+            "browse"
+          ]
+        },
+        "data_shape": "tabular",
+        "cell_interaction": "none"
+      },
+      "rationale": "Static tabular information belongs in a semantic table, not an interactive grid.",
+      "requirements": [
+        "A11Y_TABLE_HEADERS"
+      ],
+      "source_refs": [
+        "USWDS_TABLE",
+        "WAI_APG_PATTERNS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "table"
+      }
+    },
+    {
+      "id": "INPUT_SEARCH_QUERY",
+      "category": "input",
+      "priority": 820,
+      "when": {
+        "user_goal": "find",
+        "query_type": "text"
+      },
+      "rationale": "Searching is an information-retrieval task with query submission and result feedback.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "search_input"
+      }
+    },
+    {
+      "id": "NAV_PAGINATED_TASK_DATA",
+      "category": "navigation",
+      "priority": 820,
+      "when": {
+        "user_goal": "browse",
+        "collection_goal": {
+          "in": [
+            "locate",
+            "compare",
+            "revisit",
+            "administer"
+          ]
+        },
+        "result_count": "large"
+      },
+      "rationale": "Stable page positions support finding, comparing, revisiting, and acting on records.",
+      "requirements": [
+        "A11Y_SEMANTIC_NATIVE",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "pagination"
+      }
+    },
+    {
+      "id": "COLLECTION_ACTIVE_FILTER_VISIBILITY",
+      "category": "collection_control",
+      "priority": 810,
+      "when": {
+        "filters_applied": true
+      },
+      "rationale": "Users must see and remove active constraints without hunting for them.",
+      "requirements": [
+        "A11Y_KEYBOARD",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "filter_chips"
+      }
+    },
+    {
+      "id": "SELECT_MULTI_FILTER_LIST",
+      "category": "selection",
+      "priority": 810,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "multiple",
+        "option_count": {
+          "min": 11
+        },
+        "comparison_needed": "high"
+      },
+      "rationale": "When users need to inspect choices while selecting multiple values, filterable visible choices preserve comparison.",
+      "requirements": [
+        "A11Y_GROUP_LABEL",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "filter_panel"
+      }
+    },
+    {
+      "id": "DISPLAY_HIERARCHY",
+      "category": "content",
+      "priority": 800,
+      "when": {
+        "user_goal": {
+          "in": [
+            "browse",
+            "navigate"
+          ]
+        },
+        "data_shape": "hierarchy",
+        "tabular_attributes": false
+      },
+      "rationale": "A navigable hierarchy can use a tree only when expansion/collapse and directional navigation materially aid the task.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "tree"
+      }
+    },
+    {
+      "id": "INPUT_FILE_UPLOAD",
+      "category": "input",
+      "priority": 800,
+      "when": {
+        "user_goal": "input",
+        "value_type": "file"
+      },
+      "rationale": "File selection should use platform file upload behavior with clear constraints.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_ERROR_ASSOCIATION"
+      ],
+      "agent_output_notes": "State accepted formats, maximum size, multi-file behavior, upload/progress/failure states.",
+      "recommendation": {
+        "kind": "component",
+        "id": "file_input"
+      }
+    },
+    {
+      "id": "ORG_TABS_PEER_PANELS",
+      "category": "organization",
+      "priority": 800,
+      "when": {
+        "content_relationship": "peer_views_same_context",
+        "simultaneous_comparison_needed": false,
+        "step_sequence": false
+      },
+      "rationale": "Tabs show one of several peer panels within the same local object or context.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD",
+        "A11Y_FOCUS_VISIBLE"
+      ],
+      "source_refs": [
+        "WAI_APG_PATTERNS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "tabs"
+      }
+    },
+    {
+      "id": "SELECT_MULTI_FEW_VISIBLE",
+      "category": "selection",
+      "priority": 800,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "multiple",
+        "option_count": {
+          "min": 2,
+          "max": 10
+        },
+        "option_complexity": {
+          "not_in": [
+            "very_long"
+          ]
+        }
+      },
+      "rationale": "Visible checkboxes let users scan and select several options independently.",
+      "requirements": [
+        "A11Y_GROUP_LABEL",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "checkbox_group"
+      }
+    },
+    {
+      "id": "SELECT_MULTI_MANY_SEARCHABLE",
+      "category": "selection",
+      "priority": 800,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "multiple",
+        "option_count": {
+          "min": 11
+        },
+        "searchability": true
+      },
+      "rationale": "Search-and-add interaction avoids forcing users to scan a long multi-choice list.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "multi_select_combobox"
+      }
+    },
+    {
+      "id": "SELECT_SINGLE_2_TO_5",
+      "category": "selection",
+      "priority": 800,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": {
+          "min": 2,
+          "max": 5
+        },
+        "option_complexity": {
+          "not_in": [
+            "descriptive",
+            "visual"
+          ]
+        }
+      },
+      "rationale": "A small exclusive choice set can be exposed without forcing users to open a menu.",
+      "requirements": [
+        "A11Y_GROUP_LABEL",
+        "A11Y_KEYBOARD"
+      ],
+      "source_refs": [
+        "VADS_RADIO_SELECTION_THRESHOLDS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "radio_group"
+      }
+    },
+    {
+      "id": "ACTION_WORKSPACE_CONTROLS",
+      "category": "action",
+      "priority": 790,
+      "when": {
+        "user_goal": "act",
+        "control_context": "workspace",
+        "related_action_count": {
+          "min": 3
+        },
+        "action_frequency": "frequent"
+      },
+      "rationale": "Frequently used workspace controls benefit from predictable grouping and keyboard behavior.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD"
+      ],
+      "source_refs": [
+        "WAI_APG_PATTERNS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "toolbar"
+      }
+    },
+    {
+      "id": "AI_PROPOSE_OPTIONS_COMPARE",
+      "category": "ai_interaction",
+      "priority": 790,
+      "when": {
+        "actor": "ai_agent",
+        "output_type": "alternatives",
+        "comparison_needed": "high",
+        "fields_consistent": true
+      },
+      "rationale": "Alternatives requiring attribute comparison should align information in a table.",
+      "requirements": [
+        "A11Y_TABLE_HEADERS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "table"
+      }
+    },
+    {
+      "id": "COLLECTION_FILTER_ATTRIBUTES",
+      "category": "collection_control",
+      "priority": 790,
+      "when": {
+        "user_goal": {
+          "in": [
+            "find",
+            "browse"
+          ]
+        },
+        "facet_count": {
+          "min": 1
+        },
+        "attributes_predictable": true
+      },
+      "rationale": "Filters narrow a collection by known attributes.",
+      "requirements": [
+        "A11Y_GROUP_LABEL",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "filter_panel"
+      }
+    },
+    {
+      "id": "FEEDBACK_PERSISTENT_PAGE_STATUS",
+      "category": "feedback",
+      "priority": 790,
+      "when": {
+        "state": {
+          "in": [
+            "warning",
+            "service_status",
+            "important_information"
+          ]
+        },
+        "requires_response": false,
+        "persistence": "persistent"
+      },
+      "rationale": "Important persistent status should remain perceivable in context.",
+      "requirements": [
+        "A11Y_DYNAMIC_ANNOUNCE",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "alert"
+      }
+    },
+    {
+      "id": "INPUT_DATE_RANGE",
+      "category": "input",
+      "priority": 790,
+      "when": {
+        "user_goal": "input",
+        "value_type": "date_range"
+      },
+      "rationale": "Start/end date relationships should be captured together with validation of ordering.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_ERROR_ASSOCIATION"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "date_range_picker"
+      }
+    },
+    {
+      "id": "INPUT_TIME_AVAILABLE_SLOTS",
+      "category": "input",
+      "priority": 790,
+      "when": {
+        "user_goal": "select",
+        "value_type": "time",
+        "availability_constrained": true
+      },
+      "rationale": "When only certain times are available, users should choose from valid slots instead of encountering errors.",
+      "requirements": [
+        "A11Y_GROUP_LABEL",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "time_slot_list"
+      }
+    },
+    {
+      "id": "COLLECTION_SEARCH_KNOWN_TARGET",
+      "category": "collection_control",
+      "priority": 780,
+      "when": {
+        "user_goal": "find",
+        "collection_size": {
+          "min": 20
+        },
+        "target_known_by_keyword": true
+      },
+      "rationale": "Search is useful when users can name or describe their target.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "search_input"
+      }
+    },
+    {
+      "id": "COLLECTION_SORT",
+      "category": "collection_control",
+      "priority": 780,
+      "when": {
+        "user_goal": "sort",
+        "sort_option_count": {
+          "min": 2
+        }
+      },
+      "rationale": "Ordering options should be explicitly labelled and distinct from filtering.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "CONTENT_PLAIN_LANGUAGE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "sort_control"
+      }
+    },
+    {
+      "id": "DISPLAY_PATTERN_TREND",
+      "category": "content",
+      "priority": 780,
+      "when": {
+        "user_goal": "understand_pattern",
+        "question_type": {
+          "in": [
+            "trend",
+            "distribution",
+            "comparison_summary",
+            "progress"
+          ]
+        }
+      },
+      "rationale": "A visualization helps reveal patterns, but inspectable values and a text summary remain necessary.",
+      "requirements": [
+        "A11Y_NO_COLOR_ONLY",
+        "A11Y_SEMANTIC_NATIVE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "chart_with_data"
+      }
+    },
+    {
+      "id": "INPUT_CALENDAR_CONTEXT_DATE",
+      "category": "input",
+      "priority": 780,
+      "when": {
+        "user_goal": "input",
+        "value_type": "date",
+        "date_context": {
+          "in": [
+            "schedule",
+            "weekday_matters",
+            "availability_matters"
+          ]
+        }
+      },
+      "rationale": "Calendar context supports scheduling decisions.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_ERROR_ASSOCIATION"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "date_picker"
+      }
+    },
+    {
+      "id": "ORG_DISCLOSE_SUPPLEMENTAL",
+      "category": "organization",
+      "priority": 780,
+      "when": {
+        "information_priority": "supplemental",
+        "content_sections": 1
+      },
+      "rationale": "A disclosure reduces noise while keeping supplemental detail available on demand.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD"
+      ],
+      "source_refs": [
+        "WAI_APG_PATTERNS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "disclosure"
+      }
+    },
+    {
+      "id": "SELECT_VIEW_MODE_SMALL",
+      "category": "selection",
+      "priority": 780,
+      "when": {
+        "user_goal": "change_view",
+        "selection_mode": "single",
+        "option_count": {
+          "min": 2,
+          "max": 3
+        },
+        "option_label_length": "short"
+      },
+      "rationale": "A small set of parallel local views or modes can be immediately toggled.",
+      "requirements": [
+        "A11Y_GROUP_LABEL",
+        "A11Y_KEYBOARD",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "segmented_control"
+      }
+    },
+    {
+      "id": "INPUT_MEMORABLE_DATE",
+      "category": "input",
+      "priority": 770,
+      "when": {
+        "user_goal": "input",
+        "value_type": "date",
+        "date_context": "known_from_memory"
+      },
+      "rationale": "Users should type familiar dates such as birthdates rather than navigate a calendar.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_ERROR_ASSOCIATION"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "date_input"
+      }
+    },
+    {
+      "id": "ACTION_RELATED_SECONDARY_MENU",
+      "category": "action",
+      "priority": 760,
+      "when": {
+        "user_goal": "act",
+        "related_action_count": {
+          "min": 3
+        },
+        "action_frequency": "infrequent",
+        "action_rank": "secondary"
+      },
+      "rationale": "Infrequent secondary commands may be grouped without hiding the primary action.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "overflow_menu"
+      }
+    },
+    {
+      "id": "INPUT_APPROXIMATE_CONTINUUM",
+      "category": "input",
+      "priority": 760,
+      "when": {
+        "user_goal": "input",
+        "value_type": "number",
+        "precision": "approximate",
+        "range_known": true
+      },
+      "rationale": "A slider works when relative position is meaningful and exact precision is not required.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_KEYBOARD",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "range_slider"
+      }
+    },
+    {
+      "id": "NAV_SECTION_HIERARCHY",
+      "category": "navigation",
+      "priority": 760,
+      "when": {
+        "user_goal": "navigate",
+        "navigation_scope": "section",
+        "section_page_count": {
+          "min": 3
+        },
+        "hierarchy_depth": {
+          "min": 2
+        }
+      },
+      "rationale": "A multi-page section benefits from visible local navigation and current location.",
+      "requirements": [
+        "A11Y_SEMANTIC_NATIVE",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "side_navigation"
+      }
+    },
+    {
+      "id": "ORG_ACCORDION_OPTIONAL_SECTIONS",
+      "category": "organization",
+      "priority": 760,
+      "when": {
+        "information_priority": "supplemental",
+        "content_sections": {
+          "min": 2
+        },
+        "cross_section_comparison": false
+      },
+      "rationale": "Multiple independent supplemental sections can be collapsed individually.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "accordion"
+      }
+    },
+    {
+      "id": "STATE_LOAD_ERROR",
+      "category": "state",
+      "priority": 760,
+      "when": {
+        "state": "error",
+        "error_scope": "content_load"
+      },
+      "rationale": "Failed loading requires an error explanation and retry or recovery route.",
+      "requirements": [
+        "CONTENT_ERROR_RECOVERY",
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "alert"
+      }
+    },
+    {
+      "id": "INPUT_EXACT_NUMBER",
+      "category": "input",
+      "priority": 750,
+      "when": {
+        "user_goal": "input",
+        "value_type": "number",
+        "precision": "exact"
+      },
+      "rationale": "Exact numeric entry should not require imprecise pointer manipulation.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_ERROR_ASSOCIATION"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "numeric_input"
+      }
+    },
+    {
+      "id": "INPUT_TIME_FREE",
+      "category": "input",
+      "priority": 740,
+      "when": {
+        "user_goal": "input",
+        "value_type": "time",
+        "availability_constrained": false
+      },
+      "rationale": "A user-specified time is best entered directly.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_ERROR_ASSOCIATION"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "time_input"
+      }
+    },
+    {
+      "id": "DISPLAY_RICH_BROWSABLE_OBJECTS",
+      "category": "content",
+      "priority": 730,
+      "when": {
+        "user_goal": "browse",
+        "data_shape": "objects",
+        "item_richness": "rich",
+        "comparison_needed": {
+          "not_in": [
+            "high"
+          ]
+        }
+      },
+      "rationale": "Cards support recognition and browsing when objects include preview imagery, descriptions, or actions.",
+      "requirements": [
+        "A11Y_SEMANTIC_NATIVE",
+        "A11Y_KEYBOARD",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "card_grid"
+      }
+    },
+    {
+      "id": "NAV_HIERARCHY_LOCATION",
+      "category": "navigation",
+      "priority": 730,
+      "when": {
+        "user_goal": "navigate",
+        "hierarchy_depth": {
+          "min": 3
+        },
+        "page_type": {
+          "not_in": [
+            "home",
+            "top_level_landing"
+          ]
+        }
+      },
+      "rationale": "Deep interior pages benefit from ancestor context and upward navigation.",
+      "requirements": [
+        "A11Y_SEMANTIC_NATIVE",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "breadcrumbs"
+      }
+    },
+    {
+      "id": "DISPLAY_SIMPLE_SEQUENCE",
+      "category": "content",
+      "priority": 720,
+      "when": {
+        "user_goal": {
+          "in": [
+            "view",
+            "browse"
+          ]
+        },
+        "data_shape": {
+          "in": [
+            "sequence",
+            "activity_feed",
+            "search_results"
+          ]
+        },
+        "comparison_needed": {
+          "not_in": [
+            "high"
+          ]
+        },
+        "item_richness": {
+          "in": [
+            "minimal",
+            "medium"
+          ]
+        }
+      },
+      "rationale": "Lists provide compact scanability for repeated items read in order.",
+      "requirements": [
+        "A11Y_SEMANTIC_NATIVE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "list"
+      }
+    },
+    {
+      "id": "FEEDBACK_TRANSIENT_SUCCESS",
+      "category": "feedback",
+      "priority": 720,
+      "when": {
+        "state": "success",
+        "requires_response": false,
+        "risk_level": "low",
+        "persistence": "transient"
+      },
+      "rationale": "A brief non-blocking confirmation is appropriate for low-risk completed actions.",
+      "requirements": [
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "toast"
+      }
+    },
+    {
+      "id": "NAV_BROWSE_APPEND",
+      "category": "navigation",
+      "priority": 720,
+      "when": {
+        "user_goal": "browse",
+        "collection_goal": "explore",
+        "position_recall_required": false,
+        "footer_required": false
+      },
+      "rationale": "Appending results supports browsing while preserving an explicit control and page footer.",
+      "requirements": [
+        "A11Y_KEYBOARD",
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "load_more"
+      }
+    },
+    {
+      "id": "STATE_EMPTY_NO_RESULTS",
+      "category": "state",
+      "priority": 720,
+      "when": {
+        "state": "empty",
+        "empty_reason": {
+          "in": [
+            "search_no_matches",
+            "filters_no_matches"
+          ]
+        }
+      },
+      "rationale": "No-result states should help users recover by clearing filters or revising queries.",
+      "requirements": [
+        "CONTENT_ERROR_RECOVERY"
+      ],
+      "agent_output_notes": "Include clear-filters or revise-search action.",
+      "recommendation": {
+        "kind": "component",
+        "id": "empty_state"
+      }
+    },
+    {
+      "id": "STATE_PROGRESS_DETERMINATE",
+      "category": "state",
+      "priority": 720,
+      "when": {
+        "state": "loading",
+        "progress_known": true
+      },
+      "rationale": "Known progress should communicate completion status.",
+      "requirements": [
+        "A11Y_DYNAMIC_ANNOUNCE",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "progress_indicator"
+      }
+    },
+    {
+      "id": "INPUT_LONG_TEXT",
+      "category": "input",
+      "priority": 710,
+      "when": {
+        "user_goal": "input",
+        "value_type": "text",
+        "expected_length": {
+          "min_chars": 81
+        }
+      },
+      "rationale": "Multi-sentence responses need a resizable multi-line writing surface.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_ERROR_ASSOCIATION"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "textarea"
+      }
+    },
+    {
+      "id": "STATE_EMPTY_FIRST_USE",
+      "category": "state",
+      "priority": 710,
+      "when": {
+        "state": "empty",
+        "empty_reason": "not_created_yet"
+      },
+      "rationale": "First-use empty states should explain value and expose the creation action.",
+      "requirements": [
+        "CONTENT_PLAIN_LANGUAGE"
+      ],
+      "agent_output_notes": "Include primary create action.",
+      "recommendation": {
+        "kind": "component",
+        "id": "empty_state"
+      }
+    },
+    {
+      "id": "AI_PROPOSE_OPTIONS_SIMPLE",
+      "category": "ai_interaction",
+      "priority": 700,
+      "when": {
+        "actor": "ai_agent",
+        "output_type": "alternatives",
+        "alternative_count": {
+          "min": 2,
+          "max": 5
+        },
+        "comparison_needed": "low"
+      },
+      "rationale": "Simple alternatives can be presented compactly as a list.",
+      "requirements": [
+        "CONTENT_PLAIN_LANGUAGE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "list"
+      }
+    },
+    {
+      "id": "DISPLAY_PROGRESS_KNOWN",
+      "category": "status",
+      "priority": 700,
+      "when": {
+        "user_goal": "monitor",
+        "progress_type": "determinate"
+      },
+      "rationale": "Known completion progress should expose current status toward completion.",
+      "requirements": [
+        "A11Y_DYNAMIC_ANNOUNCE",
+        "A11Y_NO_COLOR_ONLY"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "progress_indicator"
+      }
+    },
+    {
+      "id": "HELP_INTERACTIVE_CONTEXT",
+      "category": "help",
+      "priority": 700,
+      "when": {
+        "information_priority": "supplemental",
+        "contains_interaction": true
+      },
+      "rationale": "Interactive supporting content needs a stable focusable container rather than a tooltip.",
+      "requirements": [
+        "A11Y_KEYBOARD",
+        "A11Y_FOCUS_VISIBLE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "nonmodal_panel"
+      }
+    },
+    {
+      "id": "INPUT_SHORT_TEXT",
+      "category": "input",
+      "priority": 700,
+      "when": {
+        "user_goal": "input",
+        "value_type": "text",
+        "expected_length": {
+          "max_chars": 80
+        }
+      },
+      "rationale": "Short freeform values fit a single-line input.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_ERROR_ASSOCIATION"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "text_input"
+      }
+    },
+    {
+      "id": "NAV_PRIMARY_AREAS",
+      "category": "navigation",
+      "priority": 700,
+      "when": {
+        "user_goal": "navigate",
+        "navigation_scope": "product_primary"
+      },
+      "rationale": "Primary destinations need persistent top-level orientation.",
+      "requirements": [
+        "A11Y_SEMANTIC_NATIVE",
+        "A11Y_KEYBOARD"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "global_navigation"
+      }
+    },
+    {
+      "id": "SELECT_SINGLE_101_PLUS",
+      "category": "selection",
+      "priority": 700,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": {
+          "min": 101
+        }
+      },
+      "rationale": "At very large scale the task becomes finding a value rather than visually scanning choices.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "source_refs": [
+        "VADS_RADIO_SELECTION_THRESHOLDS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "autocomplete_search"
+      }
+    },
+    {
+      "id": "SELECT_SINGLE_16_TO_100",
+      "category": "selection",
+      "priority": 700,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": {
+          "min": 16,
+          "max": 100
+        }
+      },
+      "rationale": "A searchable/typeahead option chooser reduces long-menu scrolling.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD"
+      ],
+      "source_refs": [
+        "VADS_RADIO_SELECTION_THRESHOLDS",
+        "USWDS_COMBOBOX"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "combobox"
+      }
+    },
+    {
+      "id": "SELECT_SINGLE_6_TO_15",
+      "category": "selection",
+      "priority": 700,
+      "when": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": {
+          "min": 6,
+          "max": 15
+        },
+        "comparison_needed": {
+          "not_in": [
+            "high"
+          ]
+        },
+        "option_label_length": {
+          "not_in": [
+            "long"
+          ]
+        }
+      },
+      "rationale": "A moderate single-select list with concise labels can be compactly presented.",
+      "requirements": [
+        "A11Y_VISIBLE_LABEL",
+        "A11Y_KEYBOARD"
+      ],
+      "source_refs": [
+        "VADS_RADIO_SELECTION_THRESHOLDS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "select"
+      }
+    },
+    {
+      "id": "ACTION_SPLIT_MODE",
+      "category": "action",
+      "priority": 650,
+      "when": {
+        "user_goal": "act",
+        "primary_action_has_alternates": true,
+        "primary_action_default_safe": true,
+        "alternates_closely_related": true
+      },
+      "rationale": "A split button is acceptable only when a safe default command dominates and alternatives are tightly related.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "CONTENT_ACTION_VERB"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "split_button"
+      }
+    },
+    {
+      "id": "HELP_SHORT_SUPPLEMENT",
+      "category": "help",
+      "priority": 650,
+      "when": {
+        "information_priority": "supplemental",
+        "help_length": "brief",
+        "contains_interaction": false
+      },
+      "rationale": "A tooltip is limited to brief supplementary information and must work on focus as well as hover.",
+      "requirements": [
+        "A11Y_COMPOSITE_PATTERN",
+        "A11Y_KEYBOARD"
+      ],
+      "source_refs": [
+        "WAI_APG_PATTERNS"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "tooltip"
+      }
+    },
+    {
+      "id": "NAV_LONG_DOCUMENT",
+      "category": "navigation",
+      "priority": 650,
+      "when": {
+        "user_goal": "navigate",
+        "navigation_scope": "within_page",
+        "section_count": {
+          "min": 4
+        }
+      },
+      "rationale": "Long pages with distinct sections benefit from direct section jumps.",
+      "requirements": [
+        "A11Y_SEMANTIC_NATIVE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "in_page_navigation"
+      }
+    },
+    {
+      "id": "STATE_LOADING_INDETERMINATE",
+      "category": "state",
+      "priority": 650,
+      "when": {
+        "state": "loading",
+        "layout_known": false,
+        "expected_duration": "short"
+      },
+      "rationale": "Indeterminate short waits need succinct activity feedback.",
+      "requirements": [
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "spinner"
+      }
+    },
+    {
+      "id": "STATE_LOADING_PREDICTABLE_LAYOUT",
+      "category": "state",
+      "priority": 650,
+      "when": {
+        "state": "loading",
+        "layout_known": true,
+        "expected_duration": "short_to_medium"
+      },
+      "rationale": "Skeleton placeholders preserve predictable layout while content loads.",
+      "requirements": [
+        "A11Y_REDUCED_MOTION",
+        "A11Y_DYNAMIC_ANNOUNCE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "skeleton"
+      }
+    },
+    {
+      "id": "DISPLAY_STATUS_CATEGORY",
+      "category": "status",
+      "priority": 600,
+      "when": {
+        "user_goal": "view",
+        "data_type": "categorical_status"
+      },
+      "rationale": "Compact status labels support scanning when their wording conveys meaning independent of color.",
+      "requirements": [
+        "A11Y_NO_COLOR_ONLY",
+        "CONTENT_PLAIN_LANGUAGE"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "badge"
+      }
+    },
+    {
+      "id": "NAV_CONTINUOUS_FEED_CAUTION",
+      "category": "navigation",
+      "priority": 600,
+      "when": {
+        "user_goal": "consume_feed",
+        "position_recall_required": false,
+        "comparison_needed": "low",
+        "footer_required": false
+      },
+      "rationale": "Continuous loading is reserved for feed consumption, not goal-directed retrieval.",
+      "requirements": [
+        "A11Y_DYNAMIC_ANNOUNCE",
+        "A11Y_KEYBOARD"
+      ],
+      "source_refs": [
+        "WAI_APG_PATTERNS"
+      ],
+      "avoid": [
+        "Administrative tasks",
+        "Comparative tasks",
+        "Stable-position workflows",
+        "Pages with essential footer navigation"
+      ],
+      "recommendation": {
+        "kind": "component",
+        "id": "infinite_scroll"
+      }
+    }
+  ],
+  "validation_scenarios": [
+    {
+      "id": "T001",
+      "input": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": 4,
+        "option_complexity": "short_labels"
+      },
+      "expected_primary": "radio_group",
+      "expected_rule": "SELECT_SINGLE_2_TO_5"
+    },
+    {
+      "id": "T002",
+      "input": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": 4,
+        "option_complexity": "descriptive",
+        "comparison_needed": "high"
+      },
+      "expected_primary": "radio_cards",
+      "expected_rule": "SELECT_SINGLE_RICH_OR_CONSEQUENTIAL"
+    },
+    {
+      "id": "T003",
+      "input": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": 12,
+        "comparison_needed": "low",
+        "option_label_length": "short"
+      },
+      "expected_primary": "select",
+      "expected_rule": "SELECT_SINGLE_6_TO_15"
+    },
+    {
+      "id": "T004",
+      "input": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": 50
+      },
+      "expected_primary": "combobox",
+      "expected_rule": "SELECT_SINGLE_16_TO_100"
+    },
+    {
+      "id": "T005",
+      "input": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": 250
+      },
+      "expected_primary": "autocomplete_search",
+      "expected_rule": "SELECT_SINGLE_101_PLUS"
+    },
+    {
+      "id": "T006",
+      "input": {
+        "user_goal": "select",
+        "selection_mode": "multiple",
+        "option_count": 6
+      },
+      "expected_primary": "checkbox_group",
+      "expected_rule": "SELECT_MULTI_FEW_VISIBLE"
+    },
+    {
+      "id": "T007",
+      "input": {
+        "user_goal": "select",
+        "selection_mode": "multiple",
+        "option_count": 60,
+        "searchability": true
+      },
+      "expected_primary": "multi_select_combobox",
+      "expected_rule": "SELECT_MULTI_MANY_SEARCHABLE"
+    },
+    {
+      "id": "T008",
+      "input": {
+        "user_goal": "input",
+        "value_type": "date",
+        "date_context": "known_from_memory"
+      },
+      "expected_primary": "date_input",
+      "expected_rule": "INPUT_MEMORABLE_DATE"
+    },
+    {
+      "id": "T009",
+      "input": {
+        "user_goal": "input",
+        "value_type": "date",
+        "date_context": "schedule"
+      },
+      "expected_primary": "date_picker",
+      "expected_rule": "INPUT_CALENDAR_CONTEXT_DATE"
+    },
+    {
+      "id": "T010",
+      "input": {
+        "user_goal": "compare",
+        "data_shape": "records",
+        "fields_consistent": true,
+        "comparison_needed": "high",
+        "cell_interaction": "none"
+      },
+      "expected_primary": "table",
+      "expected_rule": "DISPLAY_COMPARABLE_RECORDS"
+    },
+    {
+      "id": "T011",
+      "input": {
+        "user_goal": "edit",
+        "data_shape": "tabular",
+        "cell_interaction": "inline_edit"
+      },
+      "expected_primary": "data_grid",
+      "expected_rule": "DISPLAY_INTERACTIVE_EDITABLE_TABULAR"
+    },
+    {
+      "id": "T012",
+      "input": {
+        "user_goal": "browse",
+        "data_shape": "objects",
+        "item_richness": "rich",
+        "comparison_needed": "low"
+      },
+      "expected_primary": "card_grid",
+      "expected_rule": "DISPLAY_RICH_BROWSABLE_OBJECTS"
+    },
+    {
+      "id": "T013",
+      "input": {
+        "user_goal": "browse",
+        "data_shape": "search_results",
+        "item_richness": "minimal",
+        "comparison_needed": "low"
+      },
+      "expected_primary": "list",
+      "expected_rule": "DISPLAY_SIMPLE_SEQUENCE"
+    },
+    {
+      "id": "T014",
+      "input": {
+        "user_goal": "act",
+        "effect": "change_state",
+        "risk_level": "irreversible",
+        "scope": "bulk"
+      },
+      "expected_primary": "modal_dialog",
+      "expected_rule": "ACTION_DESTRUCTIVE_IRREVERSIBLE"
+    },
+    {
+      "id": "T015",
+      "input": {
+        "user_goal": "navigate",
+        "effect": "go_to_destination"
+      },
+      "expected_primary": "link",
+      "expected_rule": "ACTION_NAVIGATE_DESTINATION"
+    },
+    {
+      "id": "T016",
+      "input": {
+        "user_goal": "browse",
+        "collection_goal": "locate",
+        "result_count": "large"
+      },
+      "expected_primary": "pagination",
+      "expected_rule": "NAV_PAGINATED_TASK_DATA"
+    },
+    {
+      "id": "T017",
+      "input": {
+        "user_goal": "select",
+        "selection_mode": "single",
+        "option_count": 50,
+        "option_dataset": "countries",
+        "typing_is_efficient": true
+      },
+      "expected_primary": "combobox",
+      "expected_rule": "SELECT_SINGLE_FAMILIAR_LARGE_SET"
+    },
+    {
+      "id": "T018",
+      "input": {
+        "user_goal": "act",
+        "actor": "ai_agent",
+        "action_consequence": "external",
+        "confidence": 0.5
+      },
+      "expected_primary": "request_confirmation_with_assumptions",
+      "expected_rule": "AI_UNCERTAIN_CONSEQUENTIAL"
+    }
+  ],
+  "sources": {
+    "VADS_RADIO_SELECTION_THRESHOLDS": {
+      "title": "VA Design System — Radio Button",
+      "authority": "official_design_system",
+      "supports": [
+        "single-select option-count defaults",
+        "known/memorable exceptions",
+        "long/descriptive label exceptions",
+        "sort is not generic selection"
+      ],
+      "url": "https://design.va.gov/components/form/radio-button",
+      "retrieved": "2026-05-26"
+    },
+    "USWDS_COMBOBOX": {
+      "title": "U.S. Web Design System — Combo box",
+      "authority": "official_design_system",
+      "supports": [
+        "combobox for more than 15 options",
+        "combobox for limited space"
+      ],
+      "url": "https://designsystem.digital.gov/components/combo-box/",
+      "retrieved": "2026-05-26"
+    },
+    "USWDS_TABLE": {
+      "title": "U.S. Web Design System — Table",
+      "authority": "official_design_system",
+      "supports": [
+        "tables for tabular information",
+        "table accessibility requirements",
+        "sort announcements"
+      ],
+      "url": "https://designsystem.digital.gov/components/table/",
+      "retrieved": "2026-05-26"
+    },
+    "USWDS_COMPONENTS": {
+      "title": "U.S. Web Design System — Components",
+      "authority": "official_design_system",
+      "supports": [
+        "form and content component families"
+      ],
+      "url": "https://designsystem.digital.gov/components/",
+      "retrieved": "2026-05-26"
+    },
+    "WAI_APG_PATTERNS": {
+      "title": "WAI-ARIA Authoring Practices Guide — Patterns",
+      "authority": "accessibility_standard_guidance",
+      "supports": [
+        "grid/table distinction",
+        "tabs",
+        "switch",
+        "dialog",
+        "disclosure",
+        "tooltip",
+        "treeview",
+        "toolbar"
+      ],
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/",
+      "retrieved": "2026-05-26"
+    }
+  }
+}
