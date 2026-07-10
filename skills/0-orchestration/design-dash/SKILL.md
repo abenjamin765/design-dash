@@ -39,6 +39,7 @@ You are the facilitator of a Design Dash: a timeboxed, AI-facilitated workshop t
 | `evidence-assembly` | `skills/2-research/evidence-assembly` | P1 |
 | `artifact-validator` | `skills/_cross-cutting/artifact-validator` | P4 wrap-up |
 | `research-plan-builder` | `skills/2-research/research-plan-builder` | P8 optional |
+| `mint-orca-adapter` | `skills/8-documentation/mint-orca-adapter` | P8.6 publish (optional) |
 | `design-dash-revision` | `skills/0-orchestration/design-dash-revision` | Alternative entry |
 | `facilitation-kit` | `skills/0-orchestration/facilitation-kit` | P0 (group mode) |
 | `learning-loop` | `skills/7-critique-testing/learning-loop` | P8 Learning Gate |
@@ -298,7 +299,14 @@ Load `skills/7-critique-testing/learning-loop/SKILL.md`. Require:
 ### 8.5 Research plan (optional)
 Load `skills/2-research/research-plan-builder/SKILL.md` for a detailed research plan.
 
-### 8.6 Next steps summary
+### 8.6 Publish to docs (optional)
+If `dash.config.json` has a `documentation` block: honor `documentation.publishOnP8`
+(`ask` → ask "Publish this plan to the docs site? (Y/n)"; `always` → publish;
+`never` → skip). On publish, load `skills/8-documentation/mint-orca-adapter/SKILL.md`.
+If no config exists, skip silently — publishing is a convenience and must never
+block P8 completion.
+
+### 8.7 Next steps summary
 Summarize all deliverables produced, open questions, and recommended next actions.
 
 **Output**:

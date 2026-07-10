@@ -20,3 +20,6 @@ __pycache__/
 # everything except the .gitkeep:
 # dashes/*
 # !dashes/.gitkeep
+
+# Workspace-local configuration (business-specific overrides stay out of the OSS repo)
+dash.config.json

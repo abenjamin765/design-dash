@@ -12,6 +12,24 @@ Gives agents working in this Design Dash repository structured access to the loc
 
 ---
 
+## Step 0 — Resolve the library root
+
+Check for `dash.config.json` in the repo root:
+
+- **If present**, use `library.objectsPath` as the objects directory and
+  `library.indexPath` as the index, and honor `library.format` (`md` or `mdx`).
+  Paths are relative to the repo root. All later steps that say
+  `library/objects/` mean the resolved path.
+- **If absent**, use the defaults: `library/objects/` and `library/objects/_index.md`.
+
+When `library.format` is `mdx`, guides carry Mintlify-style YAML frontmatter
+(`title`, `description`, `slug`, `status`, `source`) and the index may be a
+`manifest.yaml` (one entry per object: `slug`, `display_name`, `domain`,
+`nav_group`, `hub`, `status`, `path`, `summary`) instead of a markdown table —
+parse accordingly.
+
+---
+
 ## Step 1 — Load the index
 
 Read `library/objects/_index.md` if it exists. This file is an auto-generated index of all guides with slug, name, status, dash origin, and one-line summary.
@@ -90,5 +108,6 @@ When adding a row, append it at the bottom of the table. Update the `Last update
 ## Notes
 
 - Object guides in `library/objects/` accumulate across dashes. An object modeled in one dash is available to all future dashes in the same repo.
+- When `dash.config.json` redirects the library to an external docs repo, writes must respect that repo's conventions (frontmatter, flat `objects/` directory, domain-prefixed slugs for name collisions) and its manifest/registry regeneration scripts — check that repo's `AGENTS.md` before writing.
 - The index is the canonical lookup; the individual `*.md` files are the source of truth for guide content.
 - If a guide exists but is `draft` or `needs-review`, surface that status to the consuming skill so it can decide whether to trust the guide or prompt for validation.

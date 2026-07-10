@@ -22,6 +22,7 @@ See [`README.md`](./README.md), [`CONTRIBUTING.md`](./CONTRIBUTING.md), and [`AG
 - A single edit to `skills/**/<skill>/SKILL.md` propagates to both agents via symlink — **never fork content**.
 - No skill hardcodes an absolute machine path.
 - Run `./install.sh --dry-run` to preview what would be linked.
+- **Workspace config**: an optional, gitignored `dash.config.json` at the repo root can redirect the object library (`library.objectsPath`, `library.indexPath`, `library.format`) and enable P8 docs publishing (`documentation.*`). Skills check it first and fall back to repo defaults — the OSS repo stays business-agnostic.
 
 ---
 
@@ -42,6 +43,7 @@ P5  Flow & IA synthesis            ← skills/4-synthesis-ia/scenario-flow-mappi
 P6  Divergence & Selection         ← skills/4-synthesis-ia/concept-divergence
 P7  Wireframe + Edge/Ethics/Equity ← skills/5-wireframing/ + skills/7-critique-testing/
 P8  Plan assembly                  ← orchestrator compiles requirements.md + summary.html
+                                     + optional publish via skills/8-documentation/ (config-driven)
 ```
 
 ### Single-purpose work
@@ -65,6 +67,7 @@ skills/<stage>/<skill>/SKILL.md
 | **4-synthesis-ia** | `skills/4-synthesis-ia/` | `scenario-flow-mapping`, `nav-flow-designer`, `concept-divergence` |
 | **5-wireframing** | `skills/5-wireframing/` | `wireframing` |
 | **7-critique-testing** | `skills/7-critique-testing/` | `adversarial-panel`, `a11y-audit`, `usability-validation`, `learning-loop`, `ethics-equity-review`, `privacy-gate` |
+| **8-documentation** | `skills/8-documentation/` | `mint-orca-adapter` (publish P8 artifacts to a Mintlify docs site; optional, config-driven) |
 | **_cross-cutting** | `skills/_cross-cutting/` | `object-library-context`, `artifact-validator`, `evidence-and-assumptions`, `voice-and-style`, `stop-slop`, `ui-interaction` |
 
 ---
