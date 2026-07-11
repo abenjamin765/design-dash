@@ -1,0 +1,52 @@
+# Dash Configuration
+# One file per Design Dash.
+# Governs tier, mandatory gates, and default thresholds for this dash.
+# Do NOT edit mid-dash to lower the tier — promotion is allowed, demotion is not.
+
+# --- Dash identity ---
+dash-name: "Green Loom Landing Page"
+dash-id: "green-loom-landing-2026-07"
+owner: "Aaron"
+start-date: "2026-07-10"
+workspace: "dashes/green-loom-landing-2026-07"
+
+# --- Tier classification ---
+tier: "high-stakes"
+computed-tier-rationale: "Email signup form = regulated PII surface (GDPR/CCPA) → high-stakes (+ Privacy gate). Reach <500 and reversible page would otherwise be Express; PII trigger wins."
+tier-confirmed-by: ""   # A-001 debt: rule requires NON-author reviewer; author offered to self-review — not permitted. Peer review due 2026-08-10.
+tier-confirmation-date: ""
+framing-locked: "2026-07-10"
+
+# --- Build context ---
+build-mode: "enhance"   # Existing draft: landing-page/index.html + landing-page-draft.md
+mode: "solo"
+
+# --- Active phases ---
+phases-active:
+  - P0   # Preconditions & tier classification
+  - P1   # Opportunity & Evidence (Evidence Gate)
+  - P2   # Intake & Context
+  - P3   # Framing lock
+  - P4   # Object Modeling
+  - P5   # Synthesis + Reconciliation Gate
+  - P6   # Divergence + Selection Gate
+  - P7   # Wireframe + Edge/Ethics/Equity Gate + Privacy Gate
+  - P8   # Plan assembly + Learning Gate
+
+# --- Mandatory gates (auto-computed from high-stakes tier) ---
+gates-required:
+  - P1   # Evidence Gate
+  - P5   # Reconciliation Gate
+  - P6   # Selection Gate (>= 2 concepts)
+  - P7   # Edge/Ethics/Equity — full matrix + Privacy Gate (PII surface)
+  - P8   # Learning Gate
+
+# --- Required artifacts ---
+artifacts-required:
+  - assumptions.md
+  - glossary.md
+  - ethics-equity-checklist.md
+  - metrics.md
+  - edge-state-matrix.md
+  - sign-off-ledger.md
+  - privacy-review.md   # PII surface

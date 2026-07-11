@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Loom Landing Page — Dash Plan Summary</title>
+<style>
+  body{font-family:ui-sans-serif,system-ui,sans-serif;margin:0;color:#111;line-height:1.5}
+  header,main{max-width:860px;margin:0 auto;padding:24px}
+  header{border-bottom:3px solid #111}
+  h1{margin:0 0 4px} h2{margin:28px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}
+  .meta span{display:inline-block;border:1px solid #111;border-radius:10px;padding:1px 10px;font-size:12px;margin-right:6px}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  td,th{border:1px solid #ccc;padding:6px 8px;text-align:left;vertical-align:top}
+  details{border:1px solid #ccc;padding:8px 12px;margin:6px 0}
+  summary{font-weight:700;cursor:pointer}
+  .muted{color:#666;font-size:13px}
+  ul{margin:6px 0 12px 20px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Green Loom Landing Page — PLAN</h1>
+  <p class="meta">
+    <span>Dash: green-loom-landing-2026-07</span>
+    <span>Date: 2026-07-10</span>
+    <span>Tier: High-stakes</span>
+    <span>Concept: B-trimmed "Guided Depth"</span>
+  </p>
+</header>
+<main>
+  <h2>Problem</h2>
+  <p>Green Loom has no shipped public presence. Prospective operators and agencies can't discover or evaluate it, and no early-access demand signal exists. This plan ships a WordPress-delivered landing page with brand identity v0 that converts visitors into early-access signups (25 in 90 days) and discovery calls — while staying honest about pre-launch stage.</p>
+
+  <h2>Primary user</h2>
+  <p>Prospective operator (dispensary owner/operator); secondary: agency decision-maker; tertiary: founder-maintainer.</p>
+
+  <h2>Chosen concept</h2>
+  <p><strong>B-trimmed: Guided Depth</strong> — 8-section narrative spine (merged from the 11-section draft), form vendor + scheduler, founder-note proof block (borrowed from Concept C). Runner-up: A "One Promise" (revisit if underconverting). Full scoring: requirements.md §3.</p>
+
+  <h2>Object model (Marketing site domain — 6 canonical guides)</h2>
+  <table>
+    <tr><th>Object</th><th>Role</th><th>Guide</th></tr>
+    <tr><td>Lead</td><td>Conversion hub — every CTA path ends here</td><td>object-library/objects/lead</td></tr>
+    <tr><td>Page Section</td><td>Structural hub — 1:1 with WP blocks</td><td>object-library/objects/page-section</td></tr>
+    <tr><td>Discovery Call</td><td>Secondary conversion (vendor-owned)</td><td>object-library/objects/discovery-call</td></tr>
+    <tr><td>Value Pillar</td><td>4 value-prop organizers</td><td>object-library/objects/value-pillar</td></tr>
+    <tr><td>Product Module</td><td>9 planned products; status badge = honesty rule</td><td>object-library/objects/product-module</td></tr>
+    <tr><td>Brand Token</td><td>Identity v0 → WP theme.json</td><td>object-library/objects/brand-token</td></tr>
+  </table>
+
+  <h2>Scenarios</h2>
+  <details open><summary>S1 — Curious operator (happy path → Lead)</summary><p>Hero (plain-terms answer) → problem → pillars → optional module expand → closing CTA → signup success.</p></details>
+  <details><summary>S2 — Skeptical agency (→ Discovery Call)</summary><p>Hero → FAQ ("Is this a POS?") → suite statuses → schedule call.</p></details>
+  <details><summary>S3 — Direct intent (→ Lead)</summary><p>Sticky skip-to-signup anchor → form.</p></details>
+  <details><summary>S4 — Founder maintenance</summary><p>WP block editor edits; Brand Tokens keep styling consistent; no code required.</p></details>
+
+  <h2>Key decisions</h2>
+  <ul>
+    <li>WordPress delivery — dogfoods GL Storefront/Studio direction</li>
+    <li>One P per context: Join early access owns primary; call CTA is secondary everywhere</li>
+    <li>Module status badges always visible (anti-overpromise, canonical rule)</li>
+    <li>Founder story + domain depth replaces fabricated social proof</li>
+    <li>Email-only minimum form; role optional (guardrail M-003 via optional field)</li>
+    <li>FAQ items are section content, not objects; "Landing Page" is the system, not an object</li>
+  </ul>
+
+  <h2>Gates</h2>
+  <table>
+    <tr><th>Gate</th><th>Result</th></tr>
+    <tr><td>P1 Evidence</td><td>PASS via tagged assumptions (A-002..A-006) with validation methods</td></tr>
+    <tr><td>P5 Reconciliation</td><td>PASS — 3 divergences resolved (category language, roadmap honesty, proof substitute)</td></tr>
+    <tr><td>P6 Selection</td><td>PASS — dual-scored, structurally distinct concepts</td></tr>
+    <tr><td>P7 Edge/Ethics/Equity + Privacy</td><td>PASS — edge states rendered; build-time obligations: AA contrast, aria-live; launch gated on PR-1..3 (vendors, privacy notice)</td></tr>
+    <tr><td>P8 Learning</td><td><strong>DEFERRED (A-007 debt)</strong> — 5-person comprehension test due 2026-08-15</td></tr>
+  </table>
+
+  <h2>Open questions / debt</h2>
+  <ul>
+    <li>A-001: non-author tier review (due 2026-08-10)</li>
+    <li>A-007: deferred comprehension test (due 2026-08-15)</li>
+    <li>PR-1..PR-3: name form/scheduler vendors, analytics choice, privacy notice page — block launch, not build</li>
+  </ul>
+
+  <h2>Artifacts</h2>
+  <ul>
+    <li>requirements.md · scope.md · flow.md · wireframe.html · ethics-review.md · privacy-review.md</li>
+    <li>object-discovery.md · nom.md · cta-matrix.md · object-map.md · assumptions.md · metrics.md</li>
+    <li>6 canonical object guides in docs/object-library/ (Marketing site domain)</li>
+  </ul>
+  <p class="muted">Next: brand identity v0 (Brand Token set → theme.json) → build the page → publish plan to docs (P8.6) → mirror to Notion.</p>
+</main>
+</body>
+</html>

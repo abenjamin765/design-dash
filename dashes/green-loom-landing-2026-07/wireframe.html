@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Loom Landing Page — Wireframe (green-loom-landing-2026-07)</title>
+<style>
+  /* Monochrome wireframe styles — subset consistent with skills/5-wireframing/wireframe-components.html */
+  :root { --ink:#111; --mid:#666; --line:#bbb; --bg:#fff; --panel:#f4f4f4; }
+  * { box-sizing:border-box; }
+  body { font-family:ui-sans-serif,system-ui,sans-serif; color:var(--ink); background:var(--bg); margin:0; line-height:1.45; }
+  section { border-bottom:2px dashed var(--line); padding:32px 24px; max-width:960px; margin:0 auto; }
+  h1,h2,h3 { margin:0 0 8px; font-weight:700; }
+  h1{font-size:28px} h2{font-size:20px} h3{font-size:16px}
+  p{margin:0 0 12px; color:var(--ink);} .muted{color:var(--mid); font-size:13px;}
+  .annotation { background:var(--panel); border-left:4px solid var(--ink); padding:8px 12px; font-size:12px; color:var(--mid); margin:16px 0 0; }
+  .badge { display:inline-block; border:1px solid var(--ink); border-radius:10px; padding:1px 8px; font-size:11px; }
+  .button { display:inline-block; border:2px solid var(--ink); padding:10px 18px; font-weight:700; text-decoration:none; color:var(--ink); }
+  .button.primary { background:var(--ink); color:#fff; }
+  .button.secondary { background:#fff; }
+  .button.tertiary { border:none; text-decoration:underline; padding:10px 4px; }
+  .field { margin:8px 0; } .label{display:block; font-size:13px; font-weight:700; margin-bottom:4px;}
+  input[type=email],select { border:2px solid var(--ink); padding:10px; width:280px; max-width:100%; font-size:14px; }
+  .checkbox-row{font-size:13px; display:flex; gap:8px; align-items:flex-start; max-width:420px;}
+  .card { border:2px solid var(--ink); padding:16px; }
+  .grid { display:grid; gap:12px; } .grid.cols-2{grid-template-columns:1fr 1fr;} .grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+  .state-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px; }
+  .state { border:1px dashed var(--mid); padding:8px; font-size:12px; }
+  .state .tag{font-weight:700; display:block; margin-bottom:4px; text-transform:uppercase; font-size:10px; letter-spacing:.05em;}
+  details { border:1px solid var(--line); padding:8px 12px; margin:6px 0; }
+  summary { cursor:pointer; font-weight:700; font-size:14px; }
+  .sticky-note { position:sticky; top:0; background:var(--panel); border-bottom:1px solid var(--line); padding:6px 24px; font-size:12px; display:flex; justify-content:space-between; z-index:2; }
+  ul{margin:0 0 12px 20px; padding:0;} li{margin:2px 0; font-size:14px;}
+  footer{padding:24px; font-size:12px; color:var(--mid); max-width:960px; margin:0 auto;}
+  @media (max-width:700px){ .grid.cols-2,.grid.cols-3{grid-template-columns:1fr;} .state-row{grid-template-columns:1fr 1fr;} }
+</style>
+</head>
+<body>
+
+<!-- PAGE LEVEL
+     System: Green Loom landing page (single named page, WP block-based)
+     Hub objects: Lead (conversion) · Page Section (structure)
+     Page actions: P = Join early access (Lead) · S = Schedule discovery call · T = skip-to-signup anchor · Q = manage consent (footer)
+     Brand: all styles via Brand Tokens (theme.json) — wireframe is monochrome by convention -->
+
+<!-- Sticky utility: appears after ~50% scroll (S3 direct-intent scenario). ui-rule: anchor nav / skip link -->
+<div class="sticky-note" aria-label="Quick signup shortcut">
+  <span>Green Loom</span>
+  <a class="button tertiary" href="#closing-cta">Skip to signup ↓</a>
+</div>
+
+<!-- SECTION 1: HERO (type=hero) — merged Hero + What-it-is
+     Instance level: H1 promise, plain-terms subhead (reconciliation #1), inline Lead form, S-tier call link -->
+<section id="hero">
+  <h1>Complex rules. Clean operations.</h1>
+  <p><strong>Green Loom is modular software for regulated retail — starting with cannabis.</strong></p>
+  <p class="muted">Storefronts, workflows, compliance rules, and integrations that fit how licensed retailers actually operate. Not a POS. Built to connect the tools you already use.</p>
+
+  <!-- Lead form (hero instance). source_section=hero. ui-rule: SHORT_FORM_SINGLE_GOAL -->
+  <form aria-label="Join the early access list">
+    <div class="field">
+      <span class="label">Work email</span>
+      <input type="email" placeholder="you@dispensary.com" required>
+    </div>
+    <div class="field">
+      <span class="label">What describes you? <span class="muted">(optional)</span></span>
+      <select><option>Operator / dispensary</option><option>Agency / builder</option><option>Other</option></select>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" required>
+      <span>Email me about Green Loom early access. I can unsubscribe anytime. <a href="#footer">Privacy</a></span>
+    </div>
+    <p><button class="button primary">Join the early access list</button>
+       <a class="button tertiary" href="#closing-cta">or schedule a discovery call</a></p>
+  </form>
+
+  <!-- EDGE STATES: form (P7 gate — rendered, not described) -->
+  <div class="state-row" aria-label="Form edge states">
+    <div class="state"><span class="tag">Default</span>Empty fields, button enabled</div>
+    <div class="state"><span class="tag">Submitting</span>Button label → "Joining…", inputs disabled</div>
+    <div class="state"><span class="tag">Success</span>Form replaced: "You're on the list. We'll be in touch." + call link</div>
+    <div class="state"><span class="tag">Error</span>Inline message above button: "That didn't go through — try again or email hello@greenloom.co" (form values preserved)</div>
+  </div>
+  <p class="annotation">P: Join early access (Lead). S: call link is text-only here — never visually equal (PSTQ cut). Consent checkbox required before submit (privacy gate). Plain-terms subhead answers "what is this" before any metaphor (reconciliation #1).</p>
+</section>
+
+<!-- SECTION 2: PROBLEM (type=narrative) — merged Problem + Why-now -->
+<section id="problem">
+  <h2>Regulated retail should not run on workarounds.</h2>
+  <p>Product rules, age gates, purchase limits, state reporting, delivery restrictions — and a software stack that feels scattered. Your menu is separate from your POS. Your POS is separate from delivery. Your compliance process lives in someone's head.</p>
+  <p>Markets keep multiplying and customers expect modern ecommerce. That gap is where Green Loom fits.</p>
+  <p class="annotation">Narrative only — no CTA competing with hero form. Copy source: draft §1 + §7, condensed.</p>
+</section>
+
+<!-- SECTION 3: PILLARS (type=pillars) — merged Pillars + How-it-works
+     COLLECTION LEVEL: 4 Value Pillar cards, fixed order (merchandising decision, P6)
+     INSTANCE LEVEL: title, promise, operating question, capability accordion, module chips -->
+<section id="pillars">
+  <h2>Four promises, one fabric</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>Sell better</h3>
+      <p class="muted">"Can customers find what they need and order easily?"</p>
+      <details><summary>Planned capabilities</summary><ul><li>Regulated retail WP themes</li><li>Menus & product experiences</li><li>Age gates, store locators</li></ul></details>
+      <p><span class="badge">Storefront</span> <span class="badge">Studio</span></p>
+    </div>
+    <div class="card">
+      <h3>Operate cleaner</h3>
+      <p class="muted">"Can staff fulfill the order correctly?"</p>
+      <details><summary>Planned capabilities</summary><ul><li>Order orchestration & staff queues</li><li>Pickup/delivery workflows</li><li>Exceptions & approvals</li></ul></details>
+      <p><span class="badge">Flow</span> <span class="badge">Staff</span> <span class="badge">Dispatch</span></p>
+    </div>
+    <div class="card">
+      <h3>Stay compliant</h3>
+      <p class="muted">"Can we sell this product, to this customer, here, right now — and prove it later?"</p>
+      <details><summary>Planned capabilities</summary><ul><li>Jurisdiction-aware rules</li><li>Purchase limits & disclaimers</li><li>Audit logs & exports</li></ul></details>
+      <p><span class="badge">Rules</span> <span class="badge">Audit</span></p>
+    </div>
+    <div class="card">
+      <h3>Connect the stack</h3>
+      <p class="muted">"Can our tools stop failing silently?"</p>
+      <details><summary>Planned capabilities</summary><ul><li>POS, menu & inventory sync</li><li>APIs & webhooks</li><li>Integration health monitoring</li></ul></details>
+      <p><span class="badge">Connect</span> <span class="badge">Insights</span></p>
+    </div>
+  </div>
+  <!-- EDGE STATE: capability list empty -->
+  <div class="state-row">
+    <div class="state"><span class="tag">Accordion closed</span>Default — promise + question only</div>
+    <div class="state"><span class="tag">Accordion open</span>Capability bullets (content-at-scale: cap at 6, "and more")</div>
+    <div class="state"><span class="tag">Empty capabilities</span>Accordion hidden entirely — never an empty panel</div>
+    <div class="state"><span class="tag">No-JS</span>&lt;details&gt; is native — degrades to open/closed without script</div>
+  </div>
+  <p class="annotation">Collection: 4 Value Pillars. Operating questions from draft §5 merged here. Module chips link-scroll to suite section. ui-rule: DISCLOSURE_PROGRESSIVE (accordion for optional depth).</p>
+</section>
+
+<!-- SECTION 4: SUITE (type=suite)
+     COLLECTION LEVEL: 9 Product Module cards, grouped visual grid; status badge ALWAYS visible (reconciliation #2) -->
+<section id="suite">
+  <h2>A modular suite — built in the open</h2>
+  <p class="muted">Every module ships on its own. Statuses are real: nothing here pretends to be finished.</p>
+  <div class="grid cols-3">
+    <div class="card"><h3>Storefront</h3><p class="muted">Compliant sites & ecommerce</p><span class="badge">building</span></div>
+    <div class="card"><h3>Studio</h3><p class="muted">Campaigns & compliant publishing</p><span class="badge">designing</span></div>
+    <div class="card"><h3>Rules</h3><p class="muted">Configurable compliance layer</p><span class="badge">designing</span></div>
+    <div class="card"><h3>Connect</h3><p class="muted">Integrations, sync, monitoring</p><span class="badge">exploring</span></div>
+    <div class="card"><h3>Flow</h3><p class="muted">Order & fulfillment workflows</p><span class="badge">exploring</span></div>
+    <div class="card"><h3>Dispatch</h3><p class="muted">Delivery zones, drivers, proof</p><span class="badge">exploring</span></div>
+    <div class="card"><h3>Staff</h3><p class="muted">Guided tools for retail teams</p><span class="badge">exploring</span></div>
+    <div class="card"><h3>Audit</h3><p class="muted">Logs, timelines, evidence</p><span class="badge">exploring</span></div>
+    <div class="card"><h3>Insights</h3><p class="muted">Ops & compliance analytics</p><span class="badge">exploring</span></div>
+  </div>
+  <p class="annotation">Instance: name · tagline · status (enum: exploring/designing/building/early-access — statuses shown are placeholders for founder to set). Content-at-scale: grid holds 9 without pagination; if suite grows, group by pillar. T-tier expansion deferred: no per-module accordions here (pillars carry depth).</p>
+</section>
+
+<!-- SECTION 5: WHO IT'S FOR (type=narrative) — self-qualification -->
+<section id="audience">
+  <h2>Built for operators who have to get it right</h2>
+  <div class="grid cols-2">
+    <ul>
+      <li>Independent dispensaries</li>
+      <li>Multi-location cannabis retailers</li>
+      <li>Delivery operators</li>
+      <li>Teams managing complex menus</li>
+    </ul>
+    <ul>
+      <li>Operators using WordPress</li>
+      <li>Agencies building regulated retail sites</li>
+      <li>Compliance-conscious ecommerce teams</li>
+      <li>Retailers expanding into new jurisdictions</li>
+    </ul>
+  </div>
+  <p class="annotation">Supports M-003 guardrail — visitor self-qualifies before converting. Agency line intentionally present (S2 scenario).</p>
+</section>
+
+<!-- SECTION 6: FOUNDER NOTE (type=narrative) — proof substitute (reconciliation #3) -->
+<section id="founder-note">
+  <h2>Why trust us before there's a product?</h2>
+  <p>[Founder photo placeholder]</p>
+  <p>Green Loom is being designed in the open, on top of a rigorously modeled picture of how regulated retail actually works — jurisdictions, custody chains, menus, audits. We'd rather show the work than fake the testimonials.</p>
+  <p><a class="button tertiary" href="#">Read how we're building it →</a></p>
+  <p class="annotation">Social-proof substitute chosen at P6: founder story + domain-depth, borrowed from Concept C. Link target (docs/blog) optional at launch — hide link if no destination (empty state = link removed, never dead).</p>
+</section>
+
+<!-- SECTION 7: CLOSING CTA (type=cta) — Lead form (source_section=closing) + scheduler -->
+<section id="closing-cta">
+  <h2>Help shape the future of regulated retail software</h2>
+  <form aria-label="Join the early access list (closing)">
+    <div class="field"><span class="label">Work email</span><input type="email" required></div>
+    <div class="checkbox-row"><input type="checkbox" required><span>Email me about early access. Unsubscribe anytime.</span></div>
+    <p><button class="button primary">Join the early access list</button>
+       <a class="button secondary" href="#">Schedule a discovery call</a></p>
+  </form>
+  <!-- EDGE STATES: scheduler -->
+  <div class="state-row">
+    <div class="state"><span class="tag">Scheduler ok</span>Button opens vendor page/embed in new context</div>
+    <div class="state"><span class="tag">Embed fails</span>Fallback: "Email hello@greenloom.co and we'll find a time" (authored, not vendor 404)</div>
+    <div class="state"><span class="tag">Form success</span>Same authored success state as hero</div>
+    <div class="state"><span class="tag">Form error</span>Same authored error state as hero</div>
+  </div>
+  <p class="annotation">Only section where the call CTA gets S-tier button weight (secondary outline) — form remains P. Role select omitted here to cut friction; role captured in hero form or post-signup email.</p>
+</section>
+
+<!-- SECTION 8: FAQ (type=faq) + FOOTER
+     COLLECTION LEVEL: 6 FAQ items (content of section, not objects) -->
+<section id="faq">
+  <h2>Questions we expect</h2>
+  <details><summary>Is Green Loom a POS system?</summary><p>Not initially. Green Loom is a modular layer around the tools regulated retailers already use.</p></details>
+  <details><summary>Is Green Loom only for cannabis?</summary><p>Cannabis is the starting point; the vision is high-regulation retail.</p></details>
+  <details><summary>Will it replace our current tools?</summary><p>Not necessarily — it connects and extends existing systems first.</p></details>
+  <details><summary>Will it work with WordPress?</summary><p>Yes — WP themes and plugins are core to the plan. This site is WordPress.</p></details>
+  <details><summary>What stage is Green Loom in?</summary><p>Early development — module statuses above are kept honest.</p></details>
+  <details><summary>How can we get involved?</summary><p>Join the list or schedule a call — especially teams with complex menus, delivery, or compliance burdens.</p></details>
+  <p class="annotation">ui-rule: DISCLOSURE_PROGRESSIVE. FAQ items are section content (dash decision — promote to objects if reused). First item stays the category-corrector (reconciliation #1).</p>
+</section>
+
+<footer id="footer">
+  <p>© Green Loom · <a href="#">Privacy notice</a> · <a href="#">Manage consent / unsubscribe</a> · hello@greenloom.co</p>
+  <p class="annotation" style="margin-top:8px">Q-tier consent management (required by privacy gate). Permission-denied state: N/A — fully public page, no auth surface. Loading state: static page renders progressively; forms are the only async surface (states above).</p>
+</footer>
+
+</body>
+</html>
