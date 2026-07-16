@@ -10,6 +10,8 @@ Design Dash is an open-source, AI-facilitated UX workflow you can clone and run 
 
 > **For designers.** This is your starting point. The machine/agent entry point is [`AGENTS.md`](./AGENTS.md). Contributor info is in [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
+**New here?** Use the tool-neutral [`Getting Started guide`](./GETTING_STARTED.md). You can run a dash in a general AI chat, Cursor, Claude Code, another file-capable agent, or a human-facilitated workshop. The portable method contract lives in [`method/method.yaml`](./method/method.yaml).
+
 ---
 
 ## When to run a dash
@@ -73,9 +75,15 @@ Every dash produces five portable deliverables:
 
 ## Get started
 
+### No terminal required
+
+Open [`GETTING_STARTED.md`](./GETTING_STARTED.md), choose the general-assistant path, and paste the [`generic agent prompt`](./adapters/generic/AGENT_PROMPT.md) into your tool. Missing capabilities have explicit fallbacks, and the outputs stay in portable Markdown, YAML, and HTML.
+
+### Cursor or Claude Code
+
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-org/design-dash.git
+git clone https://github.com/abenjamin765/design-dash.git
 cd design-dash
 
 # 2. Install skills (symlinks into ~/.cursor/skills/ and ~/.claude/skills/)
@@ -103,6 +111,10 @@ After install, a single edit to any `skills/**/SKILL.md` propagates to both agen
 
 - [`AGENTS.md`](./AGENTS.md) — cross-agent entry point (Cursor + Claude Code parity, stage map, skill reference).
 - [`CONTRIBUTING.md`](./CONTRIBUTING.md) — how to add, port, or improve skills.
+- [`method/`](./method/) — tool-neutral phases, gates, outputs, and capability fallbacks.
+- [`adapters/`](./adapters/) — conformance rules and tool-specific starting paths.
+- [`GETTING_STARTED.md`](./GETTING_STARTED.md) — accessible setup for terminal and no-terminal environments.
+- [`examples/`](./examples/) — requirements for canonical worked examples.
 - [`commands/README.md`](./commands/README.md) — all `/` slash commands and what they do.
 - [`rules/README.md`](./rules/README.md) — `.mdc` rules and when each applies.
 
