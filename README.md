@@ -115,6 +115,7 @@ After install, a single edit to any `skills/**/SKILL.md` propagates to both agen
 - [`adapters/`](./adapters/) — conformance rules and tool-specific starting paths.
 - [`GETTING_STARTED.md`](./GETTING_STARTED.md) — accessible setup for terminal and no-terminal environments.
 - [`examples/`](./examples/) — requirements for canonical worked examples.
+- [`landing-page/`](./landing-page/) — source and editorial illustrations for the public explainer site.
 - [`commands/README.md`](./commands/README.md) — all `/` slash commands and what they do.
 - [`rules/README.md`](./rules/README.md) — `.mdc` rules and when each applies.
 
