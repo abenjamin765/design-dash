@@ -1,0 +1,92 @@
+schema_version: "1.0"
+method:
+  id: design-dash
+  name: Design Dash
+  outcome: A build-ready, evidence-backed product plan.
+  principles:
+    - Evidence and assumptions are labeled separately.
+    - Rigor is derived from risk, reversibility, and reach.
+    - User mental models and system models are reconciled explicitly.
+    - Accessibility, ethics, equity, and privacy are design inputs.
+    - Outputs remain portable across tools.
+
+tiers:
+  express:
+    use_when: Low risk, easily reversible, and narrow reach.
+    required_gates: [edge_ethics_equity]
+  standard:
+    use_when: Moderate risk or a meaningful multi-role workflow.
+    required_gates: [evidence, reconciliation, edge_ethics_equity]
+  high_stakes:
+    use_when: Irreversible or broad-impact work, safety concerns, or regulated data.
+    required_gates: [evidence, reconciliation, selection, edge_ethics_equity, learning, privacy_compliance]
+
+evidence_labels: [observed, reported, inferred, assumed, unknown]
+
+phases:
+  - id: P0
+    name: Preconditions
+    intent: Establish whether the dash can be run responsibly.
+    activities: [classify tier, confirm research access, identify responsible disciplines]
+    outputs: [dash configuration, sign-off roster]
+    exit: Tier and participation constraints are explicit.
+  - id: P1
+    name: Opportunity and evidence
+    intent: Frame a falsifiable problem and separate evidence from belief.
+    activities: [assemble evidence, write problem statement, log assumptions, define metric hypotheses]
+    outputs: [assumptions.md, metrics.md]
+    gate: evidence
+    exit: Unsupported claims are labeled and assigned a validation path.
+  - id: P2
+    name: Intake and context
+    intent: Capture the domain, users, constraints, and user mental model.
+    activities: [interview stakeholders, capture observed and assumed language, inspect reusable object guides]
+    outputs: [context notes, mental-model map, library gap list]
+    exit: The team can distinguish what users think from what the system currently encodes.
+  - id: P3
+    name: Framing lock
+    intent: Define the provisional design surface and protect it from silent scope growth.
+    activities: [state goals, state non-goals, link scope to assumptions]
+    outputs: [scope.md]
+    exit: Scope, non-goals, and reopening conditions are recorded.
+  - id: P4
+    name: Object modeling
+    intent: Model the objects, relationships, attributes, and actions that organize the experience.
+    activities: [forage nouns, run ORCA, build NOM and CTA matrix, author object guides]
+    outputs: [object model, NOM, CTA matrix, object guides]
+    gate: reconciliation
+    exit: System and user-model divergences are resolved or tracked.
+  - id: P5
+    name: Flow and information architecture
+    intent: Derive journeys, pages, and navigation from scenarios and the object model.
+    activities: [map scenarios, map edge paths, define page architecture]
+    outputs: [flow.md, page list, navigation model]
+    exit: Primary, alternate, and failure paths have destinations.
+  - id: P6
+    name: Divergence and selection
+    intent: Compare meaningfully different product concepts before converging.
+    activities: [create two or three concepts, score user and business value, record tradeoffs]
+    outputs: [concept set, decision rationale]
+    gate: selection
+    exit: A concept is selected with documented tradeoffs.
+  - id: P7
+    name: Wireframe and critique
+    intent: Make the selected concept testable and pressure-test its consequences.
+    activities: [wireframe, annotate interactions, cover edge states, audit accessibility, review ethics and equity]
+    outputs: [wireframe.html, edge-state matrix, review findings]
+    gate: edge_ethics_equity
+    exit: Critical states and inclusive-use requirements are buildable.
+  - id: P8
+    name: Plan assembly
+    intent: Package decisions, requirements, and a plan for learning.
+    activities: [write requirements, define acceptance criteria, assemble summary, schedule validation]
+    outputs: [requirements.md, summary.html, learning plan]
+    gate: learning
+    exit: A new team can build and test the plan without reconstructing the dash.
+
+capability_fallbacks:
+  no_web_access: Ask for pasted sources and record evidence limitations.
+  no_file_access: Maintain a clearly headed transcript artifact for manual export.
+  no_html_preview: Produce annotated Markdown wireframes and preserve the same state coverage.
+  no_image_generation: Use diagrams, boxes, and sourced references; imagery is never gate-critical.
+  no_multi_agent_support: Run specialist critiques sequentially and record discipline plus real-or-simulated status.

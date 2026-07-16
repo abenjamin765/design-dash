@@ -10,6 +10,12 @@ A business-agnostic, open-source library of OOUX/ORCA design skills, organized b
 
 See [`README.md`](./README.md), [`CONTRIBUTING.md`](./CONTRIBUTING.md), and [`AGENTS.md`](./AGENTS.md).
 
+## Portable method contract
+
+Before translating the workflow into tool-specific commands, read [`method/method.yaml`](./method/method.yaml). It is the canonical, tool-neutral definition of phases, gates, evidence labels, outputs, and capability fallbacks. Adapter instructions in [`adapters/`](./adapters/) may change interaction mechanics but must satisfy the conformance requirements in [`adapters/README.md`](./adapters/README.md).
+
+When a capability is unavailable, disclose the limitation and use the named fallback. Never silently omit a gate, present simulated review as accountable sign-off, or trap the only copy of a deliverable in a proprietary format.
+
 ---
 
 ## Agent targets & parity
@@ -18,6 +24,8 @@ See [`README.md`](./README.md), [`CONTRIBUTING.md`](./CONTRIBUTING.md), and [`AG
 |---|---|---|---|
 | Cursor | `~/.cursor/skills/` (symlinked by `install.sh`) | this `AGENTS.md` | `./install.sh --cursor` |
 | Claude Code | `~/.claude/skills/` (symlinked by `install.sh`) | this `AGENTS.md` | `./install.sh --claude` |
+| Generic file-capable agent | workspace files | `adapters/generic/AGENT_PROMPT.md` | paste prompt + attach method/templates |
+| Human-facilitated | shared project folder | `GETTING_STARTED.md` | use templates as workshop worksheets |
 
 - A single edit to `skills/**/<skill>/SKILL.md` propagates to both agents via symlink — **never fork content**.
 - No skill hardcodes an absolute machine path.
