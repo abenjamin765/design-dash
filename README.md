@@ -25,7 +25,7 @@ Tier is **rule-derived**, not designer-chosen. The risk, reversibility, and reac
 | Tier | When it applies | What's mandatory | Cross-functional voices |
 |---|---|---|---|
 | **Express** | Low risk · easily reversible · narrow reach (one role, small cohort). Never grading, payment, PII, or compliance. | Ethics/equity floor only. Skipped gates become tracked **evidence debt** — deferred, never deleted. | Panel may *simulate* all disciplines |
-| **Standard** | Moderate risk · reversible with effort · a real workflow with bounded blast radius (>1 role or meaningful user count). | **Evidence · Reconciliation · Edge/Ethics/Equity** (+ Selection when concepts compete, + Learning when it ships). | **Real** sign-off from each *Responsible* discipline |
+| **Standard** | Moderate risk · reversible with effort · a real workflow with bounded blast radius (>1 role or meaningful user count). | **Evidence · Reconciliation · Selection · Ethics · Learning** (Selection when concepts compete; Learning when it ships — both required by the machine contract for Standard). | **Real** sign-off from each *Responsible* discipline |
 | **High-stakes** | Hard/irreversible · broad reach · **or** touches regulated personal data, financial data, or user safety. | **All five gates.** None waivable. | **Real** sign-off required; simulation never sufficient |
 
 > Any feature touching regulated personal data (PII, financial, health, minors) forces **High-stakes** and adds a **Privacy & Compliance gate** with appropriate legal/privacy sign-off.
@@ -36,15 +36,15 @@ Tier is **rule-derived**, not designer-chosen. The risk, reversibility, and reac
 
 | Phase | What you do | What comes out |
 |---|---|---|
-| **P0 · Preconditions** | Classify tier; confirm research access; assemble cross-functional roster | A dash you can actually run |
+| **P0 · Preconditions** | Classify tier; set session mode; confirm research access | A dash you can actually run (`dash-config.yaml`) |
 | **P1 · Opportunity & Evidence** | Write a falsifiable problem statement; size the opportunity; log assumptions | `assumptions.md` · success-metric hypotheses |
-| **P2 · Intake & Context** | Capture the user's mental model (tagged `observed`/`assumed`); check local object library | Dual mental-model capture; library gap list |
-| **P3 · Framing lock** | Scope the design surface — provisionally, tied to the assumption register | Framing lock + scope-creep guard |
-| **P4 · Object Modeling** | Run ORCA steps 01–12; write object guides to `library/objects/` | NOM · CTA Matrix · Object Map · Object Guides |
-| **P5 · Flow & IA** | Derive scenario flows + page architecture; reconcile system ↔ mental model | `flow.md` · page list · resolved divergences |
-| **P6 · Divergence** | Generate 2–3 real concepts; score on value/effort + user/business | A defended concept choice |
-| **P7 · Wireframe & Critique** | Wireframe; run the adversarial panel; cover edge states, ethics, equity, a11y | `wireframe.html` · edge-state matrix · ethics/equity checklist |
-| **P8 · Plan assembly** | Compile `requirements.md` + `summary.html`; close the Learning gate | Complete, portable plan |
+| **P2 · Intake & Object Modeling** | Dual mental models + ORCA; write object guides to `library/objects/` | `scope.md` · NOM · CTA Matrix · Object Guides |
+| **P3 · Framing lock** | Scope the design surface — provisionally, tied to the assumption register | `design-spec.md` §1–3 |
+| **P4 · Flow & Reconciliation** | Derive scenario flows + page architecture; reconcile system ↔ mental model | `flow.md` · page list · resolved divergences |
+| **P5 · Divergence & Selection** | Generate 2–3 real concepts; score on user + business value | A defended concept choice |
+| **P6 · Wireframe & Ethics** | Wireframe; cover edge states; ethics, equity, a11y | `wireframe.html` · ethics review |
+| **P7 · Optional Build** | Coded prototype when a workspace is configured; otherwise stub note | Prototype page or `p7-build-note.md` |
+| **P8 · Validate & Learn** | Research plan → pitch site → Learning gate | `pitch/index.html` · `research-plan.md` · plan artifacts |
 
 ---
 
@@ -55,8 +55,8 @@ Gates aren't bureaucracy. Each one forces "is this real, or is it assumed?"
 - **Evidence Gate (P1)** — *Is this problem real? What's the evidence, and how big is the opportunity?*
   No statement passes on zero evidence unless explicitly tagged as an assumption.
 - **Reconciliation Gate (P4)** — *Where does our system model diverge from how users think — and how is each divergence resolved?*
-- **Selection Gate (P6)** — *Did we weigh 2–3 genuine alternatives against both user and business value?*
-- **Edge/Ethics/Equity Gate (P7)** — *Have we designed the empty / loading / error / permission-denied / at-scale states? Checked for dark patterns, equity issues, and privacy exposure?*
+- **Selection Gate (P5)** — *Did we weigh 2–3 genuine alternatives against both user and business value?*
+- **Ethics Gate (P6)** — *Have we designed the empty / loading / error / permission-denied / at-scale states? Checked for dark patterns, equity issues, and privacy exposure?*
 - **Learning Gate (P8)** — *How will we know if this worked? Is a usability test plan in place?*
 
 ---
@@ -66,10 +66,10 @@ Gates aren't bureaucracy. Each one forces "is this real, or is it assumed?"
 Every dash produces five portable deliverables:
 
 1. **`library/objects/*.md`** — Object guides that accumulate across dashes. One authoritative source of truth per domain object.
-2. **`dashes/{slug}/requirements.md`** — Complete, robust product requirements: context, goals/non-goals, users, objects, flows, page requirements, states, acceptance criteria, open questions.
-3. **`dashes/{slug}/wireframe.html`** — Monochrome, design-system-agnostic wireframes with annotated interaction patterns.
-4. **`dashes/{slug}/summary.html`** — A self-contained HTML plan: problem, goals, key decisions, full requirements, object-guide cards, flow diagram, embedded wireframes. Opens in any browser with no server needed.
-5. **Evidence trail** — `scope.md`, `flow.md`, `assumptions.md`, `metrics.md`, `glossary.md`.
+2. **`dashes/{slug}/pitch/index.html`** — Stakeholder pitch site (primary walk-away deliverable).
+3. **`dashes/{slug}/requirements.md`** — Complete product requirements: context, goals/non-goals, users, objects, flows, states, acceptance criteria, open questions.
+4. **`dashes/{slug}/wireframe.html`** — Monochrome, design-system-agnostic wireframes with annotated interaction patterns.
+5. **Evidence trail** — `scope.md`, `flow.md`, `assumptions.md`, `metrics.md`, `glossary.md`, optional thin `summary.html` index.
 
 ---
 

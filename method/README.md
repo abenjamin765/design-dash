@@ -2,7 +2,8 @@
 
 This directory is the tool-neutral source of truth for Design Dash. It describes the work, decisions, gates, and outputs without assuming a particular AI agent, editor, operating system, or design tool.
 
-- [`method.yaml`](./method.yaml) is the machine-readable phase and gate contract.
+- [`method.yaml`](./method.yaml) is the human/portable phase and gate contract.
+- [`../apps/dash-living-plan/contract/dash-contract.mjs`](../apps/dash-living-plan/contract/dash-contract.mjs) is the machine SoT consumed by the living-plan CLI and console (when present).
 - [`../GETTING_STARTED.md`](../GETTING_STARTED.md) helps people choose a way to run it.
 - [`../adapters/`](../adapters/) translates the contract into tool-specific instructions.
 
@@ -10,13 +11,14 @@ An adapter may change commands, prompts, and file-handling mechanics. It must no
 
 ## Portable artifact contract
 
-Every completed dash should leave a readable project folder containing:
+Every completed dash should leave a readable project folder under `dashes/{slug}/` containing:
 
-- `scope.md`, `assumptions.md`, `metrics.md`, `glossary.md`
-- object-modeling artifacts and object guides
+- `dash-config.yaml`, `scope.md`, `assumptions.md`, `metrics.md`, `glossary.md`
+- object-modeling artifacts and object guides (`library/objects/`)
 - `flow.md`, page architecture, and concept rationale
 - `wireframe.html` with edge-state annotations
 - accessibility, ethics/equity, and privacy findings appropriate to the tier
-- `requirements.md` and `summary.html`
+- `pitch/index.html` (primary stakeholder deliverable), `requirements.md`, optional thin `summary.html`
+- optional `living-plan/` MDX when Node tooling is used
 
 Markdown, YAML, and self-contained HTML are deliberate defaults: designers can inspect, edit, share, and archive the work without proprietary software.
