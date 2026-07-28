@@ -1,6 +1,6 @@
 ---
 name: wireframing
-description: Use when translating Design Dash artifacts, OOUX page/collection/instance models, object-library findings, or rough product concepts into HTML wireframes. Use when asked to create a wireframe, produce a wireframe for Design Dash P4, update skills/5-wireframing/wireframe-components.html, or translate a design spec into a visual structure.
+description: Use when translating Design Dash artifacts, OOUX page/collection/instance models, object-library findings, or rough product concepts into HTML wireframes. Use when asked to create a wireframe, produce a wireframe for Design Dash P6, update skills/5-wireframing/wireframe-components.html, or translate a design spec into a visual structure.
 stage: 5-wireframing
 version: 0.1.0
 ---
@@ -10,6 +10,8 @@ version: 0.1.0
 ## Overview
 
 Produces `dashes/{slug}/wireframe.html` as the durable wireframe artifact for a Design Dash or standalone wireframing session. Uses `skills/5-wireframing/wireframe-components.html` as the local reusable component/style source.
+
+**Design Dash phase labels:** wireframe = **P6**. Flow / page list comes from **P4** (`flow.md`). Optional coded prototype = **P7** (stub is valid). Do not treat wireframing as P4, and do not assume a proprietary design-system translation step.
 
 A wireframe communicates structure, hierarchy, and content placement using minimal monochrome styles. It is system-agnostic — it does not assume any specific design system or component library.
 
@@ -30,9 +32,9 @@ Collect what is known about the screen:
 - `dashes/{slug}/flow.md` — **read this first if it exists**. Use the "Derived pages" table as the authoritative page list (do not reinvent pages from scratch). Use the "Goal-page map" to ensure every success criterion lands in markup. Use the "Constraints log" to check component choices before drawing.
 - `dashes/{slug}/scope.md` — problem statement, success criteria, constraints.
 - Design spec `dashes/{slug}/requirements.md` — in-scope objects, relationships, attributes, actions.
-- Object library findings from P1 Context (hub object identity, canonical attributes, prioritized attributes).
+- Object library findings from P2 (`library/objects/` — hub object identity, canonical attributes, prioritized attributes).
 
-If `flow.md` is missing and this wireframe is part of a Design Dash, ask whether P4 Synthesis has been run. If not, recommend running it first. If working standalone (no Design Dash context), proceed without it.
+If `flow.md` is missing and this wireframe is part of a Design Dash, ask whether P4 Flow has been run. If not, recommend running it first (P6 needs the page list). If working standalone (no Design Dash context), proceed without it.
 
 If scope.md or the design spec are unavailable, ask the designer before proceeding.
 

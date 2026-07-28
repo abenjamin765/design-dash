@@ -29,6 +29,8 @@ Ask the user:
 
 Do not proceed until answered.
 
+**Solo / auto session mode:** do not wait. Self-answer from `dash-config.yaml` (tier, session-mode), `scope.md` / `flow.md` / `wireframe.html` (artifact + audience), and the P0 T1 / privacy screen (PII). Log the self-answers in `dashes/{slug}/auto-confirms.md`. Still run every Section C item with a cited design decision — solo does not shorten the privacy review.
+
 ---
 
 ## Section A — Dark pattern audit
