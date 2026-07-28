@@ -16,8 +16,11 @@ A conforming adapter must:
 
 Adapters may provide slash commands, IDE rules, templates, automations, or workshop scripts. Each adapter should document setup, start/resume commands, required capabilities, fallbacks, and its conformance version.
 
+Session modes (`interactive` | `solo`), living-plan MDX, and the workshop console are optional runtime layers. Adapters that cannot run Node must still satisfy gates by authoring portable Markdown/YAML/HTML under `dashes/{slug}/`.
+
 ## Available paths
 
-- Cursor and Claude Code: use `install.sh` and the existing skills.
+- Cursor and Claude Code: use `install.sh` and the existing skills (commands symlink for Claude Code).
 - Generic file-capable AI agent: use [`generic/AGENT_PROMPT.md`](./generic/AGENT_PROMPT.md).
 - No terminal or no agent: follow the manual path in [`GETTING_STARTED.md`](../GETTING_STARTED.md).
+- Optional Node: `apps/dash-living-plan` (viewer/CLI) and `apps/dash-console` (workshop UI).

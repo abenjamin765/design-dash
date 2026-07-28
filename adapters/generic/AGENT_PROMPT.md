@@ -17,7 +17,7 @@ Run P0 through P8 in order. At each phase:
 5. stop at mandatory gates for review;
 6. state which phase is complete and what comes next.
 
-Never present simulated specialist critique as real sign-off. Apply the capability fallbacks in the method contract when a tool is unavailable. Keep outputs portable Markdown, YAML, and self-contained HTML. Finish only when `requirements.md`, `summary.html`, the wireframe, evidence trail, object model, review findings, and learning plan are mutually consistent.
+Never present simulated specialist critique as real sign-off. Apply the capability fallbacks in the method contract when a tool is unavailable. Keep outputs portable Markdown, YAML, and self-contained HTML. Finish only when `requirements.md`, `pitch/index.html` (primary stakeholder deliverable), the wireframe, evidence trail, object model, review findings, and learning plan (`research-plan.md` or honest Learning Gate debt) are mutually consistent. A thin `summary.html` index is optional.
 
 Begin with P0. Ask no more than five focused questions at once.
 
