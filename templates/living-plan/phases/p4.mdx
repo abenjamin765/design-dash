@@ -1,0 +1,79 @@
+<PhaseSection id="P4" title="How People Use It" status="placeholder">
+
+{/* Standard/High-stakes: scenario-flow-mapping owns this phase and writes THIS file
+    (p4.mdx). flow.md is exporter output — never hand-author it.
+    Express: one primary scenario plus page list, written directly here.
+    Do not put example strings on ScenarioFlow props — they serialize on export
+    even when children sit inside <Placeholder>. Keep examples in Placeholder only. */}
+
+<Takeaway>[User] needs to [task] when [trigger] — the design delivers this through [N] screens with no new navigation level introduced.</Takeaway>
+
+## Scenarios
+
+<Placeholder example="ScenarioFlow user=Teacher, trigger=Opens the Assignment two days before the due date, goal=Know which students need help before the deadline. Steps: 1. Opens the assignment from their list. 2. Sees the risk card alongside the existing roster. 3. Identifies the three students trending at-risk. 4. Decides to message two and reteach the third.">
+
+Replace this Placeholder with one or more `<ScenarioFlow user="..." trigger="..." goal="...">` blocks and real steps. Do not leave example props on ScenarioFlow in the seeded file — they leak into `flow.md` on export.
+
+</Placeholder>
+
+## Flow
+
+<Placeholder example="Teacher opens Assignment → View Progress surface → sees risk card embedded in existing page → reads rationale for each at-risk student → gives binary feedback.">
+
+Describe the end-to-end user flow as a short narrative or step list.
+
+</Placeholder>
+
+## Page List
+
+{/* Six-column contract — matches scenario-flow-mapping 4.4. Priority: P1 = on
+    the primary-scenario critical path or maps to a success criterion; P2 = supporting. */}
+
+<Placeholder example="1. Assignment detail / View Progress (existing, enhanced) — hub: Assignment, detail, steps 1–4, objects Assignment+Student, P1. 2. Admin at-risk rollup (new) — hub: Assignment aggregate, list, step 8, objects Assignment, P2.">
+
+| Page | Hub object | Surface type | Trigger (step #) | Objects present | Priority |
+|---|---|---|---|---|---|
+| [Page name] | [Object] | list \| detail \| modal \| form \| landing \| dashboard \| action | [S#.step] | [slugs] | P1 \| P2 |
+
+</Placeholder>
+
+## Which Screen Delivers Which Goal
+
+<Placeholder example="'Teacher identifies at-risk students in one interaction' → Assignment detail / View Progress. 'Admin sees rollup' → Admin at-risk rollup (P2 surface).">
+
+| Success criterion | Page(s) | Notes |
+|---|---|---|
+| [Criterion] | [Page] | |
+
+</Placeholder>
+
+## Where Users and the System Disagree
+
+{/* Every divergence from the P2 mental-model table needs a resolution here.
+    Options: adapt UI language, propose an object-library update, or accept with a note.
+    A table with zero rows is not a pass — it means the reconciliation was skipped. */}
+
+<Placeholder example="Divergence: teachers call practice sets and formal assessments the same thing. Resolution: adapt UI language — the card says 'assignment' throughout, regardless of the underlying object type.">
+
+| Divergence (from P2) | Resolution | Direction |
+|---|---|---|
+| [Divergence] | [What we'll do] | UI adapts to user \| System model changes |
+
+</Placeholder>
+
+## Constraints
+
+<Placeholder example="Must work within your design system grid. No new data pipeline — reuses existing signals. Mobile breakpoint required.">
+
+- [Constraint]
+
+</Placeholder>
+
+## Gate
+
+{/* Own heading on purpose: without it the gate result is captured by the section
+    above it and lands inside that section of the exported artifact. */}
+
+<GateStatus name="Reconciliation Gate" required={true} result="pending" />
+
+</PhaseSection>

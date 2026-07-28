@@ -1,0 +1,93 @@
+<PhaseSection id="P2" title="Background & Scope" status="placeholder">
+
+<Takeaway>We are building [surface description] for [user role], scoped to [in-scope], with [out-of-scope items] explicitly out.</Takeaway>
+
+## Problem Statement
+
+<Placeholder example="Teachers cannot see which students are trending toward missing a due date while the assignment is still open — they only find out after the Overdue state fires.">
+
+Lock the problem statement here (1–3 sentences, unchanged from P1).
+
+</Placeholder>
+
+## User Role
+
+<Placeholder example="Teacher — any grade band. Secondary audience: admin, school-level rollup.">
+
+Record: user role · grade band · secondary audiences.
+
+</Placeholder>
+
+## Build Mode
+
+<Placeholder example="New surface — no existing prototype to review.">
+
+Record: new · enhance · refactor. If enhance or refactor, note the prototype path.
+
+</Placeholder>
+
+## Scope
+
+<ScopeBoundary>
+
+### In scope
+
+<Placeholder example="The risk card on the Assignment detail view; reuses existing score and proficiency-prediction signals from the local object library.">
+
+- [In-scope item]
+
+</Placeholder>
+
+### Out of scope
+
+<Placeholder example="Changing assignment creation; the Overdue lifecycle state; any student-facing surface.">
+
+- [Out-of-scope item]
+
+</Placeholder>
+
+</ScopeBoundary>
+
+## Constraints
+
+<Placeholder example="Must reuse existing data signals — no new pipeline. A forecast with fewer than two days of data renders a 'need more data' state, never a fabricated score.">
+
+- [Constraint]
+
+</Placeholder>
+
+## Success Criteria
+
+<Placeholder example="Teacher can identify every at-risk student on an open assignment without leaving the Assignment detail view, and can state what they'd do next within one interaction of seeing the card.">
+
+Must be concrete and checkable.
+
+</Placeholder>
+
+## Mental Models
+
+<Placeholder example="Teachers think of practice sets and formal assessments as one thing. The object library distinguishes Assignment from Assessment — a gap this design bridges in its copy, not its model.">
+
+### User model vs. system model
+
+| Object | User mental model (observed/assumed) | system model (object library) | Divergence? |
+|---|---|---|---|
+| [Object] | [What users think] | [What object library says] | [Yes/No] |
+
+</Placeholder>
+
+## Hub Object
+
+<Placeholder example="Hub: Assignment (object library slug: assignment, maturity: canonical, audited: 2026-03-15). Key attributes: title, due date, status, students. Key actions: View, View Progress.">
+
+### Hub Object: [name]
+
+- Slug: [slug]
+- Maturity: [canonical|needs-review|draft]
+- Audited: [date]
+- Key attributes: [list]
+- Key actions: [list]
+
+</Placeholder>
+
+</PhaseSection>
