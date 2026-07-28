@@ -1,0 +1,45 @@
+<PhaseSection id="P1" title="The Problem" status="placeholder">
+
+{/* Standard/High-stakes: assemble evidence from Condens and analytics before proceeding.
+    Express: fill the assumptions table with evidence-debt tags and advance. */}
+
+<Takeaway>[User role] cannot [task], which costs [concrete impact] — the evidence is [quality], and the key assumptions are below.</Takeaway>
+
+## Problem Statement
+
+<Placeholder example="Teachers cannot see which students are trending toward missing a due date while the assignment is still open. They only find out after the system marks it Overdue — too late to reteach, extend, or regroup. Affected role: teacher. Reach: ~2,000 students per district. Evidence: low (assumed).">
+
+Replace with a validated problem statement: current state · affected role · evidence · reach · cost of inaction · desired outcome · success metric · confidence.
+
+</Placeholder>
+
+## Assumptions
+
+{/* Add one <AssumptionRow> per assumption. Replace all [...] values before flipping to "done".
+    Do not wrap these in <Placeholder> — the exporter needs to see them directly to write assumptions.md. */}
+
+<AssumptionRow
+  id="A1"
+  statement="[Replace: assumption statement]"
+  type="assumed"
+  confidence="medium"
+  validation="[Replace: validation method and phase, e.g. P8 usability test]"
+  status="open"
+/>
+
+## Metrics
+
+<Placeholder example="North-star: percentage of at-risk-flagged students who complete on time when the teacher intervenes before the due date. Baseline: none (new surface). Target: set in P8 usability test.">
+
+Record north-star metric, guardrail metric, event pair, baseline, and target.
+
+</Placeholder>
+
+## Gate
+
+{/* Own heading on purpose: without it the gate result is captured by the section
+    above it and lands inside that section of the exported artifact. */}
+
+<GateStatus name="Evidence Gate" required={true} result="pending" />
+
+</PhaseSection>

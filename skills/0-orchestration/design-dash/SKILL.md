@@ -110,6 +110,8 @@ node $LP lint --dir dashes/{slug}
 
 ## P0 — Preconditions + Tier Classification
 
+**Detailed source:** `references/phases/p0.md`
+
 ### Precondition checks (run before everything else)
 
 1. **New or resume?** Ask: "Is this a new dash, or are you resuming one?" If resuming → load `skills/0-orchestration/design-dash-revision/SKILL.md` and exit this skill.
@@ -166,6 +168,8 @@ Mid-dash: if P6 Section C raises a solo dash to High-stakes, halt at P6 under th
 
 ## P1 — Opportunity & Evidence *(Evidence Gate — Standard + High-stakes)*
 
+**Detailed source:** `references/phases/p1.md`
+
 **Purpose**: Validate that the problem is worth solving before committing design effort.
 
 ### 1.1–1.5
@@ -180,6 +184,8 @@ Problem statement · opportunity sizing · evidence assembly (`evidence-assembly
 ---
 
 ## P2 — Intake & Object Modeling
+
+**Detailed source:** `references/phases/p2.md`
 
 Capture intake into `scope.md`, then run ORCA modeling for in-scope objects.
 
@@ -199,6 +205,8 @@ Write guides to `library/objects/{slug}.md` and update `library/objects/_index.m
 
 ## P3 — Framing Lock
 
+**Detailed source:** `references/phases/p3.md`
+
 Lock problem statement, in-scope objects, participant model / sign-off ledger, decisions log, and open questions. Produce `design-spec.md` §1–3 (Context, Goals/Non-Goals, Primary User).
 
 **Output**: `design-spec.md`; `living-plan/phases/p3.mdx`.
@@ -206,6 +214,8 @@ Lock problem statement, in-scope objects, participant model / sign-off ledger, d
 ---
 
 ## P4 — Flow & Reconciliation Gate
+
+**Detailed source:** `references/phases/p4.md`
 
 Load `skills/4-synthesis-ia/scenario-flow-mapping/SKILL.md`.
 
@@ -223,6 +233,8 @@ Optional: `nav-flow-designer` for a navigation blueprint.
 
 ## P5 — Divergence + Selection Gate
 
+**Detailed source:** `references/phases/p5.md`
+
 Load `skills/4-synthesis-ia/concept-divergence/SKILL.md`. Generate 2–3 structurally distinct concepts. Score on user criteria + a business metric.
 
 **Write contract**: subagent writes `living-plan/phases/p5.mdx` only when living-plan is active.
@@ -236,6 +248,8 @@ Load `skills/4-synthesis-ia/concept-divergence/SKILL.md`. Generate 2–3 structu
 ---
 
 ## P6 — Wireframe + Ethics Gate *(all tiers)*
+
+**Detailed source:** `references/phases/p6.md`
 
 Load `skills/5-wireframing/SKILL.md`. Produce `dashes/{slug}/wireframe.html`. Wireframing is **P6** (not an earlier phase).
 
@@ -256,6 +270,8 @@ Tier scope: Express = ethics floor only; Standard/High-stakes = full matrix.
 
 ## P7 — Optional Build
 
+**Detailed source:** `references/phases/p7.md`
+
 When `prototype_workspace` is set and a design-system base page is resolvable, optionally produce a coded prototype there. Otherwise write `dashes/{slug}/p7-build-note.md` (stub mode) and continue to P8.
 
 **Never invent a proprietary design-system tree inside this repo.**
@@ -265,6 +281,8 @@ When `prototype_workspace` is set and a design-system base page is resolvable, o
 ---
 
 ## P8 — Validate & Learn + Pitch *(Learning Gate)*
+
+**Detailed source:** `references/phases/p8.md`
 
 ### 8.1 Research plan first
 Author `dashes/{slug}/research-plan.md` **before** dispatching pitch. Solo Learning Gate debt uses honest sentinels (`owner: unassigned — needs human`, `due-by: unassigned — set when owner is named`) — do not invent owners/dates to clear the gate.
@@ -293,9 +311,11 @@ If configured, load `mint-orca-adapter`. Never block P8 completion.
 
 ## References (loaded only when their phase fires)
 
+**Detailed phase source:** for each active phase, load `skills/0-orchestration/design-dash/references/phases/p{N}.md` (`p0.md` … `p8.md`). The phase sections above are the orchestrator index; the phase files own checkpoint depth, subagent briefs, and gate rubrics. Prefer the phase file when this SKILL.md and a phase file disagree on procedure.
+
 | File | Loaded at |
 |---|---|
-| `references/phases/p0.md` … `p8.md` | When that phase is active (if present) |
+| `references/phases/p0.md` … `p8.md` | When that phase is active — detailed source |
 | `references/critique-checklists.md` | P6 Critique |
 | `references/design-spec-template.md` | P3 |
 | `references/meeting-invite-template.md` | P2 group mode |

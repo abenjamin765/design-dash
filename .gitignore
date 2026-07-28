@@ -4,6 +4,13 @@
 # Dependencies
 node_modules/
 
+# Living-plan runtime (per-dash)
+**/.ui-port
+**/.api-port
+**/.living-plan-url
+**/.last-export
+dashes/_index.json
+
 # Logs
 *.log
 

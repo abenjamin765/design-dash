@@ -1,0 +1,72 @@
+<PhaseSection id="P5" title="Options & What We Picked" status="placeholder">
+
+{/* Standard/High-stakes: concept-divergence skill generates 2–3 concepts; adversarial panel scores them.
+    Express: record the single strongest concept directly; skip divergence unless asked. */}
+
+<Takeaway>We considered [N] structurally distinct concepts and selected [concept name] because [decisive reason in one clause].</Takeaway>
+
+{/* Use ConceptCard for each concept. Do not also write "## Concept:" or "### Concept:" headings —
+    the exporter emits "### Concept: {name}" automatically from the ConceptCard name prop.
+    A duplicate heading is how the previous template ended up exporting each concept twice. */}
+
+<ConceptCompare>
+
+<ConceptCard
+  name="[Concept A name]"
+  surface="[Object + surface type]"
+  action="[Primary CTA]"
+  userScore="[N/5]"
+  businessScore="[N/5]"
+>
+
+<Placeholder example="Concept A keeps the signal inside the Assignment detail view — zero navigation cost if the teacher is already there, but it doesn't help the teacher who forgets to check per-assignment.">
+
+[Rationale: what makes this concept structurally distinct and why it was or wasn't selected]
+
+</Placeholder>
+
+</ConceptCard>
+
+<ConceptCard
+  name="[Concept B name]"
+  surface="[Object + surface type]"
+  action="[Primary CTA]"
+  userScore="[N/5]"
+  businessScore="[N/5]"
+  selected={true}
+>
+
+<Placeholder example="Concept B aggregates at-risk signals across all open assignments on a page teachers already visit — solves the 'I don't check per-assignment' problem better than A for a similar build cost.">
+
+[Rationale: why this concept was selected over the others]
+
+</Placeholder>
+
+</ConceptCard>
+
+</ConceptCompare>
+
+## Are These Options Really Different?
+
+<Placeholder example="The two concepts differ in hub object (Assignment vs. Class), interaction model (per-assignment pull vs. class-wide aggregated pull), and primary action. They are structurally distinct, not cosmetic variants of one layout.">
+
+Record the panel's judgment: are these concepts structurally distinct, or are they variations of the same idea? If variations, go back and generate more options.
+
+</Placeholder>
+
+## Selection Rationale
+
+<Placeholder example="Selected Concept B over Concept A because B solves more of the problem — aggregated, not per-assignment-scoped — for a similar build cost, since it reuses an existing page teachers already visit. Concept A deferred, not dropped.">
+
+Record: which concept was selected, why it beats the runner-up(s), and why the runner-up(s) were not chosen (named and logged, not silently discarded).
+
+</Placeholder>
+
+## Gate
+
+{/* Own heading on purpose: without it the gate result is captured by the section
+    above it and lands inside that section of the exported artifact. */}
+
+<GateStatus name="Selection Gate" required={true} result="pending" />
+
+</PhaseSection>

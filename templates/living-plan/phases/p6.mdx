@@ -1,0 +1,51 @@
+<PhaseSection id="P6" title="The Design" status="placeholder">
+
+{/* The wireframing skill writes wireframe.html to the workshop root.
+    After it does, add <WireframeEmbed> below and remove the Placeholder. */}
+
+<Takeaway>The wireframe covers [screens], and the ethics review [found no flags | flagged N items] — the design is [ready | blocked] for prototype.</Takeaway>
+
+## Wireframe
+
+<Placeholder example="wireframe.html not yet written. Run the wireframing skill first, then replace this Placeholder with a WireframeEmbed.">
+
+Replace with:
+
+```mdx
+<WireframeEmbed src="wireframe.html" title="[Screen name] wireframe" />
+```
+
+</Placeholder>
+
+## Ethics
+
+<Placeholder example="Dark patterns: none found. K-12 guardrails: pass — no engagement-baiting CTAs, no student PII newly exposed beyond what the teacher already sees on their own roster. COPPA/FERPA surface: no new disclosure. Localization: deferred to post-launch.">
+
+Record the ethics review result across all four checks. If any check fails or flags, record what was flagged, the severity, and whether it blocks the gate.
+
+### Dark patterns check
+
+[pass|fail|flagged — describe if flagged]
+
+### K-12 guardrails
+
+[pass|fail|flagged — describe if flagged]
+
+### COPPA/FERPA surface
+
+[yes (describe) | no]
+
+### Localization
+
+[pass|deferred]
+
+</Placeholder>
+
+## Gate
+
+{/* Own heading on purpose: without it the gate result is captured by the section
+    above it and lands inside that section of the exported artifact. */}
+
+<GateStatus name="Ethics Gate" required={true} result="pending" />
+
+</PhaseSection>
