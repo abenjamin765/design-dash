@@ -1,14 +1,23 @@
-schema_version: "1.0"
+schema_version: "1.1"
 method:
   id: design-dash
   name: Design Dash
-  outcome: A build-ready, evidence-backed product plan.
+  outcome: A build-ready, evidence-backed product plan with a stakeholder pitch site.
   principles:
     - Evidence and assumptions are labeled separately.
     - Rigor is derived from risk, reversibility, and reach.
     - User mental models and system models are reconciled explicitly.
     - Accessibility, ethics, equity, and privacy are design inputs.
     - Outputs remain portable across tools.
+    - Living-plan MDX is the source of truth when Node tooling is available; export owns workshop markdown sections.
+
+session_modes:
+  interactive:
+    description: Hard WAIT FOR USER at every numbered checkpoint.
+  solo:
+    description: Wait only at phase boundaries and hard gates. Auto-confirm intra-phase checkpoints into auto-confirms.md.
+    ceiling: standard
+    high_stakes_halt: P0
 
 tiers:
   express:
@@ -16,7 +25,7 @@ tiers:
     required_gates: [edge_ethics_equity]
   standard:
     use_when: Moderate risk or a meaningful multi-role workflow.
-    required_gates: [evidence, reconciliation, edge_ethics_equity]
+    required_gates: [evidence, reconciliation, selection, edge_ethics_equity, learning]
   high_stakes:
     use_when: Irreversible or broad-impact work, safety concerns, or regulated data.
     required_gates: [evidence, reconciliation, selection, edge_ethics_equity, learning, privacy_compliance]
@@ -27,60 +36,60 @@ phases:
   - id: P0
     name: Preconditions
     intent: Establish whether the dash can be run responsibly.
-    activities: [classify tier, confirm research access, identify responsible disciplines]
-    outputs: [dash configuration, sign-off roster]
-    exit: Tier and participation constraints are explicit.
+    activities: [classify tier, set session mode, confirm research access, identify responsible disciplines]
+    outputs: [dash-config.yaml, sign-off roster]
+    exit: Tier, session mode, and participation constraints are explicit. Solo + High-stakes halts here.
   - id: P1
     name: Opportunity and evidence
     intent: Frame a falsifiable problem and separate evidence from belief.
     activities: [assemble evidence, write problem statement, log assumptions, define metric hypotheses]
-    outputs: [assumptions.md, metrics.md]
+    outputs: [assumptions.md, metrics.md, living-plan/phases/p1.mdx]
     gate: evidence
     exit: Unsupported claims are labeled and assigned a validation path.
   - id: P2
-    name: Intake and context
-    intent: Capture the domain, users, constraints, and user mental model.
-    activities: [interview stakeholders, capture observed and assumed language, inspect reusable object guides]
-    outputs: [context notes, mental-model map, library gap list]
-    exit: The team can distinguish what users think from what the system currently encodes.
+    name: Intake and object modeling
+    intent: Capture domain context, dual mental models, and the object model that organizes the experience.
+    activities: [interview stakeholders, capture observed and assumed language, forage nouns, run ORCA, author object guides]
+    outputs: [scope.md, object model, NOM, CTA matrix, object guides, living-plan/phases/p2.mdx]
+    exit: The team can distinguish what users think from what the system currently encodes, and in-scope objects are modeled.
   - id: P3
     name: Framing lock
     intent: Define the provisional design surface and protect it from silent scope growth.
-    activities: [state goals, state non-goals, link scope to assumptions]
-    outputs: [scope.md]
+    activities: [state goals, state non-goals, link scope to assumptions, write design-spec sections]
+    outputs: [design-spec.md, living-plan/phases/p3.mdx]
     exit: Scope, non-goals, and reopening conditions are recorded.
   - id: P4
-    name: Object modeling
-    intent: Model the objects, relationships, attributes, and actions that organize the experience.
-    activities: [forage nouns, run ORCA, build NOM and CTA matrix, author object guides]
-    outputs: [object model, NOM, CTA matrix, object guides]
+    name: Flow and reconciliation
+    intent: Derive journeys and page architecture; reconcile system model with user mental model.
+    activities: [map scenarios, map edge paths, define page architecture, resolve divergences]
+    outputs: [flow.md, page list, living-plan/phases/p4.mdx]
     gate: reconciliation
     exit: System and user-model divergences are resolved or tracked.
   - id: P5
-    name: Flow and information architecture
-    intent: Derive journeys, pages, and navigation from scenarios and the object model.
-    activities: [map scenarios, map edge paths, define page architecture]
-    outputs: [flow.md, page list, navigation model]
-    exit: Primary, alternate, and failure paths have destinations.
-  - id: P6
     name: Divergence and selection
     intent: Compare meaningfully different product concepts before converging.
     activities: [create two or three concepts, score user and business value, record tradeoffs]
-    outputs: [concept set, decision rationale]
+    outputs: [concept set, decision rationale, living-plan/phases/p5.mdx]
     gate: selection
     exit: A concept is selected with documented tradeoffs.
-  - id: P7
-    name: Wireframe and critique
+  - id: P6
+    name: Wireframe and ethics
     intent: Make the selected concept testable and pressure-test its consequences.
     activities: [wireframe, annotate interactions, cover edge states, audit accessibility, review ethics and equity]
-    outputs: [wireframe.html, edge-state matrix, review findings]
+    outputs: [wireframe.html, edge-state matrix, ethics-review.md, living-plan/phases/p6.mdx]
     gate: edge_ethics_equity
     exit: Critical states and inclusive-use requirements are buildable.
+  - id: P7
+    name: Optional build
+    intent: Optionally produce a coded prototype when a design-system base exists; otherwise record stub mode.
+    activities: [attempt coded prototype, or write p7-build-note.md]
+    outputs: [optional prototype page, or p7-build-note.md, living-plan/phases/p7.mdx]
+    exit: Build path or honest stub is recorded. Never invent a proprietary design-system tree.
   - id: P8
-    name: Plan assembly
-    intent: Package decisions, requirements, and a plan for learning.
-    activities: [write requirements, define acceptance criteria, assemble summary, schedule validation]
-    outputs: [requirements.md, summary.html, learning plan]
+    name: Validate and learn
+    intent: Package decisions into a stakeholder pitch and a plan for learning.
+    activities: [write research-plan, assemble pitch site, thin summary index, close learning gate]
+    outputs: [pitch/index.html, research-plan.md, workshop-summary.md, summary.html, living-plan/phases/p8.mdx]
     gate: learning
     exit: A new team can build and test the plan without reconstructing the dash.
 
@@ -90,3 +99,4 @@ capability_fallbacks:
   no_html_preview: Produce annotated Markdown wireframes and preserve the same state coverage.
   no_image_generation: Use diagrams, boxes, and sourced references; imagery is never gate-critical.
   no_multi_agent_support: Run specialist critiques sequentially and record discipline plus real-or-simulated status.
+  no_node_runtime: Skip living-plan viewer and CLI; author workshop markdown directly from templates. Method gates still apply.
