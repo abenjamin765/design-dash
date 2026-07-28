@@ -19,7 +19,19 @@ cd design-dash
 ./install.sh
 ```
 
-Start with `/design-dash`. Use `--cursor`, `--claude`, or `--dry-run` to narrow or preview installation.
+Start with `/design-dash` (or `/design-dash --solo` for continuous agent-run flow). Use `--cursor`, `--claude`, or `--dry-run` to narrow or preview installation. Claude Code also gets slash-command symlinks (`/design-dash`, `/pitch-site`, …).
+
+### Optional Node tooling
+
+The method runs without Node (`no_node_runtime` fallback). When Node is available:
+
+```bash
+cd apps/dash-living-plan && npm install
+node cli.mjs seed --dir ../../dashes/{slug} --slug {slug}
+node cli.mjs serve --dir ../../dashes/{slug}/living-plan --open   # soft-fail OK
+
+cd ../dash-console && npm install && npm run dev   # optional workshop UI
+```
 
 ## Path 3 — Another file-capable agent or IDE
 

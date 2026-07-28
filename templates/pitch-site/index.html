@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<!-- ============================================================
+  PITCH SITE TEMPLATE — Design Dash end deliverable
+  ============================================================
+  HOW TO USE THIS TEMPLATE
+  ─────────────────────────────────────────────────────────────
+  Replace every {PLACEHOLDER} with content drawn from the dash
+  workshop folder. Each placeholder has a comment above it
+  indicating which artifact to read.
+
+  Placeholder index (search for these):
+    {DASH_NAME}           dash-config.yaml  › dash-name
+    {DASH_SLUG}           dash-config.yaml  › dash-id
+    {DASH_DATE}           dash-config.yaml  › start-date
+    {DASH_TIER}           dash-config.yaml  › tier
+    {PRODUCT_NAME}        scope.md          › product / concept name
+    {HERO_HEADLINE}       scope.md          › desired outcome sentence
+    {HERO_SUB}            scope.md          › one-sentence value prop
+    {AUDIENCE}            scope.md          › primary user role
+    {CTA_LABEL}           The ask section   › primary CTA text
+    {FUTURE_SCENE}        scope.md          › 80–150 word vignette
+    {CURRENT_REALITY}     scope.md + P1     › current-state narrative
+    {PAIN_POINTS}         scope.md + P1     › <li> pain-point items
+    {WHY_NOW}             scope.md + P1     › urgency paragraph
+    {MODEL_NAME}          flow.md + P4      › named mental model
+    {MODEL_STEPS}         flow.md           › <li class="model-step"> items
+    {MODEL_SVG}           flow.md           › inline SVG diagram (or remove block)
+    {CAPABILITIES}        requirements.md   › <div class="cap"> blocks (see pattern below)
+    {EVIDENCE_ITEMS}      assumptions.md    › <div class="ev-item"> blocks (see pattern)
+    {IMPL_PHASES}         requirements.md   › <div class="phase"> blocks (see pattern)
+    {RISKS}               assumptions.md    › <li class="risk-item"> items
+    {ASK_HEADLINE}        scope.md          › specific decision sentence
+    {ASK_CTA}             scope.md          › CTA button label
+    {DECISIONS_HTML}      workshop notes    › <tr> rows for decisions table
+    {FAQS_HTML}           assumptions.md    › <details> FAQ items
+    {REQUIREMENTS_HTML}   requirements.md   › HTML section list
+    {SPECS_HTML}          mcsfd / handoff   › MCSFD spec blocks
+    {ORCA_HTML}           object guides     › object summary blocks
+    {ASSUMPTIONS_ROWS}    assumptions.md    › <tr> rows for assumptions table
+    {METRICS_ROWS}        metrics.md        › <tr> rows for metrics table
+    {ETHICS_HTML}         ethics-review.md  › key items from ethics review
+    {EDGE_STATES_HTML}    wireframe / edge  › <tr> rows for edge states table
+    {PROTOTYPE_URL}       workshop          › relative path to prototype
+    {WIREFRAME_URL}       workshop          › relative path to wireframe.html
+    {OWNER}               dash-config.yaml  › owner field
+
+  OUTPUT PATH: dashes/{DASH_SLUG}/pitch/index.html
+  Copy docs/assets/design-dash-logo.svg and docs/assets/rds-icon.png
+  into dashes/{DASH_SLUG}/pitch/assets/ before finalising.
+  ============================================================ -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- scope.md › product/concept name + desired outcome -->
+  <title>{PRODUCT_NAME} — {HERO_HEADLINE} | Design Dash</title>
+  <meta name="description" content="{HERO_SUB}">
+
+  <link rel="icon" href="assets/rds-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Tokens ─────────────────────────────────────────── */
+    :root {
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body:    'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      --font-mono:    'Roboto Mono', ui-monospace, Menlo, Consolas, monospace;
+
+      /* Base palette — override per brand */
+      --text:         #202020;
+      --text-mid:     #54585e;
+      --border:       #d9dada;
+      --surface:      #fff;
+      --bg:           #f3f5f7;
+      --cream:        #F1EFE3;
+
+      /* Brand */
+      --gold:         #FFDF65;
+      --gold-deep:    #E8C32E;
+      --gold-ink:     #806400;
+      --navy:         #0d1320;
+      --navy-mid:     #1a2740;
+      --black:        #000;
+
+      /* Spacing */
+      --maxw:         1160px;
+      --radius:       10px;
+      --radius-sm:    8px;
+      --shadow-sm:    0 1px 3px rgba(0,0,0,.07);
+      --shadow-md:    0 6px 24px rgba(0,0,0,.1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+    h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .5em; }
+    p  { margin: 0 0 1em; }
+    ul, ol { margin: 0; padding: 0; list-style: none; }
+    code { font-family: var(--font-mono); }
+
+    .skip-link {
+      position: absolute; left: -9999px; top: 0;
+      background: var(--black); color: #fff;
+      padding: 10px 16px;
+      border-radius: 0 0 var(--radius-sm) 0;
+      z-index: 200;
+    }
+    .skip-link:focus { left: 0; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--gold-deep);
+      outline-offset: 2px;
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px var(--black);
+      border-radius: 4px;
+    }
+
+    /* ── Icons ──────────────────────────────────────────── */
+    .icon {
+      width: 20px; height: 20px;
+      stroke: currentColor; stroke-width: 2;
+      fill: none; stroke-linecap: round; stroke-linejoin: round;
+      flex-shrink: 0; vertical-align: middle;
+    }
+    .icon--sm { width: 16px; height: 16px; }
+    .icon--lg { width: 28px; height: 28px; }
+
+    /* ── Layout ─────────────────────────────────────────── */
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+    section { padding: 80px 0; }
+
+    /* ── Header ─────────────────────────────────────────── */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: #fff; border-bottom: 1px solid var(--border);
+    }
+    .site-header .wrap {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 24px;
+      min-height: 60px;
+    }
+    .brand { display: inline-flex; align-self: center; text-decoration: none; }
+    .brand img { height: 48px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a {
+      text-decoration: none; font-size: 14px; font-weight: 500;
+      color: var(--text-mid);
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--gold); color: var(--black);
+      border: 1px solid var(--gold-deep);
+      padding: 7px 14px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; text-decoration: none;
+    }
+    .nav-pill:hover { background: var(--gold-deep); }
+    @media (max-width: 680px) {
+      .nav-links a:not(.nav-pill) { display: none; }
+    }
+
+    /* ── Buttons ────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 15px; font-weight: 700;
+      text-decoration: none; padding: 13px 24px; border-radius: 999px;
+      cursor: pointer; border: 1px solid transparent;
+      transition: background .15s, transform .15s;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn-primary { background: var(--gold); color: var(--black); border-color: var(--gold-deep); }
+    .btn-primary:hover { background: var(--gold-deep); }
+    .btn-ghost {
+      background: transparent; color: #fff;
+      border-color: rgba(255,255,255,.35);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.6); }
+
+    /* ── Eyebrow / label ────────────────────────────────── */
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-mid);
+      margin: 0 0 12px;
+    }
+    .on-dark .eyebrow, .on-dark.eyebrow { color: var(--gold); }
+
+    /* ── Animations (motion: 1 — hero entrance) ─────────── */
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-enter { animation: heroIn .7s cubic-bezier(.22,1,.36,1) both; }
+      .hero-enter-delay { animation: heroIn .7s .2s cubic-bezier(.22,1,.36,1) both; }
+      .hero-enter-delay-2 { animation: heroIn .7s .4s cubic-bezier(.22,1,.36,1) both; }
+      @keyframes heroIn {
+        from { opacity: 0; transform: translateY(22px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* motion: 2 — scroll reveals */
+      .reveal { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
+      .reveal.in-view { opacity: 1; transform: translateY(0); }
+      .reveal-delay-1 { transition-delay: .1s; }
+      .reveal-delay-2 { transition-delay: .2s; }
+      .reveal-delay-3 { transition-delay: .3s; }
+
+      /* motion: 3 — appendix tab slide */
+      .tab-panel.active { animation: tabSlide .25s ease both; }
+      @keyframes tabSlide {
+        from { opacity: 0; transform: translateX(8px); }
+        to   { opacity: 1; transform: translateX(0); }
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ── HERO ───────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(155deg, var(--navy) 0%, var(--navy-mid) 60%, #243555 100%);
+      color: #fff;
+      padding: 0;
+      overflow: hidden;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 580px;
+      align-items: stretch;
+    }
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; min-height: auto; }
+    }
+    .hero-content {
+      padding: 80px 40px 80px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+    }
+    @media (min-width: 860px) {
+      .hero-content { padding-left: calc((100vw - var(--maxw)) / 2 + 24px); }
+    }
+    .hero-product-name {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      color: var(--gold);
+      letter-spacing: -.01em;
+      margin: 0 0 8px;
+      line-height: 1.1;
+    }
+    .hero-overline {
+      font-size: 12px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: rgba(255,255,255,.5);
+      margin: 0 0 20px; display: block;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.5vw, 42px);
+      font-weight: 400;
+      color: #fff;
+      max-width: 22ch;
+      margin: 0 0 20px;
+      line-height: 1.25;
+    }
+    .hero-sub {
+      font-size: 17px; line-height: 1.6;
+      color: rgba(255,255,255,.72);
+      max-width: 52ch;
+      margin: 0 0 32px;
+    }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 36px; }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 8px 20px;
+      font-size: 12px; color: rgba(255,255,255,.45);
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 20px; margin-top: auto;
+    }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 5px; }
+    .tier-pill {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 999px;
+      background: rgba(255,223,101,.15); color: var(--gold);
+      border: 1px solid rgba(255,223,101,.3);
+    }
+
+    .hero-visual {
+      background: rgba(255,255,255,.04);
+      border-left: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      padding: 48px 40px;
+      overflow: hidden;
+    }
+    @media (max-width: 860px) {
+      .hero-visual {
+        border-left: none;
+        border-top: 1px solid rgba(255,255,255,.08);
+        min-height: 300px;
+        padding: 40px 24px;
+      }
+    }
+    /* {HERO_SVG} goes inside .hero-visual-inner */
+    .hero-visual-inner { width: 100%; max-width: 520px; }
+    /* placeholder for when no SVG is provided */
+    .hero-visual-placeholder {
+      width: 100%; aspect-ratio: 4/3;
+      border: 1.5px dashed rgba(255,255,255,.18);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.3);
+      font-size: 13px; text-align: center; padding: 24px;
+    }
+
+    /* ── FUTURE SCENE ───────────────────────────────────── */
+    .future-scene { background: var(--surface); }
+    .scene-quote {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.45;
+      color: var(--text);
+      max-width: 64ch;
+      position: relative;
+      padding-left: 28px;
+    }
+    .scene-quote::before {
+      content: '';
+      position: absolute; left: 0; top: 6px;
+      width: 4px; height: calc(100% - 12px);
+      background: var(--gold); border-radius: 2px;
+    }
+
+    /* ── CURRENT REALITY ────────────────────────────────── */
+    .current-reality { background: var(--cream); }
+    .current-reality h2 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+    .pain-list { display: grid; gap: 12px; margin-top: 24px; }
+    .pain-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 16px; line-height: 1.5; color: var(--text);
+      padding: 14px 18px;
+      background: #fff;
+      border-left: 3px solid var(--gold-deep);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .pain-list li .icon { color: var(--gold-deep); margin-top: 2px; flex-shrink: 0; }
+
+    /* ── WHY NOW ────────────────────────────────────────── */
+    .why-now { background: var(--surface); }
+    .why-now h2 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 400; margin-bottom: 18px;
+    }
+    .shift-row {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px;
+      align-items: center; margin-top: 32px;
+    }
+    @media (max-width: 680px) {
+      .shift-row { grid-template-columns: 1fr; }
+      .shift-arrow { transform: rotate(90deg); }
+    }
+    .shift-box {
+      padding: 20px 24px;
+      border-radius: var(--radius);
+      font-size: 15px; line-height: 1.5;
+    }
+    .shift-box strong { display: block; font-size: 12px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+    .shift-box--before { background: var(--bg); border: 1px solid var(--border); }
+    .shift-box--before strong { color: var(--text-mid); }
+    .shift-box--after { background: var(--navy); color: #fff; border: 1px solid var(--navy-mid); }
+    .shift-box--after strong { color: var(--gold); }
+    .shift-arrow { color: var(--gold-deep); display: flex; justify-content: center; }
+
+    /* ── MENTAL MODEL ───────────────────────────────────── */
+    .mental-model { background: var(--navy); color: #fff; }
+    .mental-model h2 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 38px); font-weight: 400;
+      color: #fff; margin-bottom: 10px;
+    }
+    .mental-model .section-sub { color: rgba(255,255,255,.65); margin-bottom: 40px; }
+    .model-name {
+      display: inline-block; font-size: 13px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 28px;
+    }
+    .model-steps { display: grid; gap: 12px; margin-bottom: 40px; }
+    .model-step {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 16px 20px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-sm);
+    }
+    .model-step-num {
+      flex-shrink: 0; width: 28px; height: 28px;
+      background: var(--gold); color: var(--black);
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 12px; font-weight: 700;
+    }
+    .model-step-body strong { display: block; margin-bottom: 2px; }
+    .model-step-body span { font-size: 14px; color: rgba(255,255,255,.6); }
+    .model-diagram {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius); padding: 24px;
+      overflow-x: auto;
+    }
+    .model-diagram svg { max-width: 100%; }
+
+    /* ── PROPOSED SOLUTION ──────────────────────────────── */
+    .solution { background: var(--surface); }
+    .solution h2 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px); font-weight: 400; margin-bottom: 10px;
+    }
+    .solution-sub { color: var(--text-mid); margin-bottom: 40px; }
+    .capabilities { display: grid; gap: 18px; }
+    .cap {
+      display: grid; grid-template-columns: 40px 1fr;
+      gap: 16px; padding: 22px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .cap-icon {
+      width: 40px; height: 40px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-ink);
+    }
+    .cap h3 { font-size: 17px; margin-bottom: 4px; }
+    .cap p { font-size: 14px; color: var(--text-mid); margin: 0; }
+
+    /* ── PROOF & EVIDENCE ───────────────────────────────── */
+    .proof { background: var(--cream); }
+    .proof h2 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px); font-weight: 400; margin-bottom: 10px;
+    }
+    .proof-sub { color: var(--text-mid); margin-bottom: 40px; }
+    .evidence-list { display: grid; gap: 12px; }
+    .ev-item {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+    .ev-label {
+      flex-shrink: 0; font-size: 10px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 999px;
+      white-space: nowrap; margin-top: 2px;
+    }
+    .ev-label--proven  { background: #eef8f0; color: #1f4a2c; border: 1px solid #c7e6cf; }
+    .ev-label--observed{ background: #eef4fb; color: #1f3a52; border: 1px solid #c9ddf2; }
+    .ev-label--assumed { background: #fff6e6; color: #6a4b06; border: 1px solid #f3dca0; }
+    .ev-body { font-size: 15px; line-height: 1.5; }
+    .ev-source { font-size: 12px; color: var(--text-mid); margin-top: 4px; }
+
+    /* ── IMPLEMENTATION PLAN ────────────────────────────── */
+    .impl-plan { background: var(--surface); }
+    .impl-plan h2 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px); font-weight: 400; margin-bottom: 10px;
+    }
+    .impl-sub { color: var(--text-mid); margin-bottom: 40px; }
+    .phases { display: grid; gap: 2px; position: relative; }
+    .phases::before {
+      content: ''; position: absolute;
+      left: 20px; top: 20px; bottom: 20px;
+      width: 2px; background: var(--border);
+    }
+    .phase {
+      display: grid; grid-template-columns: 42px 1fr;
+      gap: 20px; padding: 20px 20px 20px 0;
+      position: relative;
+    }
+    .phase-num {
+      position: relative; z-index: 1;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--gold); color: var(--black);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .phase-body { padding-top: 8px; }
+    .phase-body h3 {
+      font-size: 18px; margin-bottom: 6px; display: flex;
+      align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .phase-goal { font-size: 14px; color: var(--text-mid); }
+    .phase-tags {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
+    }
+    .phase-tag {
+      font-size: 12px; padding: 2px 10px; border-radius: 999px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text-mid);
+    }
+
+    /* ── RISKS ──────────────────────────────────────────── */
+    .risks-section { background: var(--bg); }
+    .risks-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px); font-weight: 400; margin-bottom: 32px;
+    }
+    .risk-list { display: grid; gap: 10px; }
+    .risk-item {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+    .risk-icon { color: #b35c00; margin-top: 1px; flex-shrink: 0; }
+    .risk-body strong { display: block; margin-bottom: 3px; }
+    .risk-body span { font-size: 14px; color: var(--text-mid); }
+
+    /* ── THE ASK ────────────────────────────────────────── */
+    .the-ask {
+      background: linear-gradient(155deg, var(--navy) 0%, #1e3050 100%);
+      color: #fff; text-align: center;
+    }
+    .the-ask h2 {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 4vw, 46px); font-weight: 400;
+      color: #fff; max-width: 24ch; margin: 0 auto 20px;
+    }
+    .ask-sub { color: rgba(255,255,255,.7); max-width: 52ch; margin: 0 auto 36px; font-size: 17px; }
+    .ask-ctas { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+    .ask-meta { margin-top: 36px; font-size: 13px; color: rgba(255,255,255,.4); }
+
+    /* ── APPENDIX ───────────────────────────────────────── */
+    .appendix { background: var(--surface); }
+    .appendix h2 {
+      font-size: 22px; margin-bottom: 6px;
+    }
+    .appendix-sub { color: var(--text-mid); margin-bottom: 28px; }
+    .tab-bar {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .tab-btn {
+      appearance: none; background: none; border: none;
+      font-family: var(--font-body); font-size: 14px; font-weight: 500;
+      color: var(--text-mid); padding: 10px 16px;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -2px; transition: color .15s;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    }
+    .tab-btn:hover { color: var(--text); background: var(--bg); }
+    .tab-btn[aria-selected="true"] {
+      color: var(--text); border-bottom-color: var(--gold-deep);
+      background: none;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Appendix table ─────────────────────────────────── */
+    .data-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 14px; line-height: 1.5;
+    }
+    .data-table th {
+      text-align: left; font-weight: 700;
+      font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--text-mid); padding: 10px 14px;
+      border-bottom: 2px solid var(--border);
+      background: var(--bg);
+    }
+    .data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .data-table tr:hover td { background: var(--bg); }
+
+    /* label pills inside tables */
+    .pill {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 999px;
+    }
+    .pill--high   { background: #eef8f0; color: #1f4a2c; border: 1px solid #c7e6cf; }
+    .pill--medium { background: #fff6e6; color: #6a4b06; border: 1px solid #f3dca0; }
+    .pill--low    { background: #fef2f2; color: #7f1d1d; border: 1px solid #f9c3c3; }
+    .pill--open   { background: var(--bg); color: var(--text-mid); border: 1px solid var(--border); }
+    .pill--closed { background: #eef8f0; color: #1f4a2c; border: 1px solid #c7e6cf; }
+
+    /* accordions for FAQs */
+    .faq-list { display: grid; gap: 6px; }
+    details.faq {
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--bg);
+    }
+    summary.faq-q {
+      cursor: pointer; padding: 14px 18px; font-weight: 500; font-size: 15px;
+      list-style: none; display: flex; justify-content: space-between;
+      align-items: center; gap: 12px;
+    }
+    summary.faq-q::-webkit-details-marker { display: none; }
+    summary.faq-q::after {
+      content: '+'; font-size: 20px; font-weight: 300;
+      color: var(--text-mid); flex-shrink: 0;
+      transition: transform .2s;
+    }
+    details[open] summary.faq-q::after { content: '−'; }
+    .faq-a { padding: 0 18px 16px; font-size: 15px; color: var(--text-mid); }
+
+    /* req / spec blocks */
+    .req-section { margin-bottom: 28px; }
+    .req-section h3 { font-size: 16px; margin-bottom: 10px; }
+    .req-section ul { display: grid; gap: 6px; }
+    .req-section li {
+      font-size: 14px; padding-left: 18px; position: relative;
+      line-height: 1.5; color: var(--text);
+    }
+    .req-section li::before {
+      content: ''; position: absolute; left: 0; top: 8px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold-deep);
+    }
+
+    /* orca object chips */
+    .orca-objects { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .obj-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px;
+      background: var(--navy); color: #fff;
+      border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 500;
+      text-decoration: none;
+    }
+    .obj-chip:hover { background: var(--navy-mid); }
+
+    /* links panel */
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .link-card {
+      display: flex; flex-direction: column; gap: 6px;
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius); text-decoration: none;
+      background: var(--bg);
+      transition: box-shadow .15s;
+    }
+    .link-card:hover { box-shadow: var(--shadow-md); background: var(--surface); }
+    .link-card-title { font-weight: 700; font-size: 15px; color: var(--text); }
+    .link-card-desc  { font-size: 13px; color: var(--text-mid); }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    .site-footer {
+      background: var(--text); color: rgba(255,255,255,.7);
+      padding: 48px 0;
+    }
+    .footer-inner {
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+      gap: 20px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 12px; }
+    .footer-brand img { height: 40px; opacity: .7; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 16px; }
+    .footer-links a { font-size: 14px; color: rgba(255,255,255,.55); text-decoration: none; }
+    .footer-links a:hover { color: #fff; }
+    .footer-small { font-size: 12px; color: rgba(255,255,255,.3); margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ── SVG sprite ────────────────────────────────────── -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+      <symbol id="i-arrow-left"  viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+      <symbol id="i-check"       viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+      <symbol id="i-alert"       viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+      <symbol id="i-shield"      viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+      <symbol id="i-eye"         viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="i-layers"      viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+      <symbol id="i-target"      viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+      <symbol id="i-zap"         viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+      <symbol id="i-link"        viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+      <symbol id="i-file"        viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></symbol>
+      <symbol id="i-database"    viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 5v14c0 1.66-4 3-9 3s-9-1.34-9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></symbol>
+      <symbol id="i-code"        viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+      <symbol id="i-external"    viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- ── Header ────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="wrap">
+      <!-- logo: copy assets/design-dash-logo.svg into the pitch/ assets/ folder -->
+      <a class="brand" href="../index.html" aria-label="Design Dash — home">
+        <img src="assets/design-dash-logo.svg" width="100" height="47" alt="Design Dash">
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="../../case-studies.html">Case studies</a>
+        <!-- {PROTOTYPE_URL}: link to optional coded prototype if available -->
+        <a href="{PROTOTYPE_URL}" class="nav-pill" target="_blank">
+          View prototype <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ══════════════════════════════════════════════════
+         HERO
+         Source: scope.md › product/concept name,
+                 desired outcome, primary audience,
+                 dash-config.yaml › tier, start-date
+    ════════════════════════════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-h1">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <!-- {PRODUCT_NAME}: the product or concept name — this is the brand signal -->
+          <h2 class="hero-product-name hero-enter">{PRODUCT_NAME}</h2>
+          <span class="hero-overline hero-enter">Design Dash · {DASH_NAME}</span>
+
+          <!-- {HERO_HEADLINE}: one memorable headline (desired outcome phrased as achievement) -->
+          <h1 id="hero-h1" class="hero-enter-delay">{HERO_HEADLINE}</h1>
+
+          <!-- {HERO_SUB}: Help [audience] [achieve outcome] by [approach]. -->
+          <p class="hero-sub hero-enter-delay">{HERO_SUB}</p>
+
+          <div class="hero-ctas hero-enter-delay-2">
+            <!-- {ASK_CTA}: the primary decision ask -->
+            <a href="#ask" class="btn btn-primary">
+              {CTA_LABEL} <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+            </a>
+            <a href="#appendix" class="btn btn-ghost">View artifacts</a>
+          </div>
+
+          <div class="hero-meta hero-enter-delay-2">
+            <!-- {DASH_TIER}: express | standard | high-stakes -->
+            <span><span class="tier-pill">{DASH_TIER}</span></span>
+            <!-- {AUDIENCE}: primary user role -->
+            <span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-eye"/></svg> For {AUDIENCE}</span>
+            <!-- {DASH_DATE}: YYYY-MM-DD from dash-config.yaml -->
+            <span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-file"/></svg> {DASH_DATE}</span>
+            <!-- {OWNER}: designer name from dash-config.yaml -->
+            <span>Lead: {OWNER}</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-visual-inner">
+            <!-- {HERO_SVG}: replace with an inline SVG showing the product concept,
+                 before/after, or the mental model diagram. The case study wireframe
+                 SVGs work well here. Remove the placeholder div when you have SVG. -->
+            <div class="hero-visual-placeholder">
+              Insert product visual or before/after SVG here
+            </div>
+            <!-- {HERO_SVG} -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         FUTURE SCENE
+         Source: scope.md › desired outcome / vignette
+         ~80–150 words. Show the user in the better world.
+    ════════════════════════════════════════════════════ -->
+    <section class="future-scene" aria-labelledby="scene-h2">
+      <div class="wrap">
+        <p class="eyebrow reveal"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-eye"/></svg> The future state</p>
+        <h2 id="scene-h2" class="sr-only">Imagine</h2>
+        <!-- {FUTURE_SCENE}: 80–150 word vignette in the present tense. No hype. -->
+        <p class="scene-quote reveal">{FUTURE_SCENE}</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         CURRENT REALITY
+         Source: scope.md + P1 evidence
+    ════════════════════════════════════════════════════ -->
+    <section class="current-reality" aria-labelledby="reality-h2">
+      <div class="wrap">
+        <p class="eyebrow reveal"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-alert"/></svg> The current state</p>
+        <!-- {CURRENT_REALITY_HEADLINE}: contrast headline -->
+        <h2 id="reality-h2" class="reveal">{CURRENT_REALITY_HEADLINE}</h2>
+        <!-- {CURRENT_REALITY}: 2–3 sentence narrative of current friction -->
+        <p class="reveal" style="max-width:68ch; color: var(--text-mid);">{CURRENT_REALITY}</p>
+
+        <!-- {PAIN_POINTS}: add <li> items using the pattern below.
+             Each li gets the icon and the pain text. -->
+        <ul class="pain-list reveal">
+          <!--
+          PATTERN: copy and fill for each pain point
+          <li>
+            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-alert"/></svg>
+            {PAIN_POINT_TEXT}
+          </li>
+          -->
+          {PAIN_POINTS}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         WHY NOW
+         Source: scope.md + P1 opportunity sizing
+    ════════════════════════════════════════════════════ -->
+    <section class="why-now" aria-labelledby="now-h2">
+      <div class="wrap">
+        <p class="eyebrow reveal"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-zap"/></svg> Why now</p>
+        <h2 id="now-h2" class="reveal">The moment this became possible.</h2>
+        <!-- {WHY_NOW}: 2–4 sentences. Use "old constraint → new shift → opportunity" shape. -->
+        <p class="reveal" style="max-width:68ch; color:var(--text-mid);">{WHY_NOW}</p>
+
+        <div class="shift-row reveal">
+          <div class="shift-box shift-box--before">
+            <strong>Before</strong>
+            <!-- {SHIFT_BEFORE}: old constraint in 1–2 short sentences -->
+            {SHIFT_BEFORE}
+          </div>
+          <div class="shift-arrow">
+            <svg class="icon icon--lg" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </div>
+          <div class="shift-box shift-box--after">
+            <strong>Now</strong>
+            <!-- {SHIFT_NOW}: what changed that makes this possible -->
+            {SHIFT_NOW}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         MENTAL MODEL
+         Source: flow.md + P4 synthesis
+    ════════════════════════════════════════════════════ -->
+    <section class="mental-model on-dark" aria-labelledby="model-h2">
+      <div class="wrap">
+        <p class="eyebrow reveal"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-layers"/></svg> The mental model</p>
+        <h2 id="model-h2" class="reveal">A simple structure for understanding the problem.</h2>
+        <p class="section-sub reveal">
+          A good mental model is simple enough to explain in a hallway conversation.
+        </p>
+
+        <!-- {MODEL_NAME}: the named framework, e.g. "The Signal-to-Decision Model" -->
+        <div class="model-name reveal">{MODEL_NAME}</div>
+
+        <!-- {MODEL_STEPS}: add <li class="model-step"> items using the pattern below.
+             model-step-num = step number (1, 2, 3…)
+             model-step-body > strong = name
+             model-step-body > span  = description -->
+        <ul class="model-steps">
+          <!--
+          PATTERN: copy and fill for each model step
+          <li class="model-step reveal reveal-delay-{N}">
+            <div class="model-step-num">{N}</div>
+            <div class="model-step-body">
+              <strong>{STEP_NAME}</strong>
+              <span>{STEP_DESCRIPTION}</span>
+            </div>
+          </li>
+          -->
+          {MODEL_STEPS}
+        </ul>
+
+        <!-- {MODEL_SVG}: optional inline SVG diagram for the mental model.
+             Remove this div if no diagram is available. -->
+        <div class="model-diagram reveal">
+          {MODEL_SVG}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         PROPOSED SOLUTION
+         Source: requirements.md + wireframe
+    ════════════════════════════════════════════════════ -->
+    <section class="solution" aria-labelledby="solution-h2">
+      <div class="wrap">
+        <p class="eyebrow reveal"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-code"/></svg> Proposed solution</p>
+        <!-- {SOLUTION_HEADLINE}: "How we get there" style headline -->
+        <h2 id="solution-h2" class="reveal">{SOLUTION_HEADLINE}</h2>
+        <!-- {SOLUTION_SUB}: 1–2 sentence summary of the solution approach -->
+        <p class="solution-sub reveal">{SOLUTION_SUB}</p>
+
+        <!-- {CAPABILITIES}: add <div class="cap"> items using the pattern below.
+             cap-icon = choose a relevant symbol id from the sprite
+             h3 = capability name
+             p  = what it does + who it helps -->
+        <div class="capabilities">
+          <!--
+          PATTERN: copy and fill for each capability
+          <div class="cap reveal reveal-delay-{N}">
+            <div class="cap-icon">
+              <svg class="icon" aria-hidden="true"><use href="#i-{ICON}"/></svg>
+            </div>
+            <div>
+              <h3>{CAPABILITY_NAME}</h3>
+              <p>{CAPABILITY_DESCRIPTION}</p>
+            </div>
+          </div>
+          -->
+          {CAPABILITIES}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         PROOF & EVIDENCE
+         Source: assumptions.md + P1 evidence
+         Label each item: proven | observed | assumed
+    ════════════════════════════════════════════════════ -->
+    <section class="proof" aria-labelledby="proof-h2">
+      <div class="wrap">
+        <p class="eyebrow reveal"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-shield"/></svg> Proof &amp; evidence</p>
+        <h2 id="proof-h2" class="reveal">What we know, and what we're still learning.</h2>
+        <!-- {PROOF_SUB}: context sentence about evidence state -->
+        <p class="proof-sub reveal">{PROOF_SUB}</p>
+
+        <!-- {EVIDENCE_ITEMS}: add <div class="ev-item"> items using the pattern below.
+             ev-label classes: ev-label--proven | ev-label--observed | ev-label--assumed
+             ev-source = source + participant count or citation -->
+        <div class="evidence-list">
+          <!--
+          PATTERN: copy and fill for each evidence item
+          <div class="ev-item reveal">
+            <span class="ev-label ev-label--{LEVEL}">{LEVEL}</span>
+            <div class="ev-body">
+              {EVIDENCE_TEXT}
+              <div class="ev-source">{SOURCE}</div>
+            </div>
+          </div>
+          -->
+          {EVIDENCE_ITEMS}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         IMPLEMENTATION PLAN
+         Source: requirements.md + dash phasing
+    ════════════════════════════════════════════════════ -->
+    <section class="impl-plan" aria-labelledby="plan-h2">
+      <div class="wrap">
+        <p class="eyebrow reveal"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-target"/></svg> Implementation plan</p>
+        <h2 id="plan-h2" class="reveal">From idea to production, step by step.</h2>
+        <!-- {IMPL_SUB}: context about the staging approach -->
+        <p class="impl-sub reveal">{IMPL_SUB}</p>
+
+        <!-- {IMPL_PHASES}: add <div class="phase"> items using the pattern below.
+             phase-num = phase number (1–4)
+             h3 = "Phase N: Name"
+             phase-goal = one-sentence goal
+             phase-tags = key outputs as <span class="phase-tag"> -->
+        <div class="phases">
+          <!--
+          PATTERN: copy and fill for each phase
+          <div class="phase reveal reveal-delay-{N}">
+            <div class="phase-num">{N}</div>
+            <div class="phase-body">
+              <h3>Phase {N}: {PHASE_NAME}</h3>
+              <p class="phase-goal">{PHASE_GOAL}</p>
+              <div class="phase-tags">
+                <span class="phase-tag">{OUTPUT_1}</span>
+                <span class="phase-tag">{OUTPUT_2}</span>
+              </div>
+            </div>
+          </div>
+          -->
+          {IMPL_PHASES}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         RISKS & OPEN QUESTIONS
+         Source: assumptions.md (unvalidated) + ethics review
+    ════════════════════════════════════════════════════ -->
+    <section class="risks-section" aria-labelledby="risks-h2">
+      <div class="wrap">
+        <p class="eyebrow reveal"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-alert"/></svg> Risks &amp; open questions</p>
+        <h2 id="risks-h2" class="reveal">What we're watching.</h2>
+
+        <!-- {RISKS}: add <li class="risk-item"> items using the pattern below.
+             risk-body > strong = risk name
+             risk-body > span   = mitigation or validation plan -->
+        <ul class="risk-list">
+          <!--
+          PATTERN: copy and fill for each risk
+          <li class="risk-item reveal">
+            <svg class="icon risk-icon" aria-hidden="true"><use href="#i-alert"/></svg>
+            <div class="risk-body">
+              <strong>{RISK_NAME}</strong>
+              <span>{MITIGATION}</span>
+            </div>
+          </li>
+          -->
+          {RISKS}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         THE ASK
+         Source: scope.md › decision needed
+    ════════════════════════════════════════════════════ -->
+    <section class="the-ask on-dark" id="ask" aria-labelledby="ask-h2">
+      <div class="wrap">
+        <p class="eyebrow reveal"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-target"/></svg> The ask</p>
+        <!-- {ASK_HEADLINE}: specific, decision-forcing statement -->
+        <h2 id="ask-h2" class="reveal">{ASK_HEADLINE}</h2>
+        <!-- {ASK_SUB}: 1–2 sentences on why this decision is needed now -->
+        <p class="ask-sub reveal">{ASK_SUB}</p>
+        <div class="ask-ctas reveal">
+          <!-- {ASK_CTA}: the primary CTA label (e.g. "Approve prototype sprint") -->
+          <a href="mailto:?subject={DASH_NAME} — Pitch Site" class="btn btn-primary">
+            {ASK_CTA} <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </a>
+          <a href="#appendix" class="btn btn-ghost">Review the artifacts</a>
+        </div>
+        <!-- {DECISION_DATE}: optional — "Decision needed by YYYY-MM-DD" -->
+        <p class="ask-meta reveal">{DECISION_DATE}</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         APPENDIX
+         Source: all workshop artifacts
+    ════════════════════════════════════════════════════ -->
+    <section class="appendix" id="appendix" aria-labelledby="appendix-h2">
+      <div class="wrap">
+        <p class="eyebrow"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-database"/></svg> Appendix</p>
+        <h2 id="appendix-h2">Artifacts, decisions, and specs.</h2>
+        <p class="appendix-sub">The full evidence trail from the Design Dash.</p>
+
+        <nav class="tab-bar" role="tablist" aria-label="Appendix sections">
+          <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="tab-decisions"   id="tb-decisions">Decisions</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-faqs"        id="tb-faqs">FAQs</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-requirements" id="tb-requirements">Requirements</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-specs"       id="tb-specs">Specs</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-orca"        id="tb-orca">ORCA Artifacts</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-assumptions" id="tb-assumptions">Assumptions</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-ethics"      id="tb-ethics">Ethics &amp; Edge States</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-links"       id="tb-links">Links</button>
+        </nav>
+
+        <!-- ── Decisions ──────────────────────────────── -->
+        <div class="tab-panel active" id="tab-decisions" role="tabpanel" aria-labelledby="tb-decisions">
+          <table class="data-table">
+            <caption class="sr-only">Key design decisions</caption>
+            <thead>
+              <tr>
+                <th scope="col">Decision</th>
+                <th scope="col">Rationale</th>
+                <th scope="col">Phase</th>
+                <th scope="col">Alternatives</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- {DECISIONS_HTML}: one <tr> per key decision.
+                   Source: workshop notes + scope.md + concept scoring.
+                   PATTERN:
+                   <tr>
+                     <td>{DECISION}</td>
+                     <td>{RATIONALE}</td>
+                     <td>{PHASE}</td>
+                     <td>{ALTERNATIVES_CONSIDERED}</td>
+                   </tr> -->
+              {DECISIONS_HTML}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ── FAQs ───────────────────────────────────── -->
+        <div class="tab-panel" id="tab-faqs" role="tabpanel" aria-labelledby="tb-faqs">
+          <!-- {FAQS_HTML}: one <details class="faq"> per FAQ.
+               Source: assumptions.md open questions + stakeholder concerns.
+               PATTERN:
+               <details class="faq">
+                 <summary class="faq-q">{QUESTION}</summary>
+                 <p class="faq-a">{ANSWER}</p>
+               </details> -->
+          <div class="faq-list">
+            {FAQS_HTML}
+          </div>
+        </div>
+
+        <!-- ── Requirements ───────────────────────────── -->
+        <div class="tab-panel" id="tab-requirements" role="tabpanel" aria-labelledby="tb-requirements">
+          <!-- {REQUIREMENTS_HTML}: populated from requirements.md.
+               Use <div class="req-section"> + <h3> + <ul> + <li> pattern. -->
+          {REQUIREMENTS_HTML}
+        </div>
+
+        <!-- ── Specs ──────────────────────────────────── -->
+        <div class="tab-panel" id="tab-specs" role="tabpanel" aria-labelledby="tb-specs">
+          <!-- {SPECS_HTML}: key MCSFD specs or engineering handoff highlights.
+               Use the same req-section pattern or plain prose + code blocks. -->
+          {SPECS_HTML}
+        </div>
+
+        <!-- ── ORCA Artifacts ─────────────────────────── -->
+        <div class="tab-panel" id="tab-orca" role="tabpanel" aria-labelledby="tb-orca">
+          <h3 style="margin-bottom:12px">Objects modeled</h3>
+          <!-- {ORCA_HTML}: object chips + NOM summary + links to object guides.
+               PATTERN for chips:
+               <div class="orca-objects">
+                 <a href="{OBJECT_GUIDE_URL}" class="obj-chip">
+                   <svg class="icon icon--sm" aria-hidden="true"><use href="#i-database"/></svg>
+                   {OBJECT_NAME}
+                 </a>
+               </div>
+               Then include the NOM diagram SVG or description. -->
+          {ORCA_HTML}
+        </div>
+
+        <!-- ── Assumptions ────────────────────────────── -->
+        <div class="tab-panel" id="tab-assumptions" role="tabpanel" aria-labelledby="tb-assumptions">
+          <table class="data-table">
+            <caption class="sr-only">Assumptions register</caption>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Assumption</th>
+                <th scope="col">Type</th>
+                <th scope="col">Confidence</th>
+                <th scope="col">Validation method</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- {ASSUMPTIONS_ROWS}: one <tr> per row from assumptions.md.
+                   PATTERN:
+                   <tr>
+                     <td><code>{ID}</code></td>
+                     <td>{STATEMENT}</td>
+                     <td>{TYPE}</td>
+                     <td><span class="pill pill--{CONFIDENCE}">{CONFIDENCE}</span></td>
+                     <td>{VALIDATION_METHOD}</td>
+                     <td><span class="pill pill--{STATUS}">{STATUS}</span></td>
+                   </tr> -->
+              {ASSUMPTIONS_ROWS}
+            </tbody>
+          </table>
+
+          <h3 style="margin: 32px 0 12px">Metrics</h3>
+          <table class="data-table">
+            <caption class="sr-only">Success metrics</caption>
+            <thead>
+              <tr>
+                <th scope="col">Metric</th>
+                <th scope="col">Event / measure</th>
+                <th scope="col">Baseline</th>
+                <th scope="col">Target</th>
+                <th scope="col">Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- {METRICS_ROWS}: one <tr> per row from metrics.md.
+                   PATTERN:
+                   <tr>
+                     <td>{METRIC}</td>
+                     <td><code>{EVENT}</code></td>
+                     <td>{BASELINE}</td>
+                     <td>{TARGET}</td>
+                     <td>{SOURCE}</td>
+                   </tr> -->
+              {METRICS_ROWS}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ── Ethics & Edge States ───────────────────── -->
+        <div class="tab-panel" id="tab-ethics" role="tabpanel" aria-labelledby="tb-ethics">
+          <!-- {ETHICS_HTML}: key findings from ethics-review.md.
+               Use callout pattern or plain paragraphs. -->
+          {ETHICS_HTML}
+
+          <h3 style="margin: 28px 0 12px">Edge states</h3>
+          <table class="data-table">
+            <caption class="sr-only">Edge state matrix</caption>
+            <thead>
+              <tr>
+                <th scope="col">State</th>
+                <th scope="col">Page / surface</th>
+                <th scope="col">Behavior</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- {EDGE_STATES_HTML}: one <tr> per edge state from wireframe.
+                   PATTERN:
+                   <tr>
+                     <td>{STATE}</td>
+                     <td>{SURFACE}</td>
+                     <td>{BEHAVIOR}</td>
+                   </tr> -->
+              {EDGE_STATES_HTML}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ── Links ──────────────────────────────────── -->
+        <div class="tab-panel" id="tab-links" role="tabpanel" aria-labelledby="tb-links">
+          <div class="links-grid">
+            <!-- {PROTOTYPE_URL} -->
+            <a href="{PROTOTYPE_URL}" class="link-card" target="_blank">
+              <span class="link-card-title">
+                <svg class="icon icon--sm" aria-hidden="true"><use href="#i-code"/></svg>
+                Prototype
+              </span>
+              <span class="link-card-desc">Optional coded prototype, if produced</span>
+            </a>
+            <!-- {WIREFRAME_URL} -->
+            <a href="{WIREFRAME_URL}" class="link-card" target="_blank">
+              <span class="link-card-title">
+                <svg class="icon icon--sm" aria-hidden="true"><use href="#i-layers"/></svg>
+                Wireframe
+              </span>
+              <span class="link-card-desc">Annotated wireframe + edge states</span>
+            </a>
+            <!-- Add additional links here: object guides, Confluence, Jira, Condens -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────── -->
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="wrap">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="assets/design-dash-logo.svg" width="80" alt="Design Dash">
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="../index.html">Dashes index</a>
+          <a href="../../case-studies.html">Case studies</a>
+          <a href="{PROTOTYPE_URL}" target="_blank">Prototype <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external"/></svg></a>
+          <a href="{WIREFRAME_URL}" target="_blank">Wireframe <svg class="icon icon--sm" aria-hidden="true"><use href="#i-external"/></svg></a>
+        </nav>
+      </div>
+      <p class="footer-small">
+        <!-- {DASH_NAME}, {DASH_DATE}, {OWNER} -->
+        {DASH_NAME} · {DASH_DATE} · {OWNER} · Generated by Design Dash ({DASH_TIER} tier)
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Tab bar ─────────────────────────────────────── */
+    (function () {
+      var tabs = document.querySelectorAll('[role="tab"]');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var panelId = tab.getAttribute('aria-controls');
+          // deactivate all
+          tabs.forEach(function (t) {
+            t.setAttribute('aria-selected', 'false');
+            var p = document.getElementById(t.getAttribute('aria-controls'));
+            if (p) { p.classList.remove('active'); }
+          });
+          // activate selected
+          tab.setAttribute('aria-selected', 'true');
+          var panel = document.getElementById(panelId);
+          if (panel) { panel.classList.add('active'); }
+        });
+        // keyboard nav
+        tab.addEventListener('keydown', function (e) {
+          var siblings = Array.from(tab.parentElement.querySelectorAll('[role="tab"]'));
+          var idx = siblings.indexOf(tab);
+          if (e.key === 'ArrowRight') { siblings[(idx + 1) % siblings.length].focus(); }
+          if (e.key === 'ArrowLeft')  { siblings[(idx - 1 + siblings.length) % siblings.length].focus(); }
+        });
+      });
+    })();
+
+    /* ── Scroll reveal ───────────────────────────────── */
+    (function () {
+      if (!window.IntersectionObserver) return;
+      var els = document.querySelectorAll('.reveal');
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      els.forEach(function (el) { obs.observe(el); });
+    })();
+  </script>
+</body>
+</html>
