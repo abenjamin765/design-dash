@@ -18,6 +18,19 @@ set -euo pipefail
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_TARGET="${HOME}/.cursor/skills"
 CLAUDE_TARGET="${HOME}/.claude/skills"
+CLAUDE_COMMANDS="${HOME}/.claude/commands"
+# Slash commands installed for Claude Code (source files live in commands/)
+CLAUDE_COMMAND_NAMES=(
+  design-dash
+  pitch-site
+  orca-start
+  orca-workshop
+  orca-panel
+  orca-research-plan
+  orca-synthesize
+  orca-teach
+  wireframe
+)
 
 # ── Argument parsing ────────────────────────────────────────────────────────
 DRY_RUN=false
@@ -141,6 +154,53 @@ uninstall_from() {
   done < <(collect_skills "$REPO_DIR")
 }
 
+# ── Claude Code slash commands ───────────────────────────────────────────────
+link_commands() {
+  info "Installing slash commands to ${CLAUDE_COMMANDS}"
+  ensure_dir "$CLAUDE_COMMANDS"
+  local name src link
+  for name in "${CLAUDE_COMMAND_NAMES[@]}"; do
+    src="${REPO_DIR}/commands/${name}.md"
+    link="${CLAUDE_COMMANDS}/${name}.md"
+    if [[ ! -f "$src" ]]; then
+      log "skip (missing)  ${name}.md"
+      continue
+    fi
+    if [[ "$DO_UNINSTALL" == true ]]; then
+      if [[ -L "$link" ]]; then
+        local link_target
+        link_target="$(readlink "$link")"
+        if [[ "$link_target" == "$src" || "$link_target" == "$REPO_DIR"/* ]]; then
+          if [[ "$DRY_RUN" == true ]]; then
+            dry "rm $link"
+          else
+            rm "$link"
+            log "removed $link"
+          fi
+        fi
+      fi
+      continue
+    fi
+    if [[ -L "$link" && "$(readlink "$link")" == "$src" ]]; then
+      log "up-to-date  ${name}"
+      continue
+    fi
+    if [[ -L "$link" || -e "$link" ]]; then
+      if [[ "$DRY_RUN" == true ]]; then
+        dry "rm $link  (replace)"
+      else
+        rm "$link"
+      fi
+    fi
+    if [[ "$DRY_RUN" == true ]]; then
+      dry "ln -s $src $link"
+    else
+      ln -s "$src" "$link"
+      log "linked  ${name} → $src"
+    fi
+  done
+}
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 printf '\n╔══════════════════════════════════════════════════════╗\n'
 printf   '║  design-dash installer%s\n' "$([ "$DRY_RUN" == true ] && echo " — DRY RUN" || echo "")"
@@ -150,18 +210,23 @@ printf 'Repo: %s\n' "$REPO_DIR"
 if [[ "$DO_UNINSTALL" == true ]]; then
   [[ "$DO_CURSOR" == true ]] && uninstall_from "$CURSOR_TARGET" "Cursor"
   [[ "$DO_CLAUDE" == true ]] && uninstall_from "$CLAUDE_TARGET" "Claude Code"
+  [[ "$DO_CLAUDE" == true ]] && link_commands
   printf '\nDone. Links removed.\n'
   exit 0
 fi
 
 [[ "$DO_CURSOR" == true ]] && install_to "$CURSOR_TARGET" "Cursor"
 [[ "$DO_CLAUDE" == true ]] && install_to "$CLAUDE_TARGET" "Claude Code"
+[[ "$DO_CLAUDE" == true ]] && link_commands
 
 printf '\n✓ Installation complete.\n'
 printf '  Cursor skills:      %s\n' "$CURSOR_TARGET"
 printf '  Claude Code skills: %s\n' "$CLAUDE_TARGET"
+printf '  Claude commands:    %s\n' "$CLAUDE_COMMANDS"
 printf '\nNext steps:\n'
-printf '  1. Start a dash: open Cursor or Claude Code and run /design-dash\n'
-printf '  2. Your dash outputs will appear in dashes/{slug}/\n'
-printf '  3. Object guides accumulate in library/objects/ across dashes\n'
-printf '  4. See README.md and AGENTS.md for full documentation\n'
+printf '  1. Restart Cursor / Claude Code so new skill + command links load\n'
+printf '  2. Start a dash: /design-dash (or /design-dash --solo)\n'
+printf '  3. Optional Node tooling: cd apps/dash-living-plan && npm install\n'
+printf '  4. Optional console: cd apps/dash-console && npm install && npm run dev\n'
+printf '  5. Artifacts land in dashes/{slug}/; object guides in library/objects/\n'
+printf '  6. See README.md, GETTING_STARTED.md, and AGENTS.md\n'

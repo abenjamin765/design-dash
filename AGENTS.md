@@ -42,17 +42,21 @@ Start the **Design Dash** (`skills/0-orchestration/design-dash`) or invoke the `
 It sequences the nine phases (P0–P8) and enforces the five mandatory gates.
 
 ```
-P0  Preconditions & tier classification
-P1  Opportunity & Evidence         ← skills/2-research/ (opportunity-framing, evidence-assembly)
-P2  Intake & Context               ← skills/1-intake/ (orca-project-intake)
-P3  Framing lock
-P4  Object Modeling                ← skills/3-object-modeling/ (01–12 ORCA steps)
-P5  Flow & IA synthesis            ← skills/4-synthesis-ia/scenario-flow-mapping
-P6  Divergence & Selection         ← skills/4-synthesis-ia/concept-divergence
-P7  Wireframe + Edge/Ethics/Equity ← skills/5-wireframing/ + skills/7-critique-testing/
-P8  Plan assembly                  ← orchestrator compiles requirements.md + summary.html
-                                     + optional publish via skills/8-documentation/ (config-driven)
+P0  Preconditions & tier classification (+ session-mode; solo High-stakes halt)
+P1  Opportunity & Evidence         ← skills/2-research/ (Evidence Gate)
+P2  Intake & Object Modeling       ← skills/1-intake/ + skills/3-object-modeling/
+P3  Framing lock                   ← design-spec.md §1–3
+P4  Flow & Reconciliation          ← skills/4-synthesis-ia/scenario-flow-mapping (Reconciliation Gate)
+P5  Divergence & Selection         ← skills/4-synthesis-ia/concept-divergence (Selection Gate)
+P6  Wireframe & Ethics             ← skills/5-wireframing/ + skills/7-critique-testing/ (Ethics Gate)
+P7  Optional Build                 ← stub note or coded prototype when workspace configured
+P8  Validate & Learn               ← research-plan → pitch-site → Learning Gate
+                                     (+ optional thin summary.html; optional mint-orca-adapter)
 ```
+
+Machine contract: `apps/dash-living-plan/contract/dash-contract.mjs` (aligned with `method/method.yaml`).
+Living plan (optional Node): `node apps/dash-living-plan/cli.mjs` with `--dir dashes/{slug}`.
+Console (optional Node): `apps/dash-console`.
 
 ### Single-purpose work
 
@@ -68,7 +72,7 @@ skills/<stage>/<skill>/SKILL.md
 
 | Stage | Path | Skills |
 |---|---|---|
-| **0-orchestration** | `skills/0-orchestration/` | `design-dash` (orchestrator spine), `design-dash-revision`, `facilitation-kit` |
+| **0-orchestration** | `skills/0-orchestration/` | `design-dash` (orchestrator spine), `dash-living-plan`, `pitch-site`, `design-dash-revision`, `facilitation-kit` |
 | **1-intake** | `skills/1-intake/` | `orca-project-intake`, `orca-planner` |
 | **2-research** | `skills/2-research/` | `opportunity-framing`, `evidence-assembly`, `ux-research-planner`, `ux-research-synthesizer`, `research-plan-builder` |
 | **3-object-modeling** | `skills/3-object-modeling/` | `01-object-discovery` … `12-shapeshifter-matrix-builder`, `ooux-primer`, `ooux-ctas`, `ooux-relationships`, `ooux-advanced-modeling`, `ooux-object-thinking`, `user-story-writer`, `engineering-handoff`, `cross-object-artifacts`, `case-study-writer` |
