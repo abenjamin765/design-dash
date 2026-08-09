@@ -14,12 +14,12 @@ node_modules/
 .venv/
 __pycache__/
 
-# dashes/ holds user project artifacts produced by a dash run.
-# We keep dashes/.gitkeep so the directory is tracked. If you would rather
-# not commit generated dash outputs, uncomment the lines below to ignore
-# everything except the .gitkeep:
-# dashes/*
-# !dashes/.gitkeep
+# dashes/ holds user project artifacts produced by a dash run. This is an
+# open-source, business-agnostic repository, so dash outputs are NOT committed
+# here — they belong in the consuming workspace's own private repository.
+# Only dashes/.gitkeep is tracked.
+dashes/*
+!dashes/.gitkeep
 
 # Workspace-local configuration (business-specific overrides stay out of the OSS repo)
 dash.config.json

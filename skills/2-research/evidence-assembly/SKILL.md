@@ -27,8 +27,14 @@ The designer may use any tool to store research (a spreadsheet, Notion, Dovetail
 
 ## Checkpoint 1 — Evidence inventory (WAIT FOR USER)
 
-Ask the user:
-- "What research exists for this problem? (session notes, analytics reports, prior usability tests, interview summaries, support tickets…)"
+**Before asking:** Check `dash.config.json` at the repo root for an `evidence` block. If present:
+
+1. Read `evidence.dispositionRegistryPath` — scan for promoted, merged, deferred, and out-of-scope entries relevant to the in-scope ORCA objects. Present any relevant dispositions as starting context.
+2. Scan `evidence.researchAnnexPath` and `evidence.researchObjectsPath` — list any research files whose name matches an in-scope object slug or domain keyword. These are pre-existing sources the designer may not have mentioned.
+3. Present the pre-indexed sources to the designer: "I found these existing research sources — which are relevant to this dash?"
+
+Then ask the user:
+- "What additional research exists for this problem? (session notes, analytics reports, prior usability tests, interview summaries, support tickets…)"
 - "What's the Dash tier? (Express / Standard / High-stakes)" — drives how aggressively to surface evidence debt.
 - "Which ORCA objects are in scope? I'll key the evidence to them."
 - "Share your research notes in any format — paste directly, point to a file, or describe what you have."

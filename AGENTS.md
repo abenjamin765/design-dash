@@ -6,7 +6,23 @@ Cross-agent entry point for the **Design Dash** library. Every agent (Cursor, Cl
 
 ## What this library is
 
-A business-agnostic, open-source library of OOUX/ORCA design skills, organized by workflow stage (**intake → plan**). Skills are written for any product domain and follow the OOUX/ORCA method and the Design Dash nine-phase model (P0–P8). A dash ends at a **PLAN** — not a shipped product — and produces a complete, portable artifact set any engineer or designer can build from.
+A business-agnostic, open-source library of OOUX/ORCA design skills, organized by workflow stage (**intake → plan**). Skills are written for any product domain and follow the OOUX/ORCA method and the Design Dash nine-phase model (P0–P8). A dash ends at a **Design Plan** — not a shipped product — and produces a complete, portable artifact set any engineer or designer can build from.
+
+---
+
+## Naming disambiguation
+
+Three "plan" concepts can coexist in a workspace. Do not conflate them:
+
+| Term | Produced by | Output | Next step |
+|---|---|---|---|
+| **Design Plan** | Design Dash (P8) | `requirements.md` + `wireframe.html` + `summary.html` | Engineering Handoff → your design system |
+| **OOUX Workflow Plan** | ORCA Planner skill | `dashes/{slug}/orca-plan.md` | Guides which ORCA skills to run and in what order |
+| **Implementation Plan** | Superpowers `writing-plans` skill | `docs/superpowers/plans/…` | Developer execution guide for a specific feature/refactor |
+
+Use "Design Plan" when referring to the primary Design Dash output. Never use "plan" ambiguously when context spans more than one system.
+
+---
 
 See [`README.md`](./README.md), [`CONTRIBUTING.md`](./CONTRIBUTING.md), and [`AGENTS.md`](./AGENTS.md).
 
@@ -98,14 +114,16 @@ These skills fire across multiple stages. Load them when the Design Dash or a st
 
 ## Local Object Library
 
-The object library lives at `library/objects/` in this repo.
+The object library defaults to `library/objects/` in this repo. A workspace-local `dash.config.json` may redirect it to an external location (e.g. a Mintlify docs repo).
 
-- Object guides are generated during dashes via the `05-object-guide-builder` skill and written to `library/objects/`.
+When a workspace redirects the library, that external location is canonical — never write to `library/objects/` directly in that workspace.
+
+- Object guides are generated during dashes via the `05-object-guide-builder` skill.
 - The library **accumulates across dashes** — objects discovered in one dash are available to future dashes.
-- Access via `skills/_cross-cutting/object-library-context` — read that skill for usage instructions.
-- Index: `library/objects/_index.md` — read this first to find guides by domain or object name.
+- Access via `skills/_cross-cutting/object-library-context` — that skill reads `dash.config.json` first and resolves the correct path.
+- Index: resolved from `library.indexPath` in `dash.config.json` (or `library/objects/_index.md` fallback).
 
-Never copy object guide content into skill files. Always reference `library/objects/` at runtime.
+Never copy object guide content into skill files. Always reference the library at runtime.
 
 ---
 

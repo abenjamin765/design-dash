@@ -92,13 +92,19 @@ Act as a technical architect who understands OOUX. You will:
 
 ### Object Card → Component
 
-| OOUX Element | Component Translation |
-|---|---|
-| Object Card | `<ProjectCard />` |
-| Card in list context | `<ProjectList />` → maps `<ProjectCard />` |
-| Detail page | `<ProjectDetail />` |
-| Nested object list | `<TaskList />` nested in `<ProjectDetail />` |
-| CTA button | `<AssignButton />` or action handler |
+When a workspace `stack.stackFile` is present, check it for the domain-specific card recipe before creating a new component. A workspace may also supply a component-mapping overlay that resolves each generic name to a concrete import in its own design system.
+
+| OOUX Element | Generic translation | Resolved from the workspace overlay |
+|---|---|---|
+| Hub object card | `<{Object}Card />` | Shared object card with `card` and `row` variants |
+| Domain object card | `<{Object}Card />` | Domain card recipe from the design system's cards directory |
+| Card in list context | `<{Object}List />` → maps `<{Object}Card />` | CSS grid of the shared or domain card |
+| Detail page | `<{Object}Detail />` | Next.js `page.tsx` with object data |
+| Nested object list | `<{Nested}List />` in detail | Nested card grid within the detail page |
+| Primary CTA (P) | `<PrimaryButton />` | `Button` variant=`default` |
+| Secondary CTA (S) | `<SecondaryButton />` | `Button` variant=`outline` |
+| Tertiary CTA (T) | `<TertiaryButton />` | `Button` variant=`ghost` |
+| Quick CTA (Q) | `<IconButton />` | `Button` variant=`ghost` size=`icon` + `aria-label` |
 
 ## Collaboration Flow
 
@@ -110,6 +116,10 @@ Act as a technical architect who understands OOUX. You will:
 - The full system (all objects in the directory)
 
 ### Checkpoint 2: Tech Stack (WAIT FOR USER)
+
+**Before asking:** Check `dash.config.json` at the repo root for a `stack.stackFile` entry. If present, read that file and use it as the default stack context — present the defaults to the designer and ask only for confirmation or deviations rather than asking from scratch.
+
+If no `stack.stackFile` is configured, ask:
 
 "What's your tech stack? This affects the format of the specs."
 - **Backend**: Node/Express, Python/Django, Java/Spring, Ruby/Rails, Go, other
