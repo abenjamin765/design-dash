@@ -150,6 +150,6 @@ A **{Object Name}** is {one-sentence plain-language definition that distinguishe
 ## See Also
 
 * [Object Library](../) - All objects at a glance
-* [Glossary](../../templates/glossary.md) - OOUX terminology
+* [Glossary](../glossary.md) - OOUX terminology
 * {Links to related Object Guides}
 * {Links to project artifacts that reference this object}
