@@ -2,7 +2,7 @@
 id: user-story-writer
 title: User Story Writer
 stage: 3-object-modeling
-version: "0.1.0"
+version: "0.2.0"
 orca_round: supporting
 orca_pillar: ctas
 orca_step: 0
@@ -72,10 +72,26 @@ The critical difference from traditional user stories: **always include the dire
 **Object-Oriented (precise)**:
 > As a **Manager**, I want to **assign** a **Task** to a **User** so that the work has a clear owner and deadline.
 
-The format:
-> As a **[Role]**, I want to **[CTA verb]** a **[OBJECT]** so that **[outcome]**.
+The format is **Who / What / Why / When** — four slots, each load-bearing:
+
+| Slot | Question | Source |
+|---|---|---|
+| **Who** | Which role, with which permission profile? | CTA Matrix roles |
+| **What** | Which object is acted on, via which CTA verb? | CTA Matrix |
+| **Why** | What outcome does the user get? | Object Guide purpose |
+| **When** | Under which conditions is the action authorized — validation rules, state preconditions, permission checks? | Business rules + MCSFD specs |
+
+The **When** slot is what separates build-ready stories from backlog filler. Traditional stories stop at "so that" and force engineers to guess system states, permissions, and constraints. Every story must answer: *under what conditions does this action succeed, and what happens when they aren't met?*
 
 Notice: the direct object (Task) and the relationship target (User) are both specified.
+
+### UIM Intake Gate
+
+Before writing stories for a feature area, frame it with the Universal Idea Model sentence:
+
+> An **[object]** for **[class of users]** that **[does something]** in order to **[achieve a goal]**. Users benefit by **[getting something back]** when **[they are in a specific situation]**.
+
+If any slot cannot be filled from existing artifacts, stop and resolve it — an unfillable slot marks a gap in intake, not a wording problem. Record the UIM sentence at the top of the story set; it anchors every downstream story.
 
 ### Generating Stories from CTAs
 
@@ -134,6 +150,8 @@ For each object, present generated stories:
 - When: The Manager selects "Add to Project" on the User card
 - Then: The User appears on the Project membership list
 
+**When-clause check**: does the story state what happens when conditions are NOT met (User suspended → action hidden or blocked with explanation)? If not, add the failure-path criterion — engineers build what is written, not what was implied.
+
 "Do these criteria match your understanding?"
 
 ### Checkpoint 4–5: Review & Publish (WAIT FOR USER)
@@ -151,11 +169,14 @@ For each object, present generated stories:
 
 **Priority**: {P/S/T/Q} | **Actor**: {Role} | **CTA Source**: CTA Matrix
 
+**UIM anchor**: {the Universal Idea Model sentence for this feature area}
+
 **Acceptance Criteria**:
 - Given: {precondition from business rules}
 - When: {user performs the CTA}
 - Then: {expected result from MCSFD specs}
 - And: {additional constraints}
+- But when: {condition not met → expected failure-path behavior}
 
 **MCSFD Context**:
 - Mechanics: {inline/linked/embedded}

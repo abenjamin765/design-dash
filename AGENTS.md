@@ -92,7 +92,7 @@ skills/<stage>/<skill>/SKILL.md
 | **5-wireframing** | `skills/5-wireframing/` | `wireframing` |
 | **7-critique-testing** | `skills/7-critique-testing/` | `adversarial-panel`, `a11y-audit`, `usability-validation`, `learning-loop`, `ethics-equity-review`, `privacy-gate` |
 | **8-documentation** | `skills/8-documentation/` | `mint-orca-adapter` (publish P8 artifacts to a Mintlify docs site; optional, config-driven) |
-| **_cross-cutting** | `skills/_cross-cutting/` | `object-library-context`, `artifact-validator`, `evidence-and-assumptions`, `voice-and-style`, `stop-slop`, `ui-interaction` |
+| **_cross-cutting** | `skills/_cross-cutting/` | `object-library-context`, `artifact-validator`, `evidence-and-assumptions`, `voice-and-style`, `stop-slop`, `ui-interaction`, `object-graph-export` |
 
 ---
 
@@ -109,6 +109,7 @@ These skills fire across multiple stages. Load them when the Design Dash or a st
 | `voice-and-style` | P7 label/copy review; any time new UI copy is introduced. |
 | `stop-slop` | Before finalizing any AI-produced artifact — removes vague filler and unsupported assertions. |
 | `ui-interaction` | When wireframing interaction patterns — maps generic component behaviors. |
+| `object-graph-export` | After P4 (or standalone) — exports `library/objects/` to a validated property graph (`library/graph.json`) so agents can query accumulated objects across dashes. |
 
 ---
 
@@ -141,6 +142,7 @@ Shared artifact templates live in `templates/`. Instantiate per project into `da
 | `templates/sign-off-ledger.md` | Discipline × gate × real/simulated status — the confidence register |
 | `templates/dash-config.yaml` | Dash identity, tier, mandatory gates, and default thresholds |
 | `templates/requirements.md` | Complete product requirements spec (context, goals, objects, flows, acceptance criteria) |
+| `templates/prioritization-report.md` | Kano tallies, Better/Worse coefficients, RICE table, triage verdicts (P4.7) |
 | `templates/summary.html` | Self-contained HTML plan summary — the centerpiece dash deliverable |
 
 ---

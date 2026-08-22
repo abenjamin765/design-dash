@@ -49,6 +49,14 @@ All product UI copy must satisfy:
 
 ---
 
+## Content-first rules (specs and wireframes)
+
+1. **Real content over placeholder text** — wireframes and specs carry representative content ("Plan review: submitted Tue 9:14 AM by Maya R."), never lorem ipsum or "text goes here." Placeholder text hides layout breakage: overlong names, wrapped labels, truncated numbers. Only genuinely unknown copy may be marked `{TBD: describe what belongs here}`.
+2. **Skim-reader formatting for artifact prose** — practitioners scan documentation looking for what's relevant now. Paragraphs ≤ 3 sentences (~50–75 characters per line), descriptive headings as waypoints, bullets over prose where a list exists in the content.
+3. **Start from verified user needs** — every user-facing string answers a task need ("what does this let me do / recover from?"), not an internal org term.
+
+---
+
 ## Artifact voice
 
 Design artifacts (object guides, requirements, skill docs, workshop outputs) should sound like a thoughtful, senior designer who respects readers as colleagues:
@@ -136,6 +144,7 @@ Before finalizing **any copy**, confirm:
 **Specificity**
 - [ ] Claims are grounded (evidence, specific design choice, or named tradeoff)?
 - [ ] No vague generalities ("improves the experience," "seamless")?
+- [ ] No placeholder text where representative content belongs?
 
 **Positive framing**
 - [ ] Desired practice named before what to avoid?

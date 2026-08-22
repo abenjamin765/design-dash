@@ -2,7 +2,7 @@
 id: engineering-handoff
 title: Engineering Handoff
 stage: 3-object-modeling
-version: "0.1.0"
+version: "0.2.0"
 orca_round: supporting
 orca_pillar: cross-object
 orca_step: 0
@@ -69,6 +69,13 @@ Act as a technical architect who understands OOUX. You will:
 | Priority (Integer) | `priority INT` |
 | Description (Text, Optional) | `description TEXT` |
 
+**Schema strictness rules** — a spec that leaves types to the implementer is not a spec:
+
+1. **Every attribute gets an exact primitive type** (text, integer, boolean, datetime, enum, list). "String-ish" is not a type.
+2. **Every natural key gets a unique constraint** — state it explicitly (`UNIQUE(user_id, project_id)`), because duplicate-prevention during data merges depends on it.
+3. **Instance scale travels with the schema**: copy `average_instances` and `max_instances` from the Object Guide next to each table. Architects size indexes, pagination, and partitioning from these numbers — they cannot infer them.
+4. **Nullability is a decision, not a default**: every column is explicitly `NOT NULL` or justified-nullable with the reason.
+
 ### Relationships → Data Model
 
 | OOUX Relationship | Data Model Translation |
@@ -78,6 +85,8 @@ Act as a technical architect who understands OOUX. You will:
 | 1:1 (User → Profile) | Embedded or separate table with unique FK |
 | Dependency: Required | `NOT NULL` constraint on FK |
 | Dependency: Cascade delete | `ON DELETE CASCADE` |
+
+Every relationship row must carry its full MCSFD spec (mechanics · cardinality · sort · filter · dependency). A relationship missing any of the five is flagged as incomplete, not silently translated.
 
 ### CTAs → API Endpoints
 
@@ -105,6 +114,29 @@ When a workspace `stack.stackFile` is present, check it for the domain-specific 
 | Secondary CTA (S) | `<SecondaryButton />` | `Button` variant=`outline` |
 | Tertiary CTA (T) | `<TertiaryButton />` | `Button` variant=`ghost` |
 | Quick CTA (Q) | `<IconButton />` | `Button` variant=`ghost` size=`icon` + `aria-label` |
+
+### Structural boundaries (SOLID notes for the spec)
+
+Include a short boundary-guidance section so the spec survives growth. Two principles matter most at handoff:
+
+- **Single Responsibility**: one object guide describes one thing's data — keep persistence, rendering, and notification logic out of its core service. If the spec shows `BookService` also saving files and sending emails, split it and name the parts.
+- **Open/Closed for variants**: where the Shapeshifter Matrix defines object variants, specify extension points (interface + per-variant implementation) rather than conditional branches the team must modify every time a variant is added.
+
+Keep this section advisory — it guides architecture review; it does not prescribe class names.
+
+## Completeness Checklist (before publish)
+
+Run before Checkpoint 6. Any unchecked row is an open question routed to `assumptions.md`, not a silent gap:
+
+- [ ] Every attribute has an exact primitive type
+- [ ] Every natural key has a stated unique constraint
+- [ ] Instance scale (`average_instances` / `max_instances`) present per table
+- [ ] Nullability explicit per column
+- [ ] Every relationship carries all five MCSFD properties
+- [ ] Delete lifecycle defined for every relationship (cascade / orphan / restrict)
+- [ ] Every CTA maps to exactly one endpoint with auth roles named
+- [ ] Failure paths named for authorization-relevant CTAs (what happens when the When-clause fails)
+- [ ] Boundary notes included (SRP splits, variant extension points)
 
 ## Collaboration Flow
 

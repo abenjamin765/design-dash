@@ -63,6 +63,8 @@ Each step in the Representation round directly addresses one of the Four Ancient
 | `case-study-writer` | Case Study Writer | Write engaging project case studies from OOUX artifacts |
 | `ux-research-planner` | UX Research Planner | Plan moderated and unmoderated UX research studies aligned to ORCA phases |
 | `ux-research-synthesizer` | UX Research Synthesizer | Analyze research data using ORCA-aligned coding and produce artifact update recommendations |
+| `kano-prioritization` | Kano Prioritization | Customer-evidenced attribute/CTA prioritization: Kano surveys, Better/Worse coefficients, RICE mapping |
+| `object-graph-export` | Object Graph Export | Export the object library as a validated property graph (graph.json) for agent queryability |
 | `adversarial-panel` | Adversarial Panel | Convene an expert panel to challenge and defend an artifact, then synthesize a Decision Memo |
 
 ## Local Object Library
@@ -84,6 +86,8 @@ Access the library via the `object-library-context` skill in `skills/_cross-cutt
 - User mentions attributes, properties, fields → suggest **04 Object Map Builder** or **08 Attribute Prioritization**
 - User wants a comprehensive reference for one object → suggest **05 Object Guide Builder**
 - User mentions prioritizing or ranking CTAs, button placement → suggest **07 CTA Prioritization**
+- User wants evidence-based prioritization, Kano surveys, RICE scoring, or must-have vs delighter classification → suggest **kano-prioritization**
+- User wants the object library queryable by agents, a knowledge graph export, or cross-dash object search → suggest **object-graph-export**
 - User wants user stories → suggest **user-story-writer**
 - User mentions navigation, page flow, information architecture → suggest **10 Nav Flow Designer**
 - User mentions cards, list views, detail pages, distinct objects → suggest **09 Object Card Designer**

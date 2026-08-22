@@ -46,6 +46,18 @@ Never skip a collaboration checkpoint defined in a skill. Checkpoints exist to k
 - Make up attributes, CTAs, or examples the user hasn't confirmed
 - Produce a final artifact without the user reviewing the draft first
 
+## Destructive Actions — Severity-Scoped Confirmation
+
+Scale confirmation friction to what the action destroys:
+
+| Severity | Examples | Required confirmation |
+|---|---|---|
+| Mild | Overwriting one dash artifact with reviewed content | State what changed; proceed |
+| Moderate | Deleting a dash folder, resetting an artifact to template | Ask yes/no before acting |
+| Severe | Deleting or overwriting `library/objects/` guides, bulk-deleting across dashes | User must type the object/slug name to confirm (or pass `--confirm "{name}"` when scripted) |
+
+Never treat "the user asked for cleanup" as license to skip severity rules. When uncertain which tier applies, ask.
+
 ## Output Paths
 
 All dash outputs go to `dashes/{slug}/` — never write files outside that directory unless a skill explicitly directs otherwise (e.g. object guides go to `library/objects/`).

@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Design Dash Object Graph",
+  "description": "Validated export format for the local object library. Derived from library/objects/*.md — never hand-edited.",
+  "type": "object",
+  "required": ["graph_version", "generated_at", "nodes", "edges"],
+  "properties": {
+    "graph_version": { "type": "string", "const": "1.0" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "source_library": { "type": "string", "default": "library/objects" },
+    "nodes": { "type": "array", "items": { "$ref": "#/definitions/node" } },
+    "edges": { "type": "array", "items": { "$ref": "#/definitions/edge" } }
+  },
+  "definitions": {
+    "node": {
+      "type": "object",
+      "required": ["id", "type", "name", "provenance"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^(object|attribute|cta|role|dash|decision)-[a-z0-9-]+$" },
+        "type": { "enum": ["object", "attribute", "cta", "role", "dash", "decision"] },
+        "name": { "type": "string", "minLength": 1 },
+        "domain": { "type": "string" },
+        "definition": { "type": "string" },
+        "content_class": { "enum": ["core-content", "metadata"] },
+        "attribute_type": { "type": "string", "description": "For attribute nodes: text, integer, boolean, datetime, enum, list, etc." },
+        "required": { "type": "boolean" },
+        "priority_tier": { "enum": ["P", "S", "T", "Q"], "description": "For CTA nodes: force-ranked tier from CTA prioritization." },
+        "average_instances": { "type": "integer", "minimum": 0 },
+        "max_instances": { "type": "integer", "minimum": 0 },
+        "statement": { "type": "string", "description": "For decision nodes: the decision in one sentence." },
+        "rationale": { "type": "string" },
+        "provenance": { "$ref": "#/definitions/provenance" }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "required": ["from", "to", "type", "provenance"],
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "ASSOCIATED_WITH" } } },
+          "then": {
+            "required": ["mechanics", "cardinality", "sort", "filter", "dependency"],
+            "properties": {
+              "mechanics": { "type": "string", "description": "user-triggered | automated | api" },
+              "cardinality": { "type": "string", "description": "e.g. 1-to-1, 1-to-many, many-to-many" },
+              "sort": { "type": "string" },
+              "filter": { "type": "string" },
+              "dependency": { "type": "string", "description": "Delete lifecycle: cascade-delete | orphan-preserve | restrict" }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "from": { "type": "string", "pattern": "^(object|attribute|cta|role|dash|decision)-[a-z0-9-]+$" },
+        "to": { "type": "string", "pattern": "^(object|attribute|cta|role|dash|decision)-[a-z0-9-]+$" },
+        "type": {
+          "enum": [
+            "HAS_ATTRIBUTE",
+            "HAS_CTA",
+            "CAN_PERFORM",
+            "INHERITS_FROM",
+            "ASSOCIATED_WITH",
+            "DEFINED_IN",
+            "APPLIES_TO",
+            "SUPERSEDES"
+          ]
+        },
+        "provenance": { "$ref": "#/definitions/provenance" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source_dash", "extracted_at", "confidence"],
+      "properties": {
+        "source_dash": { "type": "string", "description": "Slug of the dash that produced or last touched this element." },
+        "extracted_at": { "type": "string", "format": "date-time" },
+        "confidence": { "enum": ["observed", "reported", "inferred", "assumed"] }
+      }
+    }
+  }
+}
