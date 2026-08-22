@@ -1,6 +1,6 @@
 # Kano Model (microlearning)
 
-**Surface at**: P4 quantitative prioritization, first use.
+**Surface at**: P2 quantitative prioritization, first use.
 
 The Kano model classifies every feature by how its **presence** and **absence** affect customer satisfaction. Five levels of answer to a paired question ("If you could X…" / "If you could NOT X…") sort each feature into one of five classes:
 

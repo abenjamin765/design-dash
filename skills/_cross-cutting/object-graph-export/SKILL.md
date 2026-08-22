@@ -9,7 +9,7 @@ description: >
   OOUX relationships as typed edges carrying MCSFD properties and provenance. Produces
   graph.json (JSON-schema-validated) plus an optional Cypher MERGE script for graph
   database import. Makes accumulated object knowledge queryable by AI agents across
-  dashes. Use at P4 wrap-up, or standalone to upgrade an existing library.
+  dashes. Use at P2 wrap-up, or standalone to upgrade an existing library.
 roles:
   - ux-designer
   - engineer
@@ -116,7 +116,7 @@ Provenance is what makes accumulation safe: a future dash can weigh a 2024 `assu
 - `graph.json` is plain data — any MCP tool, script, or agent can load it directly.
 - Natural-language queries become traversals: "Who can change an order?" → find role nodes, follow `CAN_PERFORM` → `HAS_CTA` → owning object.
 - When the library grows large, pair vector search over node definitions with exact graph traversal for requirements retrieval; embeddings narrow the field, edges deliver the precise facts.
-- Re-export after any P4 that touches the library. The export is derived state — never hand-edit `graph.json`; fix the guide and re-export.
+- Re-export after any P2 that touches the library. The export is derived state — never hand-edit `graph.json`; fix the guide and re-export.
 
 ---
 

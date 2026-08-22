@@ -21,14 +21,14 @@ Add new sources here **and** to the notebook so both stay in sync. When a skill 
 | [Assumption Mapping](https://www.designbetter.co/practices/assumption-mapping) (Design Better) | Classifying assumptions by importance vs evidence — basis of the assumptions register |
 | [RICE Prioritization](https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/) (Intercom) | Reach × Impact × Confidence ÷ Effort scoring used in P1 sizing and P4 RICE mapping |
 
-## P2–P3 — Intake & framing lock
+## P2–P3 — Facilitation & content design (cross-phase)
 
 | Source | Contribution |
 |---|---|
 | [GOV.UK content design guidance](https://www.gov.uk/guidance/content-design) | Start from verified user needs; plain English; content lifecycle management — feeds intake questions and voice-and-style |
 | [Design Sprint Kit](https://designsprintkit.withgoogle.com/resources/overview) (Google Ventures) | Facilitation structures for intake workshops (group mode) |
 
-## P4 — Object modeling
+## P2 — Intake & object modeling
 
 | Source | Contribution |
 |---|---|
@@ -39,21 +39,21 @@ Add new sources here **and** to the notebook so both stay in sync. When a skill 
 | [Event Storming](https://www.eventstorming.com/) (Alberto Brandolini) | Group noun-discovery warm-up alternative for P4.1 (workshop mode) |
 | [Domain Storytelling](https://domainstorytelling.org/) | Sentence-pattern elicitation of objects/actions — complement to noun foraging |
 
-## P5 — Flow & IA synthesis
+## P4 — Flow & reconciliation
 
 | Source | Contribution |
 |---|---|
 | [User Story Mapping](https://www.jpattonassociates.com/the-new-backlog/) (Jeff Patton) | Journey-spine derivation of page lists; narrative flow ordering |
 | [NN/g 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) (Nielsen Norman Group) | Heuristic lens for flow critique checkpoints |
 
-## P6 — Divergence & selection
+## P5 — Divergence & selection
 
 | Source | Contribution |
 |---|---|
 | [Design Sprint — Decide exercises](https://www.gv.com/sprint/) (GV / Jake Knapp) | Note-and-vote, art museum, straw poll — structured selection mechanics |
 | [QFD House of Quality / Pugh matrix coverage](https://foldingburritos.com/blog/product-prioritization-techniques/) (via Folding Burritos) | Importance × relationship scoring for weighted concept comparison |
 
-## P7 — Wireframe & critique
+## P6 — Wireframe & ethics
 
 | Source | Contribution |
 |---|---|
@@ -62,7 +62,7 @@ Add new sources here **and** to the notebook so both stay in sync. When a skill 
 | [Microsoft Inclusive Design toolkit](https://inclusive.microsoft.design/) | Permanent-to-temporary persona spectrum behind equity review |
 | [UI-Patterns.com](https://ui-patterns.com/patterns) | Pattern vocabulary aligned with `ui-interaction` decision tree |
 
-## P8 — Plan assembly & handoff
+## P8 — Validate, learn & handoff
 
 | Source | Contribution |
 |---|---|

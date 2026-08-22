@@ -11,7 +11,7 @@ description: >
   functional/dysfunctional Kano surveys from Object Guide attributes and CTAs, computes
   Better/Worse satisfaction coefficients, maps them into RICE scores, and applies the
   Must-Be > Performance > Attractive > Indifferent triage. Produces prioritization-report.md.
-  Use at ORCA Step 8 / Design Dash P4, or to generate weighted criteria for P6 concept scoring.
+  Use at ORCA Step 8 / Design Dash P2 (object modeling), or to generate weighted criteria for P5 concept scoring.
 roles:
   - ux-designer
   - product-manager
@@ -152,7 +152,7 @@ Ask the designer to confirm each cut. Every eliminated item gets a dated note in
 
 ### Checkpoint 8 — Publish report (WAIT FOR USER)
 
-Write `dashes/{slug}/prioritization-report.md` from `templates/prioritization-report.md`. Include raw tallies, coefficients, RICE table, triage verdicts, sample sizes, and dates. This report feeds P6 concept scoring: weighted criteria come from validated priorities, not opinions.
+Write `dashes/{slug}/prioritization-report.md` from `templates/prioritization-report.md`. Include raw tallies, coefficients, RICE table, triage verdicts, sample sizes, and dates. This report feeds P5 concept scoring: weighted criteria come from validated priorities, not opinions.
 
 ---
 
@@ -175,4 +175,4 @@ Never present heuristic output with surveyed-output formatting. The substitution
 2. Updated `assumptions.md` — hypotheses validated/falsified by the survey; cuts recorded.
 3. Updated Object Guides — attributes re-tiered per triage verdicts.
 
-Return control to the orchestrator (P4 wrap-up) or caller.
+Return control to the orchestrator (P2 wrap-up) or caller.

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Dash — from fuzzy problem to buildable plan</title>
+<meta name="description" content="Design Dash is an open-source library of OOUX/ORCA design skills that runs designers and AI agents through a nine-phase workshop — P0 to P8 — ending at a complete, portable product plan.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='13' fill='%23ffffff' stroke='%235B6AF2' stroke-width='1.8'/%3E%3Cpolygon points='19,9 16.2,16.2 9,19 11.8,11.8' fill='%235B6AF2'/%3E%3Ccircle cx='14' cy='14' r='2' fill='%235B6AF2'/%3E%3C/svg%3E">
+<style>
+/* ── Tokens (brand system shared with dashes/index.html + templates/summary.html) ── */
+:root{
+  --color-bg:#ffffff;
+  --color-text:#1a1a2e;
+  --color-accent:#5B6AF2;
+  --color-accent-light:#eef0ff;
+  --color-border:#e2e4f0;
+  --color-muted:#6b7280;
+  --color-surface-alt:#f8f9fc;
+
+  --tier-express-bg:#dcfce7;    --tier-express-border:#86efac;    --tier-express-text:#166534;
+  --tier-standard-bg:#dbeafe;   --tier-standard-border:#93c5fd;   --tier-standard-text:#1e40af;
+  --tier-highstakes-bg:#ffedd5; --tier-highstakes-border:#fdba74; --tier-highstakes-text:#9a3412;
+
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+  --radius:8px;
+  --radius-lg:12px;
+  --shadow-sm:0 1px 3px rgba(26,26,46,.06),0 1px 2px rgba(26,26,46,.04);
+  --shadow-md:0 10px 30px rgba(91,106,242,.12),0 2px 6px rgba(26,26,46,.05);
+  --ghost:#e9ecfb;
+  --maxw:1120px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;font-family:var(--font);font-size:16px;line-height:1.65;color:var(--color-text);background:var(--color-bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{line-height:1.15;margin:0 0 .5em;letter-spacing:-.02em}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+ul,ol{margin:0;padding:0;list-style:none}
+code{font-family:var(--font-mono);font-size:.875em;background:var(--color-accent-light);color:#3d49c4;padding:.1em .38em;border-radius:4px}
+a{color:var(--color-text);text-decoration:none}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px;border-radius:3px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--color-text);color:#fff;padding:10px 16px;z-index:300;font-weight:600;border-radius:0 0 var(--radius) 0}
+.skip-link:focus{left:0}
+
+/* ── Header ── */
+.site-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--color-border)}
+.site-header .wrap{display:flex;align-items:center;gap:20px;min-height:58px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;letter-spacing:-.01em}
+.nav{margin-left:auto;display:flex;align-items:center;gap:22px}
+.nav a{font-size:14px;font-weight:600;color:var(--color-muted)}
+.nav a:hover{color:var(--color-text);text-decoration:underline;text-decoration-color:var(--color-accent);text-underline-offset:4px;text-decoration-thickness:2px}
+@media (max-width:720px){.nav a:not(.nav-cta){display:none}.nav a.nav-cta{background:var(--color-text);color:#fff;padding:7px 14px;border-radius:999px;font-size:13px}}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 26px;border-radius:var(--radius);font-family:var(--font);font-size:16px;font-weight:700;cursor:pointer;border:1px solid transparent;transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease,border-color .15s ease}
+.btn-primary{background:var(--color-text);color:#fff}
+.btn-primary:hover{background:#2b2b52;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-secondary{background:var(--color-bg);color:var(--color-text);border-color:var(--color-border)}
+.btn-secondary:hover{border-color:var(--color-accent);background:var(--color-accent-light)}
+
+/* ── Sections ── */
+section{padding:88px 0;border-top:1px solid var(--color-border)}
+section.alt{background:var(--color-surface-alt)}
+.sec-head{position:relative;margin-bottom:44px;max-width:780px}
+.sec-num{position:absolute;top:-54px;left:-10px;z-index:0;font-family:var(--font-mono);font-weight:700;font-size:clamp(76px,11vw,128px);line-height:1;color:var(--ghost);user-select:none}
+.kicker{position:relative;display:inline-block;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--color-muted);margin-bottom:14px}
+.sec-head h2{position:relative;z-index:1;font-size:clamp(26px,4vw,38px);font-weight:800}
+.sec-lede{position:relative;z-index:1;font-size:17px;color:var(--color-muted);max-width:64ch}
+
+/* ── Hero ── */
+.hero{padding:84px 0 72px;border-top:none}
+.hero h1{font-size:clamp(36px,6.4vw,62px);font-weight:800;letter-spacing:-.03em;max-width:15ch;margin-bottom:18px}
+.hero h1 em{font-style:normal;color:var(--color-accent)}
+.hero-lede{font-size:clamp(17px,2vw,20px);color:var(--color-muted);max-width:60ch;margin-bottom:32px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:26px}
+.hero-meta{font-family:var(--font-mono);font-size:13px;color:var(--color-muted)}
+.hero-meta span{white-space:nowrap}
+.hero-meta .sep{margin:0 10px;color:var(--color-border)}
+
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rise{animation:rise .55s cubic-bezier(.2,.7,.3,1) both}
+.rise:nth-child(2){animation-delay:.08s}.rise:nth-child(3){animation-delay:.16s}.rise:nth-child(4){animation-delay:.24s}
+
+/* Phase strip */
+.strip{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.strip-group{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:20px 18px 16px;box-shadow:var(--shadow-sm)}
+.strip-group-label{display:inline-flex;align-items:baseline;gap:8px;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--color-accent-light);color:var(--color-text);padding:4px 10px;border-radius:999px;margin-bottom:18px}
+.strip-group-label b{font-weight:400;color:var(--color-muted);letter-spacing:.06em}
+.strip ol{display:flex}
+.strip li{position:relative;flex:1;text-align:center;padding-top:44px}
+.strip li::before{content:'';position:absolute;top:15px;left:0;right:0;height:2px;background:var(--color-border)}
+.strip li:first-child::before{left:50%}
+.strip li:last-child::before{right:50%}
+.strip .dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:31px;height:31px;border-radius:50%;background:var(--color-bg);border:1.5px solid var(--color-accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--color-text)}
+.strip .plabel{display:block;font-size:11.5px;font-weight:600;line-height:1.3;color:var(--color-muted)}
+
+/* ── Install steps ── */
+.steps{counter-reset:step;display:grid;gap:16px;max-width:840px}
+.step{position:relative;background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:24px 26px 24px 78px;box-shadow:var(--shadow-sm)}
+.step::before{counter-increment:step;content:counter(step,decimal-leading-zero);position:absolute;left:24px;top:24px;width:36px;height:36px;border-radius:50%;background:var(--color-accent-light);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--color-text)}
+.step h3{font-size:18px;margin-bottom:6px}
+.step p{font-size:15px;color:var(--color-muted);max-width:58ch}
+.term{background:#1c1f24;color:#e8eaed;border-radius:var(--radius);padding:14px 18px;font-family:var(--font-mono);font-size:14px;line-height:1.7;overflow-x:auto;margin-top:14px}
+.term .t-cm{color:#98a2b3}
+.term .t-pr{color:#a5b4fc;user-select:none}
+.agent-note{margin-top:20px;max-width:840px;background:var(--color-accent-light);border-left:4px solid var(--color-accent);border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;font-size:15px}
+@media (max-width:560px){.step{padding:20px 20px 20px 66px}.step::before{left:18px;top:20px}}
+
+/* ── Process movements ── */
+.movements{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:56px}
+.movement{background:var(--color-bg);border:1px solid var(--color-border);border-top:3px solid var(--color-accent);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm)}
+.movement-tag{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4553d8}
+.movement h3{font-size:20px;margin:4px 0 14px}
+.movement ol{display:grid;gap:12px}
+.movement li+li{border-top:1px dashed var(--color-border);padding-top:12px}
+.movement .ph{display:block;font-size:14.5px;font-weight:700}
+.movement .ph code{background:none;color:var(--color-muted);font-weight:600;padding:0;font-size:.85em}
+.movement p{font-size:13.5px;color:var(--color-muted);line-height:1.55;margin-top:2px}
+.gate-flag{display:inline-block;margin-top:6px;font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text);background:var(--color-surface-alt);border:1px solid var(--color-border);border-radius:999px;padding:2px 8px}
+
+/* Gates */
+.sub-h{font-size:22px;font-weight:800;margin:0 0 6px}
+.sub-p{color:var(--color-muted);max-width:64ch;margin-bottom:24px}
+.gates{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:14px;margin-bottom:56px}
+.gate{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm)}
+.gate-ph{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--color-muted);text-transform:uppercase}
+.gate h3{font-size:15.5px;margin:6px 0 8px}
+.gate p{font-size:13.5px;color:var(--color-muted);line-height:1.55}
+
+/* Tiers */
+.tiers-note{font-family:var(--font-mono);font-size:13px;color:var(--color-muted);margin-bottom:24px}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:56px}
+.tier{border-radius:var(--radius-lg);border:1px solid;padding:22px;background:var(--color-bg)}
+.tier--express{border-color:var(--tier-express-border)}.tier--express .tier-badge{background:var(--tier-express-bg);border-color:var(--tier-express-border);color:var(--tier-express-text)}
+.tier--standard{border-color:var(--tier-standard-border)}.tier--standard .tier-badge{background:var(--tier-standard-bg);border-color:var(--tier-standard-border);color:var(--tier-standard-text)}
+.tier--highstakes{border-color:var(--tier-highstakes-border)}.tier--highstakes .tier-badge{background:var(--tier-highstakes-bg);border-color:var(--tier-highstakes-border);color:var(--tier-highstakes-text)}
+.tier-badge{display:inline-block;border:1px solid;border-radius:999px;padding:3px 12px;font-size:12px;font-weight:700;letter-spacing:.04em;margin-bottom:12px}
+.tier p{font-size:14px;color:var(--color-muted)}
+.tier .tier-gates{font-size:13.5px;color:var(--color-text);font-weight:600}
+
+.tier-badge--hs{background:var(--tier-highstakes-bg);border-color:var(--tier-highstakes-border);color:var(--tier-highstakes-text)}
+
+/* Evidence labels */
+.labels{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.label-card{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow-sm)}
+.label-card dt{font-family:var(--font-mono);font-size:13.5px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.label-card dt::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--color-accent);flex-shrink:0}
+.label-card dd{margin:0;font-size:13.5px;color:var(--color-muted);line-height:1.55}
+
+/* ── Artifacts ── */
+.artifacts{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.artifact{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow-sm);transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.artifact:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--color-accent)}
+.artifact-file{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.artifact-file code{background:var(--color-accent-light);color:var(--color-text);font-weight:700;font-size:12.5px}
+.artifact-tag{font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-muted);border:1px solid var(--color-border);border-radius:999px;padding:2px 7px;white-space:nowrap}
+.artifact p{font-size:13.5px;color:var(--color-muted);line-height:1.5}
+.artifact-foot{font-size:12.5px;color:var(--color-muted);margin-top:22px;font-style:italic}
+
+/* ── Case studies ── */
+.cases{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.case{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column}
+.case-bar{height:4px;background:linear-gradient(90deg,var(--color-accent),#8d97f6)}
+.case-body{padding:26px 28px 24px;display:flex;flex-direction:column;flex:1}
+.case-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px}
+.case h3{font-size:21px;margin:0}
+.case-domain{font-size:13.5px;color:var(--color-muted);margin-bottom:18px}
+.facts{border-top:1px solid var(--color-border);margin-bottom:18px}
+.facts li{display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:14px}
+.facts .n{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--color-accent);min-width:74px;font-variant-numeric:tabular-nums;line-height:1.2}
+.facts .n small{font-size:11px;font-weight:600;color:var(--color-muted);display:block}
+.case-proves{font-size:15px;margin-bottom:18px}
+.case-link{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--color-text);text-decoration:underline;text-decoration-color:var(--color-accent);text-decoration-thickness:2px;text-underline-offset:4px}
+.case-link:hover{text-decoration-color:var(--color-text)}
+.case-link-static{font-weight:600;color:var(--color-muted);text-decoration:none;font-size:13px}
+
+/* Score bars */
+.scores{margin:4px 0 18px;display:grid;gap:8px}
+.score-row{display:grid;grid-template-columns:118px 1fr 42px;align-items:center;gap:10px;font-size:12.5px}
+.score-name{font-weight:600;color:var(--color-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score-track{height:10px;background:var(--color-surface-alt);border:1px solid var(--color-border);border-radius:999px;overflow:hidden}
+.score-fill{display:block;height:100%;background:var(--color-border);border-radius:999px}
+.score-row.win .score-fill{background:var(--color-accent)}
+.score-row.win .score-name{color:var(--color-text);font-weight:700}
+.score-val{font-family:var(--font-mono);font-weight:700;text-align:right;color:var(--color-muted);font-variant-numeric:tabular-nums}
+.score-row.win .score-val{color:var(--color-accent)}
+
+/* ── Library ── */
+.lib-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+.lib-copy p{font-size:15.5px;color:var(--color-muted);max-width:56ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.chips li{font-family:var(--font-mono);font-size:12.5px;font-weight:600;background:var(--color-bg);border:1px solid var(--color-border);border-radius:999px;padding:5px 13px}
+.graph-card{background:#1c1f24;color:#e8eaed;border-radius:var(--radius-lg);padding:22px 24px;font-family:var(--font-mono);font-size:13px;line-height:1.75;overflow-x:auto}
+.graph-card .t-cm{color:#98a2b3}
+.graph-card .t-k{color:#a5b4fc}
+.graph-card .t-s{color:#86efac}
+
+/* ── Who it's for ── */
+.audience{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.aud{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm)}
+.aud h3{font-size:17px;margin-bottom:8px}
+.aud p{font-size:14px;color:var(--color-muted)}
+
+/* ── Footer ── */
+.site-footer{background:var(--color-text);color:rgba(255,255,255,.72);padding:48px 0 40px;font-size:13.5px}
+.site-footer a{color:rgba(255,255,255,.92);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.site-footer a:hover{color:#fff}
+.footer-grid{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;margin-bottom:28px}
+.footer-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;color:#fff;margin-bottom:10px}
+.footer-tag{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.04em}
+.footer-links{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:6px}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.16);padding-top:20px;display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;font-size:12.5px;color:rgba(255,255,255,.6)}
+
+/* ── Responsive ── */
+@media (max-width:960px){
+  .strip,.movements,.tiers,.cases,.audience{grid-template-columns:1fr 1fr}
+  .lib-grid{grid-template-columns:1fr;gap:28px}
+}
+@media (max-width:640px){
+  section{padding:64px 0}
+  .hero{padding:60px 0 56px}
+  .strip,.movements,.tiers,.cases,.audience{grid-template-columns:1fr}
+  .sec-num{top:-40px;font-size:64px}
+  .facts .n{min-width:58px;font-size:18px}
+  .score-row{grid-template-columns:96px 1fr 38px}
+  .footer-grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Design Dash home">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <circle cx="14" cy="14" r="13" stroke="#5B6AF2" stroke-width="1.8"/>
+        <polygon points="19,9 16.2,16.2 9,19 11.8,11.8" fill="#5B6AF2" opacity="0.9"/>
+        <circle cx="14" cy="14" r="2" fill="#5B6AF2"/>
+      </svg>
+      Design Dash
+    </a>
+    <nav class="nav" aria-label="Page sections">
+      <a href="#install">Install</a>
+      <a href="#process">Process</a>
+      <a href="#artifacts">Artifacts</a>
+      <a href="#cases">Field notes</a>
+      <a class="nav-cta" href="https://github.com/abenjamin765/design-dash" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="top" aria-labelledby="hero-h1">
+  <div class="wrap">
+    <p class="kicker rise">Open source · OOUX / ORCA · MIT licensed</p>
+    <h1 class="rise" id="hero-h1">A fuzzy problem in. A buildable plan out.</h1>
+    <p class="hero-lede rise">Design Dash is a library of 49 OOUX/ORCA design skills that runs designers and AI agents through a nine-phase workshop — from preconditions to object models to critique — and ends at a plan any engineer can build from.</p>
+    <div class="hero-cta rise">
+      <a class="btn btn-primary" href="#install">Get started</a>
+      <a class="btn btn-secondary" href="#process">See the process</a>
+    </div>
+    <p class="hero-meta rise"><span>Nine phases</span><span class="sep" aria-hidden="true">·</span><span>Five mandatory gates</span><span class="sep" aria-hidden="true">·</span><span>Three rule-derived tiers</span><span class="sep" aria-hidden="true">·</span><span>Ends at PLAN, not code</span></p>
+
+    <div class="strip rise" aria-label="The nine phases, grouped into Frame, Model, and Prove">
+      <div class="strip-group">
+        <span class="strip-group-label">Frame <b>P0–P3</b></span>
+        <ol>
+          <li><span class="dot" aria-hidden="true">P0</span><span class="plabel">Pre&shy;conditions</span></li>
+          <li><span class="dot" aria-hidden="true">P1</span><span class="plabel">Opportunity &amp; evidence</span></li>
+          <li><span class="dot" aria-hidden="true">P2</span><span class="plabel">Intake &amp; object modeling</span></li>
+          <li><span class="dot" aria-hidden="true">P3</span><span class="plabel">Framing lock</span></li>
+        </ol>
+      </div>
+      <div class="strip-group">
+        <span class="strip-group-label">Shape <b>P4–P6</b></span>
+        <ol>
+          <li><span class="dot" aria-hidden="true">P4</span><span class="plabel">Flow &amp; reconciliation</span></li>
+          <li><span class="dot" aria-hidden="true">P5</span><span class="plabel">Divergence &amp; selection</span></li>
+          <li><span class="dot" aria-hidden="true">P6</span><span class="plabel">Wireframe &amp; ethics</span></li>
+        </ol>
+      </div>
+      <div class="strip-group">
+        <span class="strip-group-label">Prove <b>P7–P8</b></span>
+        <ol>
+          <li><span class="dot" aria-hidden="true">P7</span><span class="plabel">Optional build</span></li>
+          <li><span class="dot" aria-hidden="true">P8</span><span class="plabel">Validate &amp; learn</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INSTALL ══ -->
+<section class="alt" id="install" aria-labelledby="install-h2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num" aria-hidden="true">01</span>
+      <p class="kicker">Install</p>
+      <h2 id="install-h2">Start a dash in three commands</h2>
+      <p class="sec-lede">Skills install as symlinks into your agent&rsquo;s skills directory — one edit to any <code>SKILL.md</code> propagates to both agents. Nothing to build, nothing to host.</p>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <h3>Clone the repo</h3>
+        <p>Get the skills, templates, method contract, and the local object library.</p>
+        <div class="term"><span class="t-pr">$</span> git clone https://github.com/abenjamin765/design-dash.git<br><span class="t-pr">$</span> cd design-dash</div>
+      </li>
+      <li class="step">
+        <h3>Install the skills</h3>
+        <p>Symlinks everything into <code>~/.cursor/skills/</code> or <code>~/.claude/skills/</code>. Preview first with <code>--dry-run</code>; remove with <code>--uninstall</code>.</p>
+        <div class="term"><span class="t-pr">$</span> ./install.sh --cursor&nbsp;&nbsp;&nbsp;<span class="t-cm"># or: ./install.sh --claude</span></div>
+      </li>
+      <li class="step">
+        <h3>Run the orchestrator</h3>
+        <p>Open Cursor or Claude Code and type the slash command. It sequences P0–P8 and stops at hard <strong>WAIT FOR USER</strong> checkpoints — you approve every gate before work continues.</p>
+        <div class="term"><span class="t-cm"># inside Cursor or Claude Code:</span><br><span class="t-pr">&gt;</span> /design-dash</div>
+      </li>
+    </ol>
+
+    <aside class="agent-note" aria-label="Note for generic agents">
+      <strong>No Cursor or Claude Code?</strong> Paste <code>adapters/generic/AGENT_PROMPT.md</code> into any file-capable agent and attach the method and templates — or run it as a human-facilitated workshop with <a href="GETTING_STARTED.md">GETTING_STARTED.md</a>. Missing capabilities have named fallbacks; no gate silently disappears.
+    </aside>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══ -->
+<section id="process" aria-labelledby="process-h2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num" aria-hidden="true">02</span>
+      <p class="kicker">Process</p>
+      <h2 id="process-h2">Nine phases, three movements</h2>
+      <p class="sec-lede">A dash is a sequence, not a vibe. Each phase produces named artifacts, and five gates stop the run until hard questions have answers.</p>
+    </div>
+
+    <div class="movements">
+      <article class="movement">
+        <span class="movement-tag">Frame · P0–P3</span>
+        <h3>Establish what&rsquo;s real</h3>
+        <ol>
+          <li><span class="ph"><code>P0</code> Preconditions</span><p>Classify tier from rules; set session mode; assemble the roster.</p></li>
+          <li><span class="ph"><code>P1</code> Opportunity &amp; evidence</span><p>A falsifiable problem statement, sized — every claim carrying an evidence label.</p><span class="gate-flag">Evidence gate</span></li>
+          <li><span class="ph"><code>P2</code> Intake &amp; object modeling</span><p>Capture the user&rsquo;s mental model, then run ORCA: NOM, CTA matrix, object guides — prioritized with Kano evidence.</p></li>
+          <li><span class="ph"><code>P3</code> Framing lock</span><p>Lock scope in design-spec.md, tied to the assumption register so creep stays visible.</p></li>
+        </ol>
+      </article>
+
+      <article class="movement">
+        <span class="movement-tag">Shape · P4–P6</span>
+        <h3>From model to testable concept</h3>
+        <ol>
+          <li><span class="ph"><code>P4</code> Flow &amp; reconciliation</span><p>Scenario flows and page architecture; resolve where system and mental model diverge.</p><span class="gate-flag">Reconciliation gate</span></li>
+          <li><span class="ph"><code>P5</code> Divergence &amp; selection</span><p>Two or three structurally distinct concepts, scored on user and business value.</p><span class="gate-flag">Selection gate</span></li>
+          <li><span class="ph"><code>P6</code> Wireframe &amp; ethics</span><p>Monochrome wireframes with edge states; ethics, equity, privacy, accessibility review.</p><span class="gate-flag">Ethics gate</span></li>
+        </ol>
+      </article>
+
+      <article class="movement">
+        <span class="movement-tag">Prove · P7–P8</span>
+        <h3>Commit, then learn</h3>
+        <ol>
+          <li><span class="ph"><code>P7</code> Optional build</span><p>A coded prototype when a design-system base exists — or an honest stub note when it doesn&rsquo;t.</p></li>
+          <li><span class="ph"><code>P8</code> Validate &amp; learn</span><p>Stakeholder pitch site, research plan, and workshop summary; wire the learning plan before anyone builds.</p><span class="gate-flag">Learning gate</span></li>
+        </ol>
+      </article>
+    </div>
+
+    <h3 class="sub-h" id="gates-h3">Five gates, each one a question you must answer</h3>
+    <p class="sub-p">Gates aren&rsquo;t bureaucracy. Each forces &ldquo;is this real, or is it assumed?&rdquo; — and on High-stakes runs, none of them are waivable.</p>
+    <div class="gates">
+      <article class="gate"><span class="gate-ph">P1</span><h3>Evidence</h3><p><q>Is this problem real? What&rsquo;s the evidence, and how big is the opportunity?</q></p></article>
+      <article class="gate"><span class="gate-ph">P4</span><h3>Reconciliation</h3><p><q>Where does our system model diverge from how users think — and how is each divergence resolved?</q></p></article>
+      <article class="gate"><span class="gate-ph">P5</span><h3>Selection</h3><p><q>Did we weigh genuine alternatives against both user and business value?</q></p></article>
+      <article class="gate"><span class="gate-ph">P6</span><h3>Ethics / Equity</h3><p><q>Are empty, loading, error, denied, and at-scale states designed — with no dark patterns, equity gaps, or privacy exposure?</q></p></article>
+      <article class="gate"><span class="gate-ph">P8</span><h3>Learning</h3><p><q>How will we know if this worked? Is a usability test plan in place?</q></p></article>
+    </div>
+
+    <h3 class="sub-h" id="tiers-h3">You don&rsquo;t pick your rigor — the work does</h3>
+    <p class="sub-p tiers-note">// tier is rule-derived: risk, reversibility, and reach decide. No tier-shopping.</p>
+    <div class="tiers">
+      <article class="tier tier--express">
+        <span class="tier-badge">Express</span>
+        <p>Low risk, easily reversible, narrow reach. Never grading, payment, PII, or compliance.</p>
+        <p class="tier-gates">Ethics/equity floor only. Skipped gates become tracked evidence debt — deferred, never deleted.</p>
+      </article>
+      <article class="tier tier--standard">
+        <span class="tier-badge">Standard</span>
+        <p>Moderate risk, reversible with effort — a real workflow with bounded blast radius.</p>
+        <p class="tier-gates">All five gates mandatory. Real sign-off from each responsible discipline.</p>
+      </article>
+      <article class="tier tier--highstakes">
+        <span class="tier-badge">High-stakes</span>
+        <p>Hard to reverse, broad reach — or regulated personal, financial, or health data.</p>
+        <p class="tier-gates">All five gates plus a privacy-compliance review, none waivable. Simulated review never substitutes for accountable sign-off.</p>
+      </article>
+    </div>
+
+    <h3 class="sub-h" id="labels-h3">Every claim carries a label</h3>
+    <p class="sub-p">The assumptions register tags each statement so readers can weigh it — and unvalidated beliefs cap quality grades until they&rsquo;re tested.</p>
+    <dl class="labels">
+      <div class="label-card"><dt>observed</dt><dd>Measured in your context — interviews, analytics, usability sessions. Needs an evidence link or it gets downgraded.</dd></div>
+      <div class="label-card"><dt>reported</dt><dd>Documented elsewhere: studies, benchmarks, partner data. Can&rsquo;t override what you observed yourself.</dd></div>
+      <div class="label-card"><dt>inferred</dt><dd>Reasoned from evidence rather than measured directly — labeled as such, so nobody mistakes it for data.</dd></div>
+      <div class="label-card"><dt>assumed</dt><dd>Believed, not yet supported. Allowed in — but it caps quality, carries a validation method, and never gets quietly deleted.</dd></div>
+    </dl>
+  </div>
+</section>
+
+
+<!-- ══ ARTIFACTS ══ -->
+<section class="alt" id="artifacts" aria-labelledby="artifacts-h2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num" aria-hidden="true">03</span>
+      <p class="kicker">Artifacts</p>
+      <h2 id="artifacts-h2">Every dash ends with files, not slides</h2>
+      <p class="sec-lede">A dash ends at a PLAN. When it&rsquo;s done, these are on disk — portable Markdown, YAML, and HTML that open anywhere and hand off to anyone.</p>
+    </div>
+
+    <ul class="artifacts">
+      <li class="artifact"><span class="artifact-file"><code>assumptions.md</code><span class="artifact-tag">Evidence</span></span><p>Append-only register: every belief tagged by label, given a validation method and an owner.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>metrics.md</code><span class="artifact-tag">Evidence</span></span><p>North-star, guardrail, and vanity metrics — with instrumentation status stated honestly.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>glossary.md</code><span class="artifact-tag">Evidence</span></span><p>Term ↔ object ↔ code identifier ↔ UI label. Versioned, so language drift gets caught.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>nom.md</code><span class="artifact-tag">Model</span></span><p>The Noun-Object Model: extracted nouns become candidate objects with definitions.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>cta-matrix.md</code><span class="artifact-tag">Model</span></span><p>Every call-to-action mapped to the object it acts on — no orphan buttons.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>object guides</code><span class="artifact-tag">Model</span></span><p>One authoritative page per domain object, written to <code>library/objects/</code> where they accumulate.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>flow.md</code><span class="artifact-tag">Synthesis</span></span><p>Scenario flows and page architecture derived from the object model, not invented on top of it.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>prioritization-report.md</code><span class="artifact-tag">Synthesis</span></span><p>Kano tallies, Better/Worse coefficients, RICE table, triage verdicts.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>edge-state-matrix.md</code><span class="artifact-tag">Critique</span></span><p>Empty, loading, error, permission-denied, at-scale — designed per screen, not discovered in QA.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>ethics-equity-checklist.md</code><span class="artifact-tag">Critique</span></span><p>Dark patterns, privacy exposure, localization, accessibility — checked at P6, not after launch.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>design-spec.md</code><span class="artifact-tag">Frame</span></span><p>Locked scope: context, goals and non-goals, primary user — protected from silent growth.</p></li><li class="artifact"><span class="artifact-file"><code>requirements.md</code><span class="artifact-tag">Plan</span></span><p>Objects, flows, acceptance criteria, open questions — build-ready or it doesn&rsquo;t ship.</p></li><li class="artifact"><span class="artifact-file"><code>pitch/index.html</code><span class="artifact-tag">Plan</span></span><p>The stakeholder deliverable: a self-contained pitch site of the validated plan.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>wireframe.html</code><span class="artifact-tag">Plan</span></span><p>Monochrome, annotated, design-system-agnostic. Opens in any browser.</p></li>
+      <li class="artifact"><span class="artifact-file"><code>summary.html</code><span class="artifact-tag">Plan</span></span><p>The self-contained centerpiece: problem, decisions, requirements, guides, embedded wireframe.</p></li>
+    </ul>
+
+    <p class="artifact-foot">Plus a sign-off ledger recording which gates passed with real accountable review versus simulated panel — so readers know exactly how much confidence to carry.</p>
+  </div>
+</section>
+
+<!-- ══ CASE STUDIES ══ -->
+<section id="cases" aria-labelledby="cases-h2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num" aria-hidden="true">04</span>
+      <p class="kicker">Field notes</p>
+      <h2 id="cases-h2">Two real dashes, receipts included</h2>
+      <p class="sec-lede">Both runs were executed end-to-end with full artifact trails, gate results, and unresolved debt. What follows is what actually happened.</p>
+    </div>
+
+    <div class="cases">
+      <article class="case">
+        <div class="case-bar" aria-hidden="true"></div>
+        <div class="case-body">
+          <div class="case-top">
+            <h3>EET — meal-planning PWA</h3>
+            <span class="tier-badge tier-badge--hs">High-stakes</span>
+          </div>
+          <p class="case-domain">Coach ↔ member nutrition workflow · escalated to High-stakes at P1 · dash eet-2026-08</p>
+
+          <ul class="scores" aria-label="Concept selection scores out of 70">
+            <li class="score-row win"><span class="score-name">B · Today Ring</span><span class="score-track"><span class="score-fill" style="width:80%"></span></span><span class="score-val">56</span></li>
+            <li class="score-row"><span class="score-name">A · Week Canvas</span><span class="score-track"><span class="score-fill" style="width:74.3%"></span></span><span class="score-val">52</span></li>
+            <li class="score-row"><span class="score-name">C · Coach Thread</span><span class="score-track"><span class="score-fill" style="width:48.6%"></span></span><span class="score-val">34</span></li>
+          </ul>
+
+          <ul class="facts">
+            <li><span class="n">9<small>objects</small></span>modeled through ORCA 01–12, each with a full guide in the library</li>
+            <li><span class="n">11<small>assumptions</small></span>tracked append-only, each carrying a named validation method</li>
+            <li><span class="n">56/70<small>selection score</small></span>for &ldquo;Today Ring&rdquo; — day-first home, weekly drafting as focused mode</li>
+            <li><span class="n">0<small>launches</small></span>privacy flags from the ethics gate block launch pending real legal sign-off — and the plan says so</li>
+          </ul>
+
+          <p class="case-proves"><strong>The takeaway:</strong> evidence discipline caught real risk before build. Dietary data forced High-stakes at P1; by the ethics gate, consent flow, GDPR analysis, and retention schedule were named blockers — visible on page one of the plan, not buried.</p>
+          <span class="case-link case-link-static">Full plan artifacts live in the consuming workspace</span>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="case-bar" aria-hidden="true"></div>
+        <div class="case-body">
+          <div class="case-top">
+            <h3>Green Loom Landing</h3>
+            <span class="tier-badge tier-badge--hs">High-stakes</span>
+          </div>
+          <p class="case-domain">Regulated-retail (cannabis) marketing site · WordPress-delivered · dash green-loom-landing-2026-07</p>
+
+          <ul class="facts">
+            <li><span class="n">25<small>signups</small></span>the stated goal: early-access conversions in 90 days, no inflation</li>
+            <li><span class="n">6<small>objects</small></span>Lead, Page Section, Discovery Call, Value Pillar, Product Module, Brand Token</li>
+            <li><span class="n">0<small>testimonials</small></span>none exist, so none were faked — ethics review enforced a founder-note substitute</li>
+            <li><span class="n">3<small>concepts</small></span>scored; B-trimmed &ldquo;Guided Depth&rdquo; won, runner-up preserved with a revisit condition</li>
+          </ul>
+
+          <p class="case-proves"><strong>The takeaway:</strong> the method is business-agnostic. The same nine phases that model a coached nutrition app also modeled a marketing site — module status badges stayed always-visible, and honesty about pre-launch stage was enforced as a design rule.</p>
+          <span class="case-link case-link-static">Full plan artifacts live in the consuming workspace</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ OBJECT LIBRARY ══ -->
+<section class="alt" id="library" aria-labelledby="library-h2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num" aria-hidden="true">05</span>
+      <p class="kicker">The object library</p>
+      <h2 id="library-h2">Objects accumulate. Agents can query them.</h2>
+    </div>
+
+    <div class="lib-grid">
+      <div class="lib-copy">
+        <p>Object guides discovered during a dash are written to <code>library/objects/</code> and stay there — indexed by <code>_index.md</code>, one authoritative page per domain object. The next dash starts from what the last one learned instead of re-deriving it.</p>
+        <p>For agents and tools, the <code>object-graph-export</code> skill compiles the library into <code>library/graph.json</code> — a schema-validated property graph any script or MCP tool can load, no prose-parsing required.</p>
+        <p>In this repo right now: nine guides from the EET dash — the domain below.</p>
+        <ul class="chips" aria-label="Current objects in the library">
+          <li>member</li><li>coach</li><li>group</li><li>macro-targets</li><li>meal-plan</li><li>planned-meal</li><li>plan-review</li><li>meal-log-entry</li><li>weekly-summary</li>
+        </ul>
+      </div>
+
+      <div class="graph-card" role="img" aria-label="Illustration of a graph.json export showing member and coach objects with their relationships">
+<span class="t-cm">// library/graph.json (excerpt)</span><br>
+{<br>
+&nbsp;&nbsp;<span class="t-k">"nodes"</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="t-k">"slug"</span>: <span class="t-s">"member"</span>, <span class="t-k">"name"</span>: <span class="t-s">"Member"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-k">"dash"</span>: <span class="t-s">"eet-2026-08"</span> },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="t-k">"slug"</span>: <span class="t-s">"coach"</span>, <span class="t-k">"name"</span>: <span class="t-s">"Coach"</span> },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="t-k">"slug"</span>: <span class="t-s">"plan-review"</span> }<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;<span class="t-k">"edges"</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="t-k">"from"</span>: <span class="t-s">"coach"</span>, <span class="t-k">"rel"</span>: <span class="t-s">"reviews"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-k">"to"</span>: <span class="t-s">"plan-review"</span> }<br>
+&nbsp;&nbsp;]<br>
+}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHO IT'S FOR ══ -->
+<section id="who" aria-labelledby="who-h2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num" aria-hidden="true">06</span>
+      <p class="kicker">Who it&rsquo;s for</p>
+      <h2 id="who-h2">Three audiences, one artifact set</h2>
+    </div>
+
+    <div class="audience">
+      <article class="aud">
+        <h3>Product designers</h3>
+        <p>Run discovery that survives scrutiny. The method asks where your evidence comes from, makes you weigh real alternatives, and hands you artifacts you can defend in review — because every claim on them is labeled.</p>
+      </article>
+      <article class="aud">
+        <h3>Engineers</h3>
+        <p>Receive specs you can build from: object guides with attributes and actions, flows tied to those objects, edge states already designed, acceptance criteria in Given/When/Then. Open questions are listed, not hidden.</p>
+      </article>
+      <article class="aud">
+        <h3>Agent operators</h3>
+        <p>The orchestrator skill sequences all phases and stops at hard WAIT FOR USER checkpoints — the agent facilitates, you decide at every gate. Outputs stay in Markdown and HTML you own, never trapped in a tool.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand">
+          <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <circle cx="14" cy="14" r="13" stroke="#8d97f6" stroke-width="1.8"/>
+            <polygon points="19,9 16.2,16.2 9,19 11.8,11.8" fill="#8d97f6"/>
+            <circle cx="14" cy="14" r="2" fill="#8d97f6"/>
+          </svg>
+          Design Dash
+        </p>
+        <p class="footer-tag">Nine phases. Five gates. One portable plan.</p>
+        <nav class="footer-links" aria-label="Project documentation">
+          <a href="README.md">README</a>
+          <a href="CONTRIBUTING.md">CONTRIBUTING</a>
+          <a href="AGENTS.md">AGENTS.md</a>
+          <a href="method/sources.md">method/sources.md</a>
+          <a href="GETTING_STARTED.md">Getting started</a>
+          <a href="https://github.com/abenjamin765/design-dash" target="_blank" rel="noopener">GitHub</a>
+        </nav>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>MIT License · open source, business-agnostic</span>
+      <span>A dash ends at a PLAN — not a shipped product.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

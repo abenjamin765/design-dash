@@ -49,8 +49,8 @@ phases:
   - id: P2
     name: Intake and object modeling
     intent: Capture domain context, dual mental models, and the object model that organizes the experience.
-    activities: [interview stakeholders, capture observed and assumed language, forage nouns, run ORCA, author object guides]
-    outputs: [scope.md, object model, NOM, CTA matrix, object guides, living-plan/phases/p2.mdx]
+    activities: [interview stakeholders, capture observed and assumed language, forage nouns, run ORCA, author object guides, prioritize attributes with quantitative methods, export object graph]
+    outputs: [scope.md, object model, NOM, CTA matrix, object guides, prioritization report, object graph, living-plan/phases/p2.mdx]
     exit: The team can distinguish what users think from what the system currently encodes, and in-scope objects are modeled.
   - id: P3
     name: Framing lock
@@ -68,8 +68,8 @@ phases:
   - id: P5
     name: Divergence and selection
     intent: Compare meaningfully different product concepts before converging.
-    activities: [create two or three concepts, score user and business value, record tradeoffs]
-    outputs: [concept set, decision rationale, living-plan/phases/p5.mdx]
+    activities: [create two or three concepts, score user and business value, apply QFD or Pugh matrix when weighted criteria exist, record tradeoffs]
+    outputs: [concept set, concept scorecard, decision rationale, living-plan/phases/p5.mdx]
     gate: selection
     exit: A concept is selected with documented tradeoffs.
   - id: P6
@@ -88,7 +88,7 @@ phases:
   - id: P8
     name: Validate and learn
     intent: Package decisions into a stakeholder pitch and a plan for learning.
-    activities: [write research-plan, assemble pitch site, thin summary index, close learning gate]
+    activities: [write research-plan, assemble pitch site, thin summary index, verify handoff package completeness, close learning gate]
     outputs: [pitch/index.html, research-plan.md, workshop-summary.md, summary.html, living-plan/phases/p8.mdx]
     gate: learning
     exit: A new team can build and test the plan without reconstructing the dash.
@@ -100,3 +100,10 @@ capability_fallbacks:
   no_image_generation: Use diagrams, boxes, and sourced references; imagery is never gate-critical.
   no_multi_agent_support: Run specialist critiques sequentially and record discipline plus real-or-simulated status.
   no_node_runtime: Skip living-plan viewer and CLI; author workshop markdown directly from templates. Method gates still apply.
+  no_survey_access: Substitute heuristic Kano classification (evidence-labeled, minimum two independent raters) for surveyed coefficients; disclose the substitution in the prioritization report.
+
+references:
+  sources_registry: method/sources.md
+  evidence_note: >
+    Phase recommendations are grounded in the sources registry. When a practice
+    cites an external framework, the registry maps it to its phase and origin.

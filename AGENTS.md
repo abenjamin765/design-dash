@@ -16,7 +16,7 @@ Three "plan" concepts can coexist in a workspace. Do not conflate them:
 
 | Term | Produced by | Output | Next step |
 |---|---|---|---|
-| **Design Plan** | Design Dash (P8) | `requirements.md` + `wireframe.html` + `summary.html` | Engineering Handoff → your design system |
+| **Design Plan** | Design Dash (P8) | `pitch/index.html` + `requirements.md` + `wireframe.html` (+ thin `summary.html`) | Engineering Handoff → your design system |
 | **OOUX Workflow Plan** | ORCA Planner skill | `dashes/{slug}/orca-plan.md` | Guides which ORCA skills to run and in what order |
 | **Implementation Plan** | Superpowers `writing-plans` skill | `docs/superpowers/plans/…` | Developer execution guide for a specific feature/refactor |
 
@@ -59,14 +59,14 @@ It sequences the nine phases (P0–P8) and enforces the five mandatory gates.
 
 ```
 P0  Preconditions & tier classification
-P1  Opportunity & Evidence         ← skills/2-research/ (opportunity-framing, evidence-assembly)
-P2  Intake & Context               ← skills/1-intake/ (orca-project-intake)
-P3  Framing lock
-P4  Object Modeling                ← skills/3-object-modeling/ (01–12 ORCA steps)
-P5  Flow & IA synthesis            ← skills/4-synthesis-ia/scenario-flow-mapping
-P6  Divergence & Selection         ← skills/4-synthesis-ia/concept-divergence
-P7  Wireframe + Edge/Ethics/Equity ← skills/5-wireframing/ + skills/7-critique-testing/
-P8  Plan assembly                  ← orchestrator compiles requirements.md + summary.html
+P1  Opportunity & Evidence      ← skills/2-research/ (opportunity-framing, evidence-assembly)
+P2  Intake & Object Modeling    ← skills/1-intake/ + skills/3-object-modeling/ (ORCA)
+P3  Framing lock                ← design-spec.md
+P4  Flow & Reconciliation       ← skills/4-synthesis-ia/scenario-flow-mapping
+P5  Divergence & Selection      ← skills/4-synthesis-ia/concept-divergence
+P6  Wireframe + Ethics Gate     ← skills/5-wireframing/ + skills/7-critique-testing/
+P7  Optional build              ← coded prototype or honest stub note
+P8  Validate & learn            ← pitch site + research plan + workshop summary
                                      + optional publish via skills/8-documentation/ (config-driven)
 ```
 
@@ -105,11 +105,11 @@ These skills fire across multiple stages. Load them when the Design Dash or a st
 | `object-library-context` | Any time you work with domain objects. Reads `library/objects/` and surfaces relevant object guides. |
 | `artifact-validator` | After any OOUX artifact is produced — checks completeness and internal consistency. |
 | `evidence-and-assumptions` | Governs `assumptions.md` throughout the dash — logs, updates, and gate-checks assumptions. |
-| `ethics-equity-review` | P7 Edge/Ethics/Equity gate — dark patterns, privacy, localization, accessibility. |
-| `voice-and-style` | P7 label/copy review; any time new UI copy is introduced. |
+| `ethics-equity-review` | P6 Ethics Gate — dark patterns, privacy, localization, accessibility. |
+| `voice-and-style` | P6 label/copy review; any time new UI copy is introduced. |
 | `stop-slop` | Before finalizing any AI-produced artifact — removes vague filler and unsupported assertions. |
 | `ui-interaction` | When wireframing interaction patterns — maps generic component behaviors. |
-| `object-graph-export` | After P4 (or standalone) — exports `library/objects/` to a validated property graph (`library/graph.json`) so agents can query accumulated objects across dashes. |
+| `object-graph-export` | After P2 (or standalone) — exports `library/objects/` to a validated property graph (`library/graph.json`) so agents can query accumulated objects across dashes. |
 
 ---
 
@@ -138,11 +138,11 @@ Shared artifact templates live in `templates/`. Instantiate per project into `da
 | `templates/metrics.md` | Success metrics — north-star / guardrail / vanity; instrumentation status |
 | `templates/glossary.md` | Term ↔ object ↔ code identifier ↔ UI label; versioned |
 | `templates/edge-state-matrix.md` | Per-page: empty, loading, error, permission-denied, at-scale states |
-| `templates/ethics-equity-checklist.md` | P7 gate: dark patterns, privacy, localization, accessibility |
+| `templates/ethics-equity-checklist.md` | P6 gate: dark patterns, privacy, localization, accessibility |
 | `templates/sign-off-ledger.md` | Discipline × gate × real/simulated status — the confidence register |
 | `templates/dash-config.yaml` | Dash identity, tier, mandatory gates, and default thresholds |
 | `templates/requirements.md` | Complete product requirements spec (context, goals, objects, flows, acceptance criteria) |
-| `templates/prioritization-report.md` | Kano tallies, Better/Worse coefficients, RICE table, triage verdicts (P4.7) |
+| `templates/prioritization-report.md` | Kano tallies, Better/Worse coefficients, RICE table, triage verdicts (P2.13) |
 | `templates/summary.html` | Self-contained HTML plan summary — the centerpiece dash deliverable |
 
 ---

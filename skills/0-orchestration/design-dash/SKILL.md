@@ -54,6 +54,8 @@ Solo/auto is for dogfood, agent-run dashes, and designers who want continuous fl
 | `pitch-site` | `skills/0-orchestration/pitch-site` | P8 |
 | `object-library-context` | `skills/_cross-cutting/object-library-context` | P0 + P2 |
 | `evidence-assembly` | `skills/2-research/evidence-assembly` | P1 |
+| `kano-prioritization` | `skills/2-research/kano-prioritization` | P2 prioritization |
+| `object-graph-export` | `skills/_cross-cutting/object-graph-export` | P2 wrap-up |
 | `artifact-validator` | `skills/_cross-cutting/artifact-validator` | P2 wrap-up |
 | `research-plan-builder` | `skills/2-research/research-plan-builder` | P8 (before pitch) |
 | `mint-orca-adapter` | `skills/8-documentation/mint-orca-adapter` | P8 publish (optional) |
@@ -78,7 +80,7 @@ When the designer types "where am I", "status", or similar, re-emit the Where am
 ### `/explain {term}` handler
 Load `skills/0-orchestration/design-dash/references/microlearning/{term-slug}.md` and emit the definition. Return focus to the prior checkpoint. Match case-insensitively; normalize spaces/underscores to hyphens; near-match within edit distance ≤ 2.
 
-Available terms: `hub-object`, `nom`, `sip-test`, `noun-foraging`, `page-collection-instance`, `pstq-ranking`, `mental-model`, `scenario-mapping`, `four-ancient-truths`, `mcsfd`, `unintuitive-objects`, `prioritization-cuts`, `tree-systems`, `questions-object`.
+Available terms: `hub-object`, `nom`, `sip-test`, `noun-foraging`, `page-collection-instance`, `pstq-ranking`, `mental-model`, `scenario-mapping`, `four-ancient-truths`, `mcsfd`, `unintuitive-objects`, `prioritization-cuts`, `tree-systems`, `questions-object`, `kano-model`.
 
 ### Turn economy
 - Batch independent reads and shell calls into a single turn.
@@ -193,7 +195,15 @@ Load skills from `skills/3-object-modeling/` as needed: object discovery → NOM
 
 Write guides to `library/objects/{slug}.md` and update `library/objects/_index.md`.
 
-**Output**: `scope.md`; object guides; `living-plan/phases/p2.mdx`.
+### Quantitative prioritization (2.13) *(Standard + High-stakes; optional for Express)*
+Load `skills/2-research/kano-prioritization/SKILL.md`. Replace subjective force-ranking with customer-evidenced prioritization: paired Kano surveys over the frozen candidate list, Better/Worse coefficients, RICE mapping, and Must-Be ≻ Performance ≻ Attractive ≻ Indifferent triage. Writes `dashes/{slug}/prioritization-report.md`, which feeds P5 concept scoring. If no survey channel exists, use the skill's disclosed heuristic fallback — never silent.
+
+*Express skip*: defer with an assumptions.md debt entry scheduling validation before P8.
+
+### Object graph export (2.14)
+Load `skills/_cross-cutting/object-graph-export/SKILL.md` to regenerate `library/graph.json` from the updated guides, keeping the accumulated library queryable by agents across dashes. Skip only if no object guides were created or updated this dash.
+
+**Output**: `scope.md`; object guides; `prioritization-report.md` (Standard + High-stakes); `library/graph.json`; `living-plan/phases/p2.mdx`.
 
 ---
 
@@ -224,6 +234,8 @@ Optional: `nav-flow-designer` for a navigation blueprint.
 ## P5 — Divergence + Selection Gate
 
 Load `skills/4-synthesis-ia/concept-divergence/SKILL.md`. Generate 2–3 structurally distinct concepts. Score on user criteria + a business metric.
+
+**Weighted scoring**: if `dashes/{slug}/prioritization-report.md` exists (P2.13), derive concept-scoring criteria weights from the validated priorities (Must-Be criteria weigh heaviest) and, where concepts compete on many weighted criteria, use a QFD-style importance × relationship matrix or Pugh comparison against a baseline concept. Record the scorecard with the selection rationale.
 
 **Write contract**: subagent writes `living-plan/phases/p5.mdx` only when living-plan is active.
 
@@ -277,6 +289,18 @@ Optionally maintain `dashes/{slug}/summary.html` as a short index linking to pit
 
 ### 8.4 Requirements + workshop summary
 Complete `requirements.md` and `workshop-summary.md` from exported living-plan content (or templates if no Node).
+
+**Handoff-package completeness check** — before closing P8, verify the plan is build-ready:
+
+- [ ] Every user story states Who / What / Why / **When** (conditions, validation rules, permissions) with failure paths
+- [ ] Every relationship carries all five MCSFD properties (mechanics · cardinality · sort · filter · dependency)
+- [ ] Attributes have exact types; natural keys have unique constraints; instance scale recorded
+- [ ] Edge-state matrix covers empty · loading · error · permission-denied · at-scale per page
+- [ ] UI copy uses representative content, not placeholders (`{TBD: …}` only where genuinely unknown)
+- [ ] Every open question maps to an assumptions.md row with owner + validation method
+- [ ] Glossary rows exist for every object and CTA label used in requirements
+
+Unchecked rows are routed: fix now if cheap; otherwise log in `assumptions.md` with an owner. A plan that fails three or more rows is not ready for pitch assembly.
 
 ### 8.5 Learning Gate *(Standard + High-stakes)*
 Load `learning-loop`. Require scheduled usability test fields or honest debt. Map open assumptions to validation methods.
