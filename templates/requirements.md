@@ -120,6 +120,8 @@
 
 {One subsection per page or screen in the design. If a page has multiple significant states (e.g., empty vs. populated), they can share a subsection with separate edge-state notes.}
 
+Representation rationale per object lives in `ui-mapping.md` (produced by `skills/_cross-cutting/orca-ui-mapping`).
+
 <!-- Hint: Anchor each page to a "hub object" — the primary object the page is about. -->
 
 ### Page: {Page Name}
