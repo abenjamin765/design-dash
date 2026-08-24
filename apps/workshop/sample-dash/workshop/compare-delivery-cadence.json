@@ -1,0 +1,20 @@
+{
+  "id": "compare-delivery-cadence",
+  "type": "compare",
+  "title": "Weekly drop vs. monthly tasting box",
+  "phase": "P5",
+  "prompt": "Two cadence concepts for the core subscription. Choose the one we should carry into wireframing. If you genuinely cannot choose, note why in chat — this activity records the forced choice only.",
+  "nodes": ["screen-weekly-plan", "screen-tasting-notes"],
+  "normalizes_to": "decision",
+  "payload": {
+    "mode": "forced_choice",
+    "items": [
+      { "node_id": "screen-weekly-plan", "label": "Concept A — Weekly drop" },
+      { "node_id": "screen-tasting-notes", "label": "Concept B — Monthly tasting box" }
+    ],
+    "criteria": [
+      { "label": "Habit formation", "weight": 3 },
+      { "label": "Perceived value", "weight": 2 }
+    ]
+  }
+}

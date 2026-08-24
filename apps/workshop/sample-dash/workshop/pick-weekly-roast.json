@@ -1,0 +1,17 @@
+{
+  "id": "pick-weekly-roast",
+  "type": "question",
+  "title": "Which roast should anchor the starter box?",
+  "phase": "P5",
+  "prompt": "New subscribers get one fixed roast in their first box. Pick the profile that will anchor the starter experience — the others remain available as swaps.",
+  "nodes": ["screen-weekly-plan"],
+  "normalizes_to": "decision",
+  "payload": {
+    "mode": "single",
+    "options": [
+      { "label": "Bright & fruity — single-origin, tea-like body", "value": "bright-fruity" },
+      { "label": "Balanced medium — chocolate, round finish", "value": "balanced-medium" },
+      { "label": "Dark & bold — classic, forgiving to brew", "value": "dark-bold" }
+    ]
+  }
+}

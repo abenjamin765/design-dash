@@ -189,6 +189,14 @@ Based on the NOM, {Object Name}'s detail page includes:
 - [Object Directory](library/objects/) — All objects at a glance
 ```
 
+**Save-time completeness gate** — before writing the guide, verify every item; any miss blocks the save:
+
+- [ ] Required sections present: Definition · SIP Validation · Attributes · **Attribute Priority** (force-ranked with rationale) · CTAs (roles + permissions) · Relationship Specs (MCSFD) · Status/Lifecycle (if the object has states) · Object Card Specification · **Shapeshifter Matrix** (≥1 non-detail context row) · See Also
+- [ ] Cardinality states typical counts for relationships that grow unbounded
+- [ ] `_index.md` has a row for this guide (add or update it in the same write)
+
+The library audit (`skills/_cross-cutting/artifact-validator`, Library Audit Mode) hard-fails on these later — saving an incomplete guide just moves the failure downstream.
+
 After saving: "Saved to `library/objects/{object-slug}.md`! Next in the Prioritization Round: use the **MCSFD Spec Writer** (step 6) to prioritize relationships, or the **CTA Prioritization** skill (step 7) to force-rank CTAs."
 
 ## Advanced Modeling Notes

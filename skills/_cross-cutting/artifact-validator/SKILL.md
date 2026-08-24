@@ -94,6 +94,38 @@ Before starting, read:
 - **Over-nested objects** — An object that appears as a nested object in too many parents (may signal a hub object not yet surfaced)
 - **Orphaned CTAs** — CTAs in the CTA matrix with no user story referencing them
 
+## Library Audit Mode
+
+Invoked by "audit the object library", "--library", or before P6 UI mapping in any dash consuming accumulated guides. Sweeps **all** guides in `library/objects/` (skip `_example-account.md`) plus `_index.md`.
+
+### Per-guide hard requirements (any miss = FAIL)
+
+| # | Requirement | Notes |
+|---|---|---|
+| 1 | Definition (one sentence) | Distinguishes from all other objects |
+| 2 | SIP Validation | All three criteria addressed |
+| 3 | Attributes table | Types + required present |
+| 4 | **Attribute Priority** (or equivalent ranked table) | Force-ranked with rationale; rank 1 traces to card spec or primary CTA |
+| 5 | CTAs | Roles + permissions present |
+| 6 | Relationship Specs (MCSFD) | Cardinality includes typical counts where growth is unbounded |
+| 7 | Status/Lifecycle | Required whenever the object has states |
+| 8 | Object Card Specification | Present |
+| 9 | **Shapeshifter Matrix** | ≥1 context row beyond the detail page |
+| 10 | See Also | Cross-links resolve |
+
+### Library-level checks
+
+- **Index consistency:** every guide has an `_index.md` row; every row resolves to an existing guide; `Last updated` reflects reality.
+- **Link integrity:** every intra-library link resolves to an existing file.
+- **Naming drift:** guide slug ↔ index name ↔ glossary term agree.
+
+### Semantics
+
+- Any FAIL **blocks ORCA→UI mapping** (`skills/_cross-cutting/orca-ui-mapping`) until patched — mapping unprioritized models reproduces schema-rendering defects downstream.
+- Output: one PASS/FAIL line per guide + a blocking-issues list ordered by phase impact. Use mechanical proof (grep counts, link resolution output), not impressions.
+
+---
+
 ## Collaboration Flow
 
 ### Checkpoint 1: Choose Artifact (WAIT FOR USER)

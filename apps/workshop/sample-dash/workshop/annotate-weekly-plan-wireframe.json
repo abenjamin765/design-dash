@@ -1,0 +1,14 @@
+{
+  "id": "annotate-weekly-plan-wireframe",
+  "type": "artifact_panel",
+  "title": "Mark up the weekly plan wireframe",
+  "phase": "P6",
+  "prompt": "This is the low-fi wireframe for the subscriber's weekly brew schedule. Flag anything that would confuse a first-time subscriber — drop an annotation for each issue you spot.",
+  "nodes": ["screen-weekly-plan"],
+  "normalizes_to": "annotation",
+  "payload": {
+    "target_node_id": "screen-weekly-plan",
+    "render": "wireframe",
+    "annotations_enabled": true
+  }
+}

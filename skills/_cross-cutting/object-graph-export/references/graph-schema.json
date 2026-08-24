@@ -1,24 +1,74 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Design Dash Object Graph",
-  "description": "Validated export format for the local object library. Derived from library/objects/*.md — never hand-edited.",
+  "title": "Design Dash Graph",
+  "description": "Validated export format for Design Dash graphs. v1.0 covered the local object library only (library/objects/*.md). v2.0 generalizes to the full Dash Model (dashes/{slug}/model/*.md) while preserving every v1.0 construct unchanged. Derived data — never hand-edited.",
+  "x-anchor-edge-types": ["JUSTIFIED_BY", "IMPLEMENTS", "ADDRESSES"],
   "type": "object",
   "required": ["graph_version", "generated_at", "nodes", "edges"],
   "properties": {
-    "graph_version": { "type": "string", "const": "1.0" },
+    "graph_version": { "type": "string", "const": "2.0" },
     "generated_at": { "type": "string", "format": "date-time" },
     "source_library": { "type": "string", "default": "library/objects" },
+    "mode": {
+      "enum": ["library", "dash-model"],
+      "default": "library",
+      "description": "library = Mode A (object library export). dash-model = Mode B (full dash model export)."
+    },
+    "generation": {
+      "type": "object",
+      "description": "Drift-detection stamp (Mode B mandatory): content_hash is sha256 over the newline-joined, lexicographically sorted list of '{relative-path}:{file-sha256}' for every scanned model file.",
+      "required": ["mode", "exported_at", "hash_algorithm", "content_hash"],
+      "properties": {
+        "mode": { "$ref": "#/properties/mode" },
+        "exported_at": { "type": "string", "format": "date-time" },
+        "hash_algorithm": { "type": "string", "const": "sha256" },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "sha256 hex digest over the sorted '{relative-path}:{file-sha256}' manifest."
+        },
+        "scanned_files": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "anchor_coverage": {
+      "type": "object",
+      "description": "Mandatory-anchor coverage counts (Mode B). Reported, not enforced — tier scaling means Express dashes legitimately satisfy fewer anchors.",
+      "required": ["JUSTIFIED_BY", "IMPLEMENTS", "ADDRESSES"],
+      "properties": {
+        "JUSTIFIED_BY": { "type": "integer", "minimum": 0, "description": "screen → decision links present" },
+        "IMPLEMENTS": { "type": "integer", "minimum": 0, "description": "decision → requirement-or-object links present" },
+        "ADDRESSES": { "type": "integer", "minimum": 0, "description": "requirement → opportunity links present" },
+        "screens_total": { "type": "integer", "minimum": 0 },
+        "decisions_total": { "type": "integer", "minimum": 0 },
+        "requirements_total": { "type": "integer", "minimum": 0 },
+        "opportunities_total": { "type": "integer", "minimum": 0 }
+      }
+    },
     "nodes": { "type": "array", "items": { "$ref": "#/definitions/node" } },
     "edges": { "type": "array", "items": { "$ref": "#/definitions/edge" } }
   },
+  "allOf": [
+    {
+      "if": { "properties": { "mode": { "const": "dash-model" } } },
+      "then": { "required": ["mode", "generation"] }
+    }
+  ],
   "definitions": {
     "node": {
       "type": "object",
       "required": ["id", "type", "name", "provenance"],
       "properties": {
-        "id": { "type": "string", "pattern": "^(object|attribute|cta|role|dash|decision)-[a-z0-9-]+$" },
-        "type": { "enum": ["object", "attribute", "cta", "role", "dash", "decision"] },
+        "id": { "type": "string", "pattern": "^(object|attribute|cta|role|dash|decision|evidence|assumption|insight|opportunity|requirement|constraint|scenario|flow|screen|outcome|annotation)-[a-z0-9-]+$" },
+        "type": {
+          "enum": [
+            "object", "attribute", "cta", "role", "dash", "decision",
+            "evidence", "assumption", "insight", "opportunity",
+            "requirement", "constraint", "scenario", "flow", "screen",
+            "outcome", "annotation"
+          ]
+        },
         "name": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "description": "Type-specific lifecycle vocabulary — see per-type conditionals below." },
         "domain": { "type": "string" },
         "definition": { "type": "string" },
         "content_class": { "enum": ["core-content", "metadata"] },
@@ -29,8 +79,81 @@
         "max_instances": { "type": "integer", "minimum": 0 },
         "statement": { "type": "string", "description": "For decision nodes: the decision in one sentence." },
         "rationale": { "type": "string" },
+        "upstream": {
+          "type": "string",
+          "description": "For forked object nodes (ADR-0007): id of the library object this dash-local copy was forked from. Reference objects stay external and are not emitted as nodes."
+        },
+        "source": { "type": "string", "description": "Evidence nodes: citation or origin of the observation." },
+        "collected_at": { "type": "string", "format": "date-time", "description": "Evidence/outcome nodes: when the observation was collected." },
+        "method": { "type": "string", "description": "Evidence nodes: how it was collected (interview, analytics, session, …)." },
+        "risk_if_wrong": { "type": "string", "description": "Assumption nodes: consequence if the belief proves false." },
+        "validation_path": { "type": "string", "description": "Assumption nodes: planned test or check." },
+        "synthesizes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Insight nodes: evidence node ids this interpretation is built from."
+        },
+        "problem_statement": { "type": "string", "description": "Opportunity nodes: the framed, falsifiable problem." },
+        "metric_hypotheses": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Opportunity nodes: measurable predictions."
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Requirement nodes: build-ready acceptance criteria."
+        },
+        "phase": { "type": "string", "pattern": "^P[0-8]$", "description": "Requirement nodes: phase of origin (P0–P8)." },
+        "category": { "type": "string", "description": "Constraint nodes: business | technical | ethical | regulatory | participation." },
+        "actor": { "type": "string", "description": "Scenario nodes: who is in the situation." },
+        "trigger": { "type": "string", "description": "Scenario nodes: what starts the situation." },
+        "goal": { "type": "string", "description": "Scenario nodes: what the actor wants." },
+        "scenario_id": { "type": "string", "description": "Flow nodes: owning scenario." },
+        "path_kind": { "enum": ["happy", "edge"], "description": "Flow nodes: happy path vs edge path." },
+        "wireframe_ref": { "type": "string", "description": "Screen nodes: reference into the wireframe artifact." },
+        "edge_states_covered": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Screen nodes: which edge states are covered (empty, loading, error, permission-denied, at-scale, …)."
+        },
+        "alternatives_considered": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Decision nodes: rejected options with brief reasons."
+        },
+        "measure": { "type": "string", "description": "Outcome nodes: what was measured." },
+        "result": { "type": "string", "description": "Outcome nodes: what happened." },
+        "target_id": { "type": "string", "description": "Annotation nodes: id of the annotated node or view region." },
+        "author": { "type": "string", "description": "Annotation nodes: who wrote the comment/critique." },
         "provenance": { "$ref": "#/definitions/provenance" }
-      }
+      },
+      "allOf": [
+        { "if": { "properties": { "type": { "const": "evidence" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["open", "consumed"] } } } },
+        { "if": { "properties": { "type": { "const": "assumption" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["open", "testing", "confirmed", "falsified", "retired"] } } } },
+        { "if": { "properties": { "type": { "const": "insight" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["draft", "accepted", "superseded"] } } } },
+        { "if": { "properties": { "type": { "const": "opportunity" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["framed", "validated", "deferred", "dropped"] } } } },
+        { "if": { "properties": { "type": { "const": "requirement" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["proposed", "in_scope", "non_goal", "build_ready"] } } } },
+        { "if": { "properties": { "type": { "const": "constraint" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["active", "lifted"] } } } },
+        { "if": { "properties": { "type": { "const": "scenario" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["draft", "mapped", "reconciled"] } } } },
+        { "if": { "properties": { "type": { "const": "flow" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["draft", "reconciled"] } } } },
+        { "if": { "properties": { "type": { "const": "screen" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["wireframe_draft", "annotated", "states_covered", "ethics_reviewed"] } } } },
+        { "if": { "properties": { "type": { "const": "decision" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["proposed", "selected", "rejected", "superseded"] } } } },
+        { "if": { "properties": { "type": { "const": "outcome" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["hypothesized", "observed", "inconclusive"] } } } },
+        { "if": { "properties": { "type": { "const": "annotation" } }, "required": ["type"] },
+          "then": { "properties": { "status": { "enum": ["open", "resolved"] } } } }
+      ]
     },
     "edge": {
       "type": "object",
@@ -51,8 +174,8 @@
         }
       ],
       "properties": {
-        "from": { "type": "string", "pattern": "^(object|attribute|cta|role|dash|decision)-[a-z0-9-]+$" },
-        "to": { "type": "string", "pattern": "^(object|attribute|cta|role|dash|decision)-[a-z0-9-]+$" },
+        "from": { "type": "string", "pattern": "^(object|attribute|cta|role|dash|decision|evidence|assumption|insight|opportunity|requirement|constraint|scenario|flow|screen|outcome|annotation)-[a-z0-9-]+$" },
+        "to": { "type": "string", "pattern": "^(object|attribute|cta|role|dash|decision|evidence|assumption|insight|opportunity|requirement|constraint|scenario|flow|screen|outcome|annotation)-[a-z0-9-]+$" },
         "type": {
           "enum": [
             "HAS_ATTRIBUTE",
@@ -62,8 +185,23 @@
             "ASSOCIATED_WITH",
             "DEFINED_IN",
             "APPLIES_TO",
-            "SUPERSEDES"
-          ]
+            "SUPERSEDES",
+            "JUSTIFIED_BY",
+            "IMPLEMENTS",
+            "ADDRESSES",
+            "EVIDENCES",
+            "MOTIVATES",
+            "TESTS",
+            "CONFIRMS",
+            "FALSIFIES",
+            "CONSTRAINS",
+            "DERIVES_FROM",
+            "REALIZES",
+            "ANNOTATES",
+            "PRODUCES_OUTCOME",
+            "FEEDS_BACK"
+          ],
+          "description": "JUSTIFIED_BY (screen→decision), IMPLEMENTS (decision→requirement-or-object), and ADDRESSES (requirement→opportunity) are the three mandatory anchors (see x-anchor-edge-types). All other Dash Model edges are optional; TESTS + CONFIRMS/FALSIFIES form the assumption branch; FEEDS_BACK closes the outcome loop."
         },
         "provenance": { "$ref": "#/definitions/provenance" }
       }

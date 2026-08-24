@@ -6,7 +6,9 @@
 **Last updated:** YYYY-MM-DD  
 **Owner:** <!-- content designer or design lead -->
 
-> **Governance (req §12.7):** This glossary is a versioned, owned artifact. When a canonical object library term changes, dependent glossaries should be reviewed. Do not diverge a UI label from the canonical object library term without recording the exception here and in the sign-off ledger.
+> **Governance (req §12.7):** This glossary is a versioned, owned artifact. Default owner: the dash owner, established at P2 intake and recorded above. When a canonical object library term changes, dependent glossaries should be reviewed. Do not diverge a UI label from the canonical object library term without recording the exception here and in the sign-off ledger.
+>
+> **Mandatory destinations:** every new UI label gets a row at P6 review; every concept→icon pair decided during ORCA→UI mapping (`skills/_cross-cutting/orca-ui-mapping`, § Iconography) gets a row here — that skill's gate checklist points here, and no other artifact owns this mapping.
 
 ---
 

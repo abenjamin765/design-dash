@@ -22,15 +22,27 @@ Three "plan" concepts can coexist in a workspace. Do not conflate them:
 
 Use "Design Plan" when referring to the primary Design Dash output. Never use "plan" ambiguously when context spans more than one system.
 
+The **Dash Model** is not a fourth plan concept — it is the canonical store behind a dash (node files + generated views, see [`ARCHITECTURE.md`](./ARCHITECTURE.md)). The Design Plan is its generated view, never an independently hand-authored document.
+
 ---
 
 See [`README.md`](./README.md), [`CONTRIBUTING.md`](./CONTRIBUTING.md), and [`AGENTS.md`](./AGENTS.md).
 
 ## Portable method contract
 
-Before translating the workflow into tool-specific commands, read [`method/method.yaml`](./method/method.yaml). It is the canonical, tool-neutral definition of phases, gates, evidence labels, outputs, and capability fallbacks. Adapter instructions in [`adapters/`](./adapters/) may change interaction mechanics but must satisfy the conformance requirements in [`adapters/README.md`](./adapters/README.md).
+Before translating the workflow into tool-specific commands, read [`method/method.yaml`](./method/method.yaml). It is the canonical, tool-neutral definition of phases, gates, evidence labels, outputs, and capability fallbacks. Dash Model nodes and edges authored during a dash follow [`method/dash-model-schema.md`](./method/dash-model-schema.md). Adapter instructions in [`adapters/`](./adapters/) may change interaction mechanics but must satisfy the conformance requirements in [`adapters/README.md`](./adapters/README.md).
 
 When a capability is unavailable, disclose the limitation and use the named fallback. Never silently omit a gate, present simulated review as accountable sign-off, or trap the only copy of a deliverable in a proprietary format.
+
+## Delegation verification contract
+
+Specialist success reports are **claims, not evidence**. In dogfooding runs, delegated lanes have reported completed work that diff inspection proved missing, and cited confirmations that never occurred. Therefore:
+
+1. Before accepting any delegated work, the delegating agent **verifies against the artifacts themselves** — run the grep/diff/read that would prove the claim, and require mechanical proof (counts, resolved paths) for structural claims.
+2. Never accept "confirmed with the user" claims made by a lane; confirmations happen only in the orchestrator conversation.
+3. If verification fails, reconcile the partial state before re-dispatching, and adjust the brief rather than reissuing it unchanged.
+4. This contract applies to every agent in this repo, including orchestrators delegating to specialists.
+5. **Lanes write artifacts incrementally** — after each checkpoint or sub-deliverable, never as a single end-of-task burst — so an infrastructure failure loses at most one checkpoint. Orchestrators list expected output files in every brief; a resumed lane re-lists the target directory before writing, because orchestrator inventories go stale at crash time.
 
 ---
 
@@ -52,6 +64,8 @@ When a capability is unavailable, disclose the limitation and use the named fall
 
 ## How to navigate
 
+**System boundaries**: see [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the five-role architecture (Chat · Workshop · Dash Model · Design Plan · Story) and the decision records in [`docs/adr/`](./docs/adr/).
+
 ### Orchestrated work (full Design Dash)
 
 Start the **Design Dash** (`skills/0-orchestration/design-dash`) or invoke the `/design-dash` command.
@@ -64,7 +78,7 @@ P2  Intake & Object Modeling    ← skills/1-intake/ + skills/3-object-modeling/
 P3  Framing lock                ← design-spec.md
 P4  Flow & Reconciliation       ← skills/4-synthesis-ia/scenario-flow-mapping
 P5  Divergence & Selection      ← skills/4-synthesis-ia/concept-divergence
-P6  Wireframe + Ethics Gate     ← skills/5-wireframing/ + skills/7-critique-testing/
+P6  Wireframe + Ethics Gate     ← skills/5-wireframing/ (+ _cross-cutting/orca-ui-mapping) + skills/7-critique-testing/
 P7  Optional build              ← coded prototype or honest stub note
 P8  Validate & learn            ← pitch site + research plan + workshop summary
                                      + optional publish via skills/8-documentation/ (config-driven)
@@ -92,7 +106,7 @@ skills/<stage>/<skill>/SKILL.md
 | **5-wireframing** | `skills/5-wireframing/` | `wireframing` |
 | **7-critique-testing** | `skills/7-critique-testing/` | `adversarial-panel`, `a11y-audit`, `usability-validation`, `learning-loop`, `ethics-equity-review`, `privacy-gate` |
 | **8-documentation** | `skills/8-documentation/` | `mint-orca-adapter` (publish P8 artifacts to a Mintlify docs site; optional, config-driven) |
-| **_cross-cutting** | `skills/_cross-cutting/` | `object-library-context`, `artifact-validator`, `evidence-and-assumptions`, `voice-and-style`, `stop-slop`, `ui-interaction`, `object-graph-export` |
+| **_cross-cutting** | `skills/_cross-cutting/` | `object-library-context`, `artifact-validator`, `evidence-and-assumptions`, `voice-and-style`, `stop-slop`, `ui-interaction`, `object-graph-export`, `workshop-activities` |
 
 ---
 
@@ -103,13 +117,17 @@ These skills fire across multiple stages. Load them when the Design Dash or a st
 | Skill | When to use |
 |---|---|
 | `object-library-context` | Any time you work with domain objects. Reads `library/objects/` and surfaces relevant object guides. |
-| `artifact-validator` | After any OOUX artifact is produced — checks completeness and internal consistency. |
+| `artifact-validator` | After any OOUX artifact is produced — checks completeness and internal consistency. Library audit mode sweeps all of `library/objects/` and hard-fails guides missing required sections (see its SKILL.md). |
 | `evidence-and-assumptions` | Governs `assumptions.md` throughout the dash — logs, updates, and gate-checks assumptions. |
 | `ethics-equity-review` | P6 Ethics Gate — dark patterns, privacy, localization, accessibility. |
 | `voice-and-style` | P6 label/copy review; any time new UI copy is introduced. |
 | `stop-slop` | Before finalizing any AI-produced artifact — removes vague filler and unsupported assertions. |
 | `ui-interaction` | When wireframing interaction patterns — maps generic component behaviors. |
-| `object-graph-export` | After P2 (or standalone) — exports `library/objects/` to a validated property graph (`library/graph.json`) so agents can query accumulated objects across dashes. |
+| `object-graph-export` | After P2 (or standalone) — Mode A exports `library/objects/` to a validated property graph (`library/graph.json`) so agents can query accumulated objects across dashes; Mode B exports the full dash model (`dashes/{slug}/model/`) to `dashes/{slug}/graph.json` with a generation stamp and anchor-coverage counts. |
+| `workshop-activities` | Authoring Workshop activities at any phase — three MVP primitives (question, artifact_panel, compare) as declarative spec JSON referencing Dash Model node ids; responses normalize into Dash Model records; markdown fallbacks mandatory for terminal-only sessions. |
+| `orca-ui-mapping` | Between ORCA modeling and wireframing (P6) — translates objects, attributes, relationships, and actions into explicit visual-hierarchy and representation decisions (`ui-mapping.md`). |
+| `dataviz-selection` | Whenever a visualization is considered — decides whether a chart is justified and which form fits the question. |
+| `ui-foundation` | Before coded prototypes (P7) or component-mapping population — recommended headless primitive stack plus an evaluation checklist for project-supplied systems. |
 
 ---
 
@@ -168,6 +186,8 @@ design-dash/
 ├── README.md           → designer-facing getting-started guide
 ├── CONTRIBUTING.md     → contributor guidelines
 ├── LICENSE             → MIT
+├── ARCHITECTURE.md     → system boundaries + ADR index
+├── docs/adr/           → architecture decision records
 ├── skills/             → 7 stage dirs + _cross-cutting
 │   ├── 0-orchestration/    design-dash, design-dash-revision, facilitation-kit
 │   ├── 1-intake/           orca-project-intake, orca-planner
