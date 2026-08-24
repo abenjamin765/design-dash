@@ -28,6 +28,7 @@ Before writing any markup, read `skills/5-wireframing/wireframe-components.html`
 Collect what is known about the screen:
 
 - `dashes/{slug}/flow.md` — **read this first if it exists**. Use the "Derived pages" table as the authoritative page list (do not reinvent pages from scratch). Use the "Goal-page map" to ensure every success criterion lands in markup. Use the "Constraints log" to check component choices before drawing.
+- `dashes/{slug}/ui-mapping.md` — ORCA→UI representation decisions (visual roles, context matrix, action maps). Read first if present; if absent, Step 3.4 produces it.
 - `dashes/{slug}/scope.md` — problem statement, success criteria, constraints.
 - Design spec `dashes/{slug}/requirements.md` — in-scope objects, relationships, attributes, actions.
 - Object library findings from P1 Context (hub object identity, canonical attributes, prioritized attributes).
@@ -54,6 +55,17 @@ Decompose every screen into three layers before writing markup:
 - Actions: per-row CTAs (e.g. "View results", "Edit", overflow menu items).
 
 Write this layer model as HTML comment blocks in the wireframe before adding markup, so the structure is visible in source.
+
+### Step 3.4 — Resolve representations via ORCA→UI mapping
+
+Before matching interaction patterns, decide *what each section shows and why*:
+
+1. Load `skills/_cross-cutting/orca-ui-mapping/SKILL.md`.
+2. If `dashes/{slug}/ui-mapping.md` exists, treat its visual-role classifications, context matrix, and action map as binding input.
+3. If it does not exist, produce it now (standalone sessions may run the three passes inline for just the objects on this page).
+4. Apply the results: attribute emphasis follows visual roles (Identity/Status/Primary data dominate; Metadata hides), collection pattern matches dominant intent (compare→table, browse→cards, monitor→status list), relationship placement follows MCSFD cardinality.
+
+Step 3.5 then chooses controls for the interactive parts — it does not re-decide hierarchy.
 
 ### Step 3.5 — Match UI patterns
 
@@ -144,11 +156,14 @@ Do not promote one-off page-content structures. Promote only structural/layout p
 
 ### Step 8 — Run the wireframe critique checklist
 
+**Edge-state sequencing:** author or update `dashes/{slug}/edge-state-matrix.md` in this same pass — it is owned by this stage and must reflect exactly what the wireframe renders (and vice versa). Do not defer it to another phase or lane.
+
 Before writing the file, verify:
 
 - [ ] Every success criterion from `scope.md` maps to a visible UI element. If `flow.md` exists, verify against the goal-page map.
 - [ ] P/S/T/Q action ranking is honored — no two actions share rank unless intentional.
 - [ ] Attribute priority is honored — most important attributes appear first.
+- [ ] Attribute emphasis follows the ui-mapping visual-role classification — Identity/Status/Primary data dominate; Metadata is hidden or muted.
 - [ ] Page / collection / instance layers are clearly separated and annotated.
 - [ ] No color used as the sole signal for status (status needs label + shape/icon).
 - [ ] Heading hierarchy is logical (one `<h1>`, descending levels).
@@ -157,12 +172,17 @@ Before writing the file, verify:
 - [ ] Component hints are present on major sections.
 - [ ] Every interactive section cites at least one semantic `ui-rule` ID from the decision tree. Sections marked `ui-rule: TBD` are flagged as open questions for the designer, not silent failures.
 - [ ] If `flow.md` constraints log exists, each constraint with a forced design move is honored or explicitly overridden with a note.
+- [ ] Each object's representation pattern matches its dominant intent per orca-ui-mapping (compare→table, browse→cards, monitor→status list).
+- [ ] Icons come from one declared set (`icon-lib:` annotation); icon-only controls carry accessible labels.
+- [ ] Every chart passed the dataviz-selection gate (question + sufficient data + stated takeaway).
+- [ ] Any non-standard interaction carries `interaction: novel — {justification}`.
+- [ ] States-per-page floor: EVERY page in the file has designed or annotated empty, loading, error, permission-denied, and at-scale states. A page without full coverage fails this checklist even if another page passed.
 
 If any check fails, fix it before saving.
 
 ### Step 9 — Write the file
 
-Write to `dashes/{slug}/wireframe.html`. Update the design spec's §4 IA and §5 Page anatomy sections to be brief summaries that reference the wireframe: `See wireframe: dashes/{slug}/wireframe.html`.
+Write to `dashes/{slug}/wireframe.html`. Then persist the Step 8 results as `dashes/{slug}/wireframe-checks.md`: one line per checklist item with pass/fail **and an evidence pointer** (file + annotation id / line / grep proof). Assertions without pointers do not count — later lanes and audits must be able to re-verify mechanically. Update the design spec's §4 IA and §5 Page anatomy sections to be brief summaries that reference the wireframe: `See wireframe: dashes/{slug}/wireframe.html`.
 
 ---
 
@@ -185,3 +205,6 @@ For patterns not in this table, check `skills/5-wireframing/wireframe-components
 - Component mapping: `skills/_cross-cutting/ui-interaction/component-mapping.json`
 - Layer model reference: `skills/0-orchestration/design-dash/references/microlearning/page-collection-instance.md`
 - Action priority reference: `skills/0-orchestration/design-dash/references/microlearning/pstq-ranking.md`
+- ORCA→UI mapping engine: `skills/_cross-cutting/orca-ui-mapping/SKILL.md` (load at Step 3.4)
+- Dataviz selection gate: `skills/_cross-cutting/dataviz-selection/SKILL.md`
+- UI foundation for coded prototypes: `skills/_cross-cutting/ui-foundation/SKILL.md`

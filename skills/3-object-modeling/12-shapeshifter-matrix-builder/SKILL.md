@@ -179,4 +179,4 @@ Present the variance with intentionality ratings:
 2. **Standardize icon**: Use same icon in all contexts
 3. **Align Primary CTA**: Use same verb everywhere
 
-After publishing: "Shapeshifter Matrix published! This completes the Representation Round and the full ORCA cycle. You've fought all four anti-patterns: Masked Objects (step 9), Isolated Objects (step 10), Broken Objects (step 11), and Shapeshifters (step 12). Use the **Artifact Validator** to verify completeness, or the **Engineering Handoff** to translate everything to tech specs."
+After publishing: "Shapeshifter Matrix published! This completes the Representation Round and the full ORCA cycle. You've fought all four anti-patterns: Masked Objects (step 9), Isolated Objects (step 10), Broken Objects (step 11), and Shapeshifters (step 12). Use the **Artifact Validator** to verify completeness, or the **Engineering Handoff** to translate everything to tech specs." Then run `skills/_cross-cutting/orca-ui-mapping/SKILL.md` to turn this matrix into concrete UI representation decisions (`dashes/{slug}/ui-mapping.md`) before wireframing.

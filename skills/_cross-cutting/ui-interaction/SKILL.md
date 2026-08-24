@@ -22,6 +22,7 @@ This skill is the **canonical UI rules engine** for the design-dash library. It 
 
 - `skills/5-wireframing/SKILL.md` — Step 3.5 loads this skill before annotating each interactive section.
 - `skills/7-critique-testing/a11y-audit` — verifies `requirements` from matched rules were honored; no `ui-rule: TBD` shipped unresolved.
+- `skills/_cross-cutting/orca-ui-mapping` — supplies user intents and consequence context from `ui-mapping.md`; receives component resolutions back.
 
 ---
 
@@ -34,6 +35,8 @@ Read `decision-tree.json` → `input_context_schema`. Populate the fields that a
 Required field: `user_goal` (one of: `input`, `select`, `find`, `sort`, `browse`, `view`, `compare`, `edit`, `manipulate`, `navigate`, `act`, `monitor`, `understand_pattern`, `change_view`, `consume_feed`).
 
 When a field is unknown but materially affects the recommendation, surface it as missing context rather than choosing an arbitrary component.
+
+When an ORCA→UI mapping exists (`dashes/{slug}/ui-mapping.md`), populate `user_goal` and consequence fields from its intent analysis instead of re-inferring them from markup.
 
 **Step 2 — Apply `global_requirements` and meta rules before choosing a component.**
 

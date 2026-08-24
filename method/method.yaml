@@ -9,7 +9,7 @@ method:
     - User mental models and system models are reconciled explicitly.
     - Accessibility, ethics, equity, and privacy are design inputs.
     - Outputs remain portable across tools.
-    - Living-plan MDX is the source of truth when Node tooling is available; export owns workshop markdown sections.
+    - The Dash Model (plain files) is the single source of truth; living-plan MDX and every other human-facing view are generated projections of it.
 
 session_modes:
   interactive:
@@ -75,8 +75,8 @@ phases:
   - id: P6
     name: Wireframe and ethics
     intent: Make the selected concept testable and pressure-test its consequences.
-    activities: [wireframe, annotate interactions, cover edge states, audit accessibility, review ethics and equity]
-    outputs: [wireframe.html, edge-state matrix, ethics-review.md, living-plan/phases/p6.mdx]
+    activities: [map objects to UI representations, wireframe, annotate interactions, cover edge states, audit accessibility, review ethics and equity]
+    outputs: [ui-mapping.md, wireframe.html, edge-state matrix, ethics-review.md, living-plan/phases/p6.mdx]
     gate: edge_ethics_equity
     exit: Critical states and inclusive-use requirements are buildable.
   - id: P7
