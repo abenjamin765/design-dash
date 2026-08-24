@@ -128,6 +128,8 @@ Use the standard wireframe HTML shell:
 
 Inline the wireframe-components.html styles in the `<style>` block so the artifact is self-contained.
 
+**Multi-page files:** when one `wireframe.html` carries several pages, wrap each page in its own landmark (`<main>` or `<section aria-label="{Page name}">`), promote page titles to `<h2>` under a single document `<h1>`, and explain the page→heading mapping in an HTML comment near the top so critique tooling can attribute findings per page. Layer annotations stay per-page as usual.
+
 ### Step 6 — Annotate for critique and handoff
 
 Every meaningful section must carry a data-annotation attribute or HTML comment that includes:
@@ -182,7 +184,18 @@ If any check fails, fix it before saving.
 
 ### Step 9 — Write the file
 
-Write to `dashes/{slug}/wireframe.html`. Then persist the Step 8 results as `dashes/{slug}/wireframe-checks.md`: one line per checklist item with pass/fail **and an evidence pointer** (file + annotation id / line / grep proof). Assertions without pointers do not count — later lanes and audits must be able to re-verify mechanically. Update the design spec's §4 IA and §5 Page anatomy sections to be brief summaries that reference the wireframe: `See wireframe: dashes/{slug}/wireframe.html`.
+Write to `dashes/{slug}/wireframe.html`. Then persist the Step 8 results as `dashes/{slug}/wireframe-checks.md`: one line per checklist item with pass/fail **and an evidence pointer** (file + annotation id / line / grep proof). Assertions without pointers do not count — later lanes and audits must be able to re-verify mechanically.
+
+**Cross-artifact consistency pass (named P6 exit step).** Extend `wireframe-checks.md` with a Consistency section recording each check with evidence:
+
+1. Every action in `ui-mapping.md` action maps appears in the wireframe — and no CTA was added that the mapping doesn't list.
+2. Every `edge-state-matrix.md` cell cites a rendered state, and every rendered state variant appears in the matrix.
+3. Every cited `ui-rule:` ID exists in `skills/_cross-cutting/ui-interaction/decision-tree.json`.
+4. The rendered information architecture matches the selected concept (P5).
+
+Mismatches are fixed in the source artifact or logged as design debt with an owner — never silently ignored.
+
+Update the design spec's §4 IA and §5 Page anatomy sections to be brief summaries that reference the wireframe: `See wireframe: dashes/{slug}/wireframe.html`.
 
 ---
 

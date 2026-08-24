@@ -11,6 +11,8 @@
 
 > **Ethics floor:** The ethics/equity floor (Sections A–B) runs even on Express tier. Section C (data privacy) auto-escalates tier to High-stakes when any item is flagged.
 
+> **Governance (req §12.7):** This checklist pairs with `skills/7-critique-testing/ethics-equity-review/SKILL.md`, which is the canonical process. Sections map as follows: A ↔ A · B ↔ B (skill: "Vulnerable user population protections") · C ↔ C · D ↔ D · E ↔ E (skill E covers age & context appropriateness) · **Section F below mirrors the skill's AI & algorithmic fairness section** — include it whenever the product surfaces algorithmic or AI-mediated decisions.
+
 ---
 
 ## Section A — Dark pattern audit
@@ -76,6 +78,20 @@
 | E3 | Sensitive data views do not expose user information in stigmatizing ways | <!-- cite data display design --> | | |
 | E4 | Equity hypothesis: consider which subgroups benefit and which may not | <!-- cite equity hypothesis in assumptions.md --> | | |
 | E5 | Content and interactions appropriate for the stated user population | <!-- cite user profile and design rationale --> | | |
+
+---
+
+## Section F — AI & algorithmic fairness *(if applicable)*
+
+<!-- Mirror of ethics-equity-review SKILL.md Section F. Include whenever the
+     product surfaces algorithmic scoring, AI-generated content, or automated
+     decisions. Mark N/A explicitly if it does not. -->
+
+| Question | Answer | Design decision cited |
+| --- | --- | --- |
+| Are algorithmic outputs explainable to the users they affect? | | |
+| Can users contest or override automated decisions? | | |
+| Was training/input data checked for subgroup bias? | | |
 
 ---
 

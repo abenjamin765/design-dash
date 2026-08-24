@@ -5,6 +5,7 @@ Slash commands for the Design Dash workflow. Each command loads its correspondin
 | Command | Skill loaded | Description |
 |---|---|---|
 | `/design-dash` | `skills/0-orchestration/design-dash/SKILL.md` | Run the full nine-phase Design Dash (P0–P8). Supports `--phase {N}` to resume, `--tier {tier}` to escalate. |
+| `/dash-new` | `method/method.yaml` (contract) | Scaffold `dashes/{slug}/` with tier-correct config and linked artifact skeletons. |
 | `/orca-start` | `skills/1-intake/orca-planner/SKILL.md` | Build a sequenced ORCA workflow plan for your project. |
 | `/orca-workshop` | `skills/0-orchestration/facilitation-kit/SKILL.md` | Generate workshop agendas, pre-reads, and facilitation guides for live ORCA sessions. |
 | `/orca-panel` | `skills/7-critique-testing/adversarial-panel/SKILL.md` | Convene an adversarial expert panel to challenge a design or artifact; outputs a Decision Memo. |

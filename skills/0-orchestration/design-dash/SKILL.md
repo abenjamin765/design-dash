@@ -259,10 +259,11 @@ Load `skills/0-orchestration/design-dash/references/critique-checklists.md` at C
 2. **Ethics/equity review**: load `ethics-equity-review` — each item cites a specific design decision. In solo mode, self-answer from config/artifacts; do not shorten Section C.
 3. **Privacy**: if personal data, load `privacy-gate`.
 4. **Accessibility**: run `a11y-audit`.
+5. **Cross-artifact consistency pass**: run the four checks specified in `skills/5-wireframing/SKILL.md` Step 9 (ui-mapping action maps ↔ rendered CTAs · edge-state matrix ↔ rendered states · cited ui-rule IDs ↔ decision tree · selected concept ↔ rendered IA). Results persist in `dashes/{slug}/wireframe-checks.md`; mismatches are fixed or logged as owned design debt.
 
 Tier scope: Express = ethics floor only; Standard/High-stakes = full matrix.
 
-**Output**: `wireframe.html`; `ethics-review.md`; `living-plan/phases/p6.mdx`.
+**Output**: `wireframe.html`; `wireframe-checks.md`; `ethics-review.md`; `living-plan/phases/p6.mdx`.
 
 ---
 

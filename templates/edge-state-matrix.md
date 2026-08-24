@@ -15,7 +15,16 @@
 |---|---|---|---|---|---|
 | <!-- Page or view name --> | <!-- What is shown when there is no content yet. Must include: what's missing + why + primary action. Wireframe ref: --> | <!-- Skeleton / spinner / progressive reveal strategy. Wireframe ref: --> | <!-- Named failure + recoverable? + next step. Not "Something went wrong." Wireframe ref: --> | <!-- What the user sees when they lack access. Does not reveal protected data. Wireframe ref: --> | <!-- Behavior at realistic scale (1,000 users, 500 records, multi-tenant dataset). Does the UI degrade? Pagination, truncation, virtualization strategy. Wireframe ref: --> |
 
-<!-- Add rows for each page/view. One row per page. -->
+<!-- Add rows for each page/view. One row per page.
+
+     Structurally-unreachable denial: in multi-tenant-by-design products where
+     the route itself cannot serve forbidden data (enforced server-side), the
+     permission-denied cell may collapse into an empty-state-with-boundary-copy:
+     show the normal empty view plus copy that sets the boundary without
+     revealing that protected content exists ("No shared plans yet", not "You
+     cannot see other coaches' plans"). Record the structural reason in the
+     cell. Do not fabricate fake 403 screens for states that cannot occur.
+-->
 
 ---
 

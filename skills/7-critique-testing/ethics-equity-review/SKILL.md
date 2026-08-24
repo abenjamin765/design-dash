@@ -16,6 +16,9 @@ Run the P6 Edge/Ethics/Equity gate — a structured review that ensures the desi
 users through dark patterns, exploits vulnerable populations, excludes low-bandwidth or
 low-literacy users, or creates inequitable outcomes across user subgroups.
 
+**Output artifact:** fill `templates/ethics-equity-checklist.md`, which mirrors this skill's
+Sections A–F (its Section B/E titles are supersets; its Section F is this skill's Section F).
+
 ---
 
 ## Checkpoint 1 — Scope (WAIT FOR USER)

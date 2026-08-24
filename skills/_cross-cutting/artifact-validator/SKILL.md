@@ -77,6 +77,13 @@ Before starting, read:
 - [ ] Consistency check is complete
 - [ ] Masked objects are flagged
 
+### Assumptions Register Checklist
+- [ ] Every row has a unique ID (`A-###`), type, statement, owner, and status
+- [ ] Every row carries an evidence label from the canonical set: `observed · reported · inferred · assumed · unknown`
+- [ ] Every `assumed` row has a **non-empty validation path** (method, participants, when) — an unvalidatable assumption is a gate risk, not a formality
+- [ ] Assumptions carried forward from prior dashes are marked as such
+- [ ] Falsified assumptions link to the re-entry decision (which phase reopens, who decides)
+
 ## Consistency Checks
 
 ### Cross-Artifact Consistency
