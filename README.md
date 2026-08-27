@@ -107,6 +107,12 @@ After install, a single edit to any `skills/**/SKILL.md` propagates to both agen
 
 ---
 
+## Related projects
+
+- [Many Hats](https://github.com/abenjamin765/many-hats) — a cloneable AI product team that retains Design Dash OOUX/ORCA methods as skill references
+
+---
+
 ## For contributors & agents
 
 - [`AGENTS.md`](./AGENTS.md) — cross-agent entry point (Cursor + Claude Code parity, stage map, skill reference).
