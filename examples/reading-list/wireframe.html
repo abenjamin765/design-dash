@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reading list — wireframe</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111;
+      --line: #111;
+      --muted: #555;
+      --paper: #fff;
+      --wash: #f3f3f3;
+      --hair: #c8c8c8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 15px/1.45 ui-sans-serif, system-ui, sans-serif;
+    }
+    header, main { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+    header { padding-bottom: 0; }
+    h1 { font-size: 22px; font-weight: 650; margin: 0 0 8px; }
+    h2 { font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 10px; }
+    h3 { font-size: 18px; margin: 0; font-weight: 650; }
+    p { margin: 0; }
+    .kicker { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .lede { max-width: 62ch; color: var(--ink); }
+    .frames {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+    .frame { min-width: 0; }
+    .note { margin-top: 8px; font-size: 13px; color: var(--muted); }
+    .screen {
+      border: 1px solid var(--line);
+      background: var(--wash);
+      padding: 14px;
+      min-height: 460px;
+    }
+    .screen-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; margin-bottom: 12px; }
+    .meta { font-size: 12px; color: var(--muted); }
+    form, .row, .empty, .alert { background: var(--paper); border: 1px solid var(--hair); }
+    form { padding: 10px; display: grid; gap: 8px; margin-bottom: 12px; }
+    label { display: grid; gap: 4px; font-size: 13px; }
+    input, select {
+      font: inherit;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 6px 8px;
+      width: 100%;
+    }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      padding: 6px 10px;
+    }
+    button.primary { background: var(--ink); color: var(--paper); }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
+    .row {
+      padding: 10px;
+      margin-bottom: 8px;
+      display: grid;
+      gap: 6px;
+    }
+    .row-top, .row-actions { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+    .status {
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      border: 1px solid var(--line);
+      padding: 2px 6px;
+      white-space: nowrap;
+    }
+    .why { font-size: 13px; margin: 0; }
+    .empty { padding: 16px 12px; margin-bottom: 12px; }
+    .empty strong { display: block; margin-bottom: 4px; }
+    .alert { padding: 10px; margin-bottom: 12px; border-style: dashed; border-color: var(--line); }
+    .alert strong { display: block; }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="kicker">Synthetic example · Express · monochrome wireframe</p>
+    <h1>Reading list</h1>
+    <p class="lede">One page, three states. Boxes show structure. Happy path, empty list, and a failed save. No accounts and no personal data.</p>
+  </header>
+  <main>
+    <div class="frames">
+      <section class="frame" aria-labelledby="happy-label">
+        <h2 id="happy-label">Happy path</h2>
+        <div class="screen">
+          <div class="screen-head">
+            <h3>Reading list</h3>
+            <p class="meta">3 titles</p>
+          </div>
+          <form aria-label="Add a title">
+            <label>Title
+              <input type="text" placeholder="Book or article">
+            </label>
+            <label>Note <span class="meta">(optional)</span>
+              <input type="text" placeholder="Why it is here">
+            </label>
+            <label>Status
+              <select>
+                <option selected>To read</option>
+                <option>Reading</option>
+                <option>Finished</option>
+              </select>
+            </label>
+            <div class="actions">
+              <button type="button" class="primary">Add title</button>
+            </div>
+          </form>
+          <article class="row">
+            <div class="row-top">
+              <strong>A short guide to plain language</strong>
+              <span class="status">To read</span>
+            </div>
+            <p class="why">So our labels stay plain.</p>
+            <div class="row-actions">
+              <button type="button">Mark reading</button>
+              <button type="button">Remove</button>
+            </div>
+          </article>
+          <article class="row">
+            <div class="row-top">
+              <strong>Thinking in Systems</strong>
+              <span class="status">Reading</span>
+            </div>
+            <p class="why">For the dependency-map discussion.</p>
+            <div class="row-actions">
+              <button type="button">Mark finished</button>
+              <button type="button">Remove</button>
+            </div>
+          </article>
+          <article class="row">
+            <div class="row-top">
+              <strong>The Design of Everyday Things</strong>
+              <span class="status">Finished</span>
+            </div>
+            <p class="why">Source for the affordance arguments.</p>
+            <div class="row-actions">
+              <button type="button">Remove</button>
+            </div>
+          </article>
+        </div>
+        <p class="note">Saved title appears with its note and status. Remove is on the row.</p>
+      </section>
+
+      <section class="frame" aria-labelledby="empty-label">
+        <h2 id="empty-label">Empty</h2>
+        <div class="screen">
+          <div class="screen-head">
+            <h3>Reading list</h3>
+            <p class="meta">0 titles</p>
+          </div>
+          <div class="empty">
+            <strong>No titles yet.</strong>
+            <p>Add a book or an article so the team can find it later.</p>
+          </div>
+          <form aria-label="Add the first title">
+            <label>Title
+              <input type="text" placeholder="Book or article">
+            </label>
+            <label>Note <span class="meta">(optional)</span>
+              <input type="text" placeholder="Why it is here">
+            </label>
+            <label>Status
+              <select>
+                <option selected>To read</option>
+                <option>Reading</option>
+                <option>Finished</option>
+              </select>
+            </label>
+            <div class="actions">
+              <button type="button" class="primary">Add title</button>
+            </div>
+          </form>
+        </div>
+        <p class="note">What is missing, why it matters, and the action. No sample titles dressed up as saved.</p>
+      </section>
+
+      <section class="frame" aria-labelledby="error-label">
+        <h2 id="error-label">Error</h2>
+        <div class="screen">
+          <div class="screen-head">
+            <h3>Reading list</h3>
+            <p class="meta">2 titles</p>
+          </div>
+          <div class="alert" role="alert">
+            <strong>Not saved.</strong>
+            <p>The list did not change. Check the connection and try again.</p>
+          </div>
+          <form aria-label="Retry adding a title">
+            <label>Title
+              <input type="text" value="A book about checklists" readonly>
+            </label>
+            <label>Note <span class="meta">(optional)</span>
+              <input type="text" value="So we stop skipping the boring steps." readonly>
+            </label>
+            <label>Status
+              <select disabled>
+                <option selected>To read</option>
+              </select>
+            </label>
+            <div class="actions">
+              <button type="button" class="primary">Try again</button>
+            </div>
+          </form>
+          <article class="row">
+            <div class="row-top">
+              <strong>Thinking in Systems</strong>
+              <span class="status">Reading</span>
+            </div>
+            <p class="why">For the dependency-map discussion.</p>
+            <div class="row-actions">
+              <button type="button">Mark finished</button>
+              <button type="button">Remove</button>
+            </div>
+          </article>
+          <article class="row">
+            <div class="row-top">
+              <strong>The Design of Everyday Things</strong>
+              <span class="status">Finished</span>
+            </div>
+            <p class="why">Source for the affordance arguments.</p>
+            <div class="row-actions">
+              <button type="button">Remove</button>
+            </div>
+          </article>
+        </div>
+        <p class="note">The draft stays in the form. “A book about checklists” is not on the list.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -23,3 +23,9 @@ dashes/*
 
 # Workspace-local configuration (business-specific overrides stay out of the OSS repo)
 dash.config.json
+
+# Local-only trees. The private pilot, agent skill cache, and Playwright
+# artifacts stay off the public library.
+platform/
+.agents/
+.playwright-mcp/

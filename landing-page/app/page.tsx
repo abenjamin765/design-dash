@@ -2,7 +2,33 @@
 
 import { useState } from "react";
 
+const basePath = "/design-dash";
+const exampleBase = "https://github.com/abenjamin765/design-dash/blob/main/examples/reading-list";
+
 const steps = ["Evidence", "Objects", "Flows", "Alternatives", "Wireframes", "Plan"];
+
+const artifacts = [
+  {
+    title: "Pitch",
+    href: `${exampleBase}/README.md`,
+    body: "The reading-list README walks the problem, the decision, and what to build next. A full dash also writes a stakeholder pitch site.",
+  },
+  {
+    title: "Requirements",
+    href: `${exampleBase}/requirements.md`,
+    body: "Context, goals, objects, flows, states, and the acceptance criteria a team can build against.",
+  },
+  {
+    title: "Wireframes",
+    href: `${exampleBase}/wireframe.html`,
+    body: "The selected concept, including empty and error states, in portable HTML.",
+  },
+  {
+    title: "Object guides",
+    href: `${exampleBase}/objects.md`,
+    body: "The things people recognize: identity, relationships, actions, and the words the interface should use.",
+  },
+];
 
 const tools = {
   chatgpt: {
@@ -104,7 +130,7 @@ export default function Home() {
           <blockquote>“Show teachers student test results.”</blockquote>
         </div>
         <figure className="editorial-illustration wide-illustration">
-          <img src="/evidence-to-plan.webp" alt="Ambiguous inputs moving through structured checkpoints and resolving into a clear plan" />
+          <img src={`${basePath}/evidence-to-plan.webp`} alt="Ambiguous inputs moving through structured checkpoints and resolving into a clear plan" />
         </figure>
         <div className="example-grid">
           <div>
@@ -112,22 +138,45 @@ export default function Home() {
             <ul><li>Which teachers and students?</li><li>Which assessment or attempt?</li><li>What decision should the result support?</li><li>Who may see sensitive student data?</li></ul>
           </div>
           <div>
-            <h3>The plan makes those decisions explicit.</h3>
-            <ul><li>Seven modeled objects with clear relationships.</li><li>Three role-based scenarios.</li><li>Two structurally different concepts.</li><li>Permission, missing-data, and at-scale states.</li><li>Fourteen acceptance criteria and a usability study.</li></ul>
+            <h3>The method forces those decisions into the open.</h3>
+            <ul>
+              <li>Which objects do people recognize, and how are they related?</li>
+              <li>Which roles act, and which scenarios change state?</li>
+              <li>Which structurally different concepts were compared before one was chosen?</li>
+              <li>What happens when data is missing, permission is denied, or the class is large?</li>
+              <li>What must be true to build this, and how will we learn whether it worked?</li>
+            </ul>
           </div>
         </div>
+        <p className="example-caveat">Student results are regulated data, so this request would be classified High-stakes. The story shows why a short ask is hard. <a href="#leave-with">See a finished plan</a> in the reading-list example, a small synthetic Express dash.</p>
+      </section>
+
+      <section className="section leave-section" id="leave-with" aria-labelledby="leave-title">
+        <p className="section-label">What you leave with</p>
+        <div className="section-intro">
+          <h2 id="leave-title">A plan your team can build from.</h2>
+          <p>Every dash ends in portable files. Read them in the <a href={`${exampleBase}/README.md`}>team reading list</a>, along with its <a href={`${exampleBase}/assumptions.md`}>assumption register</a> and <a href={`${exampleBase}/flow.md`}>scenario flow</a>.</p>
+        </div>
+        <ul className="leave-list">
+          {artifacts.map((artifact) => (
+            <li key={artifact.title}>
+              <a href={artifact.href}>{artifact.title}</a>
+              <p>{artifact.body}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="section rigor-section" aria-labelledby="rigor-title">
         <p className="section-label">Rigor follows risk</p>
         <div className="section-intro">
           <h2 id="rigor-title">The work sets the rigor.</h2>
-          <p>You can always increase it. Sensitive data, broad reach, and irreversible decisions set a floor you cannot lower.</p>
+          <p>You can raise it. Regulated data, broad reach, and irreversible decisions set a floor.</p>
         </div>
         <div className="rigor-list">
-          <div><span>Express</span><h3>Small and reversible</h3><p>One role, narrow reach, and no sensitive data. Deferred evidence remains visible as debt.</p></div>
-          <div><span>Standard</span><h3>A real product workflow</h3><p>Multiple roles or meaningful reach. Evidence, reconciliation, selection, critique, and learning are required.</p></div>
-          <div><span>High-stakes</span><h3>Consequential by design</h3><p>Sensitive data, safety, broad reach, or hard-to-reverse decisions require every gate and accountable sign-off.</p></div>
+          <div><span>Express</span><h3>Small and reversible</h3><p>Low risk, easily reversible, and narrow reach. The ethics floor still applies. Skipped gates stay visible as evidence debt.</p></div>
+          <div><span>Standard</span><h3>A real product workflow</h3><p>Moderate risk, or a meaningful workflow with more than one role. Evidence, reconciliation, selection, ethics, and learning are required.</p></div>
+          <div><span>High-stakes</span><h3>Consequential by design</h3><p>Irreversible or broad-impact work, safety concerns, or regulated data. Every gate is required, including privacy, with accountable sign-off.</p></div>
         </div>
       </section>
 
@@ -141,7 +190,7 @@ export default function Home() {
               <p>Future projects begin with what your team already knows instead of rebuilding the domain from scratch.</p>
             </div>
           </div>
-          <figure className="editorial-illustration"><img src="/object-library.webp" alt="Reusable object modules forming a shared library and branching into multiple product experiences" /></figure>
+          <figure className="editorial-illustration"><img src={`${basePath}/object-library.webp`} alt="Reusable object modules forming a shared library and branching into multiple product experiences" /></figure>
         </div>
       </section>
 
@@ -151,7 +200,7 @@ export default function Home() {
           <h2 id="tools-title">One method. Wherever you work.</h2>
           <p>Use a native skill when your tool supports it, or carry the same process through portable Markdown, YAML, and HTML artifacts.</p>
         </div>
-        <figure className="editorial-illustration tools-illustration"><img src="/cross-tool.webp" alt="One central method flowing consistently into four different working environments" /></figure>
+        <figure className="editorial-illustration tools-illustration"><img src={`${basePath}/cross-tool.webp`} alt="One central method flowing consistently into four different working environments" /></figure>
         <div className="tool-controls" role="group" aria-label="Choose your environment">
           {(Object.keys(tools) as ToolKey[]).map((key) => <button key={key} aria-pressed={activeTool === key} onClick={() => setActiveTool(key)}>{tools[key].label}</button>)}
         </div>

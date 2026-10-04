@@ -63,8 +63,17 @@ Run the installer from the repo root to link the skills into your agent:
 ./install.sh
 ```
 
-(`install.sh` is added in a later phase.) Use `./install.sh --dry-run` to preview
-what would be installed without changing anything.
+**Options:**
+
+```bash
+./install.sh --cursor       # Cursor only
+./install.sh --claude       # Claude Code only
+./install.sh --dry-run      # Preview without making changes
+./install.sh --uninstall    # Remove all symlinks from this repo
+./install.sh --update       # Idempotent re-link (add new, remove stale)
+```
+
+After install, a single edit to any `skills/**/SKILL.md` propagates to both agents via symlink — never fork content.
 
 ## Opening a pull request
 

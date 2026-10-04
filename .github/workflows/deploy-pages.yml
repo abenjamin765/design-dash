@@ -23,12 +23,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: landing-page/package-lock.json
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Install dependencies
+        working-directory: landing-page
+        run: npm ci
+      - name: Build
+        working-directory: landing-page
+        run: npm run build
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: landing-page/out
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

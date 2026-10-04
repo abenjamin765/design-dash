@@ -1,6 +1,8 @@
 # Canonical examples
 
-Examples should help a designer understand both the method and the expected quality of its artifacts. Each canonical example should include:
+The canonical example is [`reading-list/`](./reading-list/): a small synthetic Express dash for a team reading list. Start with its [README](./reading-list/README.md). It is labeled synthetic and sized to read in a few minutes.
+
+Future examples should help a designer understand both the method and the expected quality of its artifacts. Each one should include:
 
 - a short project brief and computed tier;
 - evidence excerpts with provenance and confidence labels;

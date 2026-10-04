@@ -9,14 +9,15 @@ npm install
 npm run dev
 ```
 
-Then open `http://localhost:3000`.
+Then open `http://localhost:3000/design-dash/`. The dev server uses the GitHub project-page base path.
 
 ## Build
 
 ```bash
 npm run build
-npm start
 ```
+
+Static export writes `out/`. GitHub Pages serves that directory under `/design-dash/`.
 
 The page is a small Next.js app with one interactive environment selector. Its three editorial illustrations live in `public/` and include descriptive alternative text in the page source.
 

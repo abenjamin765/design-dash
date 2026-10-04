@@ -12,15 +12,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://abenjamin765.github.io/design-dash/";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Design Dash — From fuzzy problem to build-ready plan",
   description: "An open-source, AI-facilitated product design method that connects evidence, object models, flows, alternatives, wireframes, and requirements.",
-  other: {
-    "codex-preview": "development",
+  alternates: {
+    canonical: siteUrl,
+  },
+  openGraph: {
+    title: "Design Dash — From fuzzy problem to build-ready plan",
+    description: "An open-source, AI-facilitated product design method that connects evidence, object models, flows, alternatives, wireframes, and requirements.",
+    url: siteUrl,
+    type: "website",
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/design-dash/favicon.svg",
+    shortcut: "/design-dash/favicon.svg",
   },
 };
 

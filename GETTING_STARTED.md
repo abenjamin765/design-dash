@@ -2,6 +2,8 @@
 
 You do not need a particular editor, command line, or design tool. Choose the path that matches your environment; every path follows the same method and produces the same core artifacts.
 
+The public explainer is at [https://abenjamin765.github.io/design-dash/](https://abenjamin765.github.io/design-dash/). Before you start your own dash, read the synthetic Express example in [`examples/reading-list/`](./examples/reading-list/) — a team reading list, small enough to finish in a few minutes.
+
 ## Path 1 — Chat or general AI assistant
 
 1. Download this repository or attach [`method/method.yaml`](./method/method.yaml) with the templates you need.
