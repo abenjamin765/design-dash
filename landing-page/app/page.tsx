@@ -74,7 +74,9 @@ export default function Home() {
   return (
     <main id="top">
       <header className="site-header">
-        <a className="wordmark" href="#top">Design Dash</a>
+        <a className="wordmark" href="#top">
+          <img src={`${basePath}/logo.svg`} alt="Design Dash" width={120} height={48} />
+        </a>
         <nav aria-label="Main navigation">
           <a href="#method">Method</a>
           <a href="#example">Example</a>
@@ -217,7 +219,13 @@ export default function Home() {
         <a className="primary-action" href="#tools">Start a Design Dash</a>
       </section>
 
-      <footer><a className="wordmark" href="#top">Design Dash</a><p>Evidence-governed product design.</p><a href="https://github.com/abenjamin765/design-dash">GitHub</a></footer>
+      <footer>
+        <a className="wordmark" href="#top">
+          <img src={`${basePath}/logo.svg`} alt="Design Dash" width={120} height={48} />
+        </a>
+        <p>Evidence-governed product design.</p>
+        <a href="https://github.com/abenjamin765/design-dash">GitHub</a>
+      </footer>
     </main>
   );
 }

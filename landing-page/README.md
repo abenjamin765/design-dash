@@ -19,7 +19,7 @@ npm run build
 
 Static export writes `out/`. GitHub Pages serves that directory under `/design-dash/`.
 
-The page is a small Next.js app with one interactive environment selector. Its three editorial illustrations live in `public/` and include descriptive alternative text in the page source.
+The page is a small Next.js app with one interactive environment selector. Its three editorial illustrations live in `public/`, along with the Design Dash logo lockup (`logo.svg`), mark (`logo-mark.svg`), and favicon. Illustrations include descriptive alternative text in the page source.
 
 ## Content responsibilities
 

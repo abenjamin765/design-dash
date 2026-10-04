@@ -1,4 +1,6 @@
-<!-- logo -->
+<p align="center">
+  <img src="./logo.svg" alt="Design Dash" width="180" height="72" />
+</p>
 
 # Design Dash
 
