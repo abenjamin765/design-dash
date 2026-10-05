@@ -121,7 +121,7 @@ Present the combined scoring summary:
 
 If any criterion is unmet → return to the appropriate checkpoint and fix before calling the gate passed.
 
-Ask the designer to confirm the selected concept and state the reason in 1–2 sentences. Record in the design spec §5 "Concept selection" section:
+Ask the designer to confirm the selected concept and state the reason in 1–2 sentences. Write the full scorecard to `dashes/{slug}/concept-choice.md` from `templates/concept-choice.md`. Record the short decision in the design spec §5 "Concept selection" section (link to the scorecard):
 - Selected concept + rationale
 - Runner-up(s) + why not selected
 - Gate pass confirmation
@@ -139,9 +139,10 @@ Any assumption introduced during concept generation (e.g. "users prefer Project-
 
 ## Output
 
-1. Updated design spec §5 "Concept selection" with all scoring tables, panel verdict, selected concept, and gate confirmation.
-2. Updated `assumptions.md` with any new rows from 5.7.
-3. Updated `metrics.md` if a new business metric was added.
+1. `dashes/{slug}/concept-choice.md` — scoring tables, panel verdict, selected concept, and gate confirmation (from `templates/concept-choice.md`).
+2. Updated design spec §5 "Concept selection" with the short decision and a link to the scorecard.
+3. Updated `assumptions.md` with any new rows from 5.7.
+4. Updated `metrics.md` if a new business metric was added.
 
 Return control to the orchestrator at P6 Wireframe & Critique.
 

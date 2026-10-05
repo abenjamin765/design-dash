@@ -29,10 +29,10 @@ All templates live in this folder. They are used by the orchestrator, skills, an
 
 | Template | Purpose |
 |---|---|
+| `flow.md` | P4 scenario flow mapping output — mental models, scenarios, flow steps, derived pages, goal-page map, and constraints log |
 | `nav-flow.md` | Navigation flow diagram spec — entry points, page hierarchy, and transitions |
+| `concept-choice.md` | P5 concept scorecard — structural alternatives, user and business scores, and the selection |
 | `orca-plan.md` | ORCA orchestration plan — the structured sequence of steps for a full design dash |
-
-*Scenario flow mapping is handled by the `scenario-flow-mapping` skill rather than a standalone template.*
 
 ---
 
@@ -41,6 +41,7 @@ All templates live in this folder. They are used by the orchestrator, skills, an
 | Template | Purpose |
 |---|---|
 | `dash-config.yaml` | Machine-readable dash configuration: slug, tier, owner, product area, and feature flags for the orchestrator |
+| `design-spec.md` | P3 framing lock — context, goals/non-goals, primary user; later sections link to flow and concept choice |
 | `design-dash.md` | Dash overview and master index — the entry point document for a completed dash |
 | `project-hub.md` | Project hub page template for surfacing a dash's artifacts in a shared team space |
 | `scope.md` | Auto-generated scope summary produced by the P2 scoping step; do not edit manually |

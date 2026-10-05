@@ -322,7 +322,7 @@ If configured, load `mint-orca-adapter`. Never block P8 completion.
 |---|---|
 | `references/phases/p0.md` … `p8.md` | When that phase is active (if present) |
 | `references/critique-checklists.md` | P6 Critique |
-| `references/design-spec-template.md` | P3 |
+| `templates/design-spec.md` | P3 |
 | `references/meeting-invite-template.md` | P2 group mode |
 | `references/workshop-summary-template.md` | P8 |
 | `references/microlearning/*.md` | On first surface / `/explain` |

@@ -127,7 +127,7 @@ Output: constraints log (append to flow.md).
 
 ## Output — `flow.md`
 
-Write `dashes/{slug}/flow.md` with all sections:
+Write `dashes/{slug}/flow.md` from `templates/flow.md` with all sections:
 
 ```markdown
 # Flow — {topic}
